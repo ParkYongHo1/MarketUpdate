@@ -1,8 +1,6 @@
 import SocialButton from "../atoms/SocialButton";
 import SocialButtonImg from "../atoms/SocialButtonImg";
-import SocialButtonText from "../atoms/SocialButtonText";
-import { faComment } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 const SocialLoginForm = () => {
   return (
     <SocialButton type="submit">

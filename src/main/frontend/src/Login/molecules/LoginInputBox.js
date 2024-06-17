@@ -1,12 +1,24 @@
 import LoginInput from "../atoms/LoginInput";
-import LoginPTag from "../atoms/LoginPTag";
-const LoginInputBox = () => {
+import PTag from "../atoms/PTag";
+const LoginInputBox = ({ setUser, user }) => {
+  const onChangeInput = (e) => {
+    const { name, value } = e.target;
+    setUser({ ...user, [name]: value });
+  };
   return (
     <>
-      <LoginPTag>이메일 주소</LoginPTag>
-      <LoginInput />
-      <LoginPTag>비밀번호</LoginPTag>
-      <LoginInput />
+      <PTag>이메일 주소</PTag>
+      <LoginInput
+        value={user.userEmail}
+        name="userEmail"
+        onChange={onChangeInput}
+      />
+      <PTag>비밀번호</PTag>
+      <LoginInput
+        value={user.userPassword}
+        name="userPassword"
+        onChange={onChangeInput}
+      />
     </>
   );
 };
