@@ -12,10 +12,10 @@ import com.market.market.dto.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     
-    @Query("SELECT s.userEmail FROM User s WHERE s.userEmail =?1")
+    @Query("SELECT s FROM User s WHERE s.userEmail =?1")
     Optional<User> findByUserEmail(String userEmail);
 
-    @Query("SELECT s.userPassword FROM User s WHERE s.userPassword =?1")
+    @Query("SELECT s FROM User s WHERE s.userPassword =?1")
     Optional<User> findByUserPassword(String userPassword);
 
     @Query("SELECT s.userEmail FROM User s")

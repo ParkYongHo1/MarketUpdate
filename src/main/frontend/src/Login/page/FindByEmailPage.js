@@ -1,15 +1,14 @@
 import Body from "../atoms/Body";
 import LoginContainer from "../atoms/LoginContainer";
-import SignUpForm from "../organisms/SignUpForm";
-
-const SignUpTemplates = () => {
+import FindByEmailForm from "../templates/FindByEmailForm";
+const FindByEmailPage = () => {
   return (
     <Body>
       <LoginContainer>
-        <SignUpForm></SignUpForm>
+        <FindByEmailForm></FindByEmailForm>
       </LoginContainer>
     </Body>
   );
 };
 
-export default SignUpTemplates;
+export default FindByEmailPage;

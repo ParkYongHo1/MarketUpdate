@@ -31,8 +31,8 @@ public class User {
         return userEmail;
     }
 
-    public void setUserId(String userId) {
-        this.userEmail = userId;
+    public void getUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getUserPassword() {

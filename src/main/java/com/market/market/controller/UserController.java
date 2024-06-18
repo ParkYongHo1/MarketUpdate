@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("/api")
 public class UserController {
 
     @Autowired
@@ -25,6 +25,7 @@ public class UserController {
     @PostMapping("/login")
     public String login(@RequestBody User user) {
         System.out.println("로그인 진입");
+        System.out.println("userEmail : " + user.getUserEmail() + " userPassword : " + user.getUserPassword());
         User loggedInUser = userService.login(user.getUserEmail(), user.getUserPassword());
         System.out.println(loggedInUser);
         if(loggedInUser != null){
@@ -36,8 +37,17 @@ public class UserController {
     
     @GetMapping("/user/fetchEmail")
     public List<String> fetchEmail() {
+        System.out.println("모든 유저 이메일 호출 진입");
         System.out.println(userService.getAllUserEmails());
         return userService.getAllUserEmails();
+    }
+    
+    @PostMapping("/user/signup")
+    public String signup(@RequestBody User user) {
+        System.out.println("회원가입 진입");
+        System.out.println("userEmail : " + user.getUserEmail() + " userPassword : " + user.getUserPassword());
+        
+        return "hi";
     }
     
 }

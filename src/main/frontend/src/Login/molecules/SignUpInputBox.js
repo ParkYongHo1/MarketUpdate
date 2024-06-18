@@ -1,30 +1,55 @@
 import LoginInput from "../atoms/LoginInput";
 import PTag from "../atoms/PTag";
-import { React, useEffect, useState } from "react";
+import { useState } from "react";
 import ErrorMessage from "../atoms/ErrorMessage";
 import OkMessage from "../atoms/OkMessage";
 import Message from "../atoms/Message";
-const LoginInputBox = ({ userEmail }) => {
-  const [signUpInfo, setSignUpInfo] = useState({
-    userEmail: "",
-    userPassword: "",
-  });
-  const [passwordCheck, setPasswordCheck] = useState("");
-  const [emailMessage, setEmailMessage] = useState(true);
-  const [passwordMessage, setPasswordMessage] = useState(null);
+
+const LoginInputBox = ({
+  userEmail,
+  signUpInfo,
+  setSignUpInfo,
+  passwordCheck,
+  setPasswordCheck,
+  emailMessage,
+  setEmailMessage,
+  passwordMessage,
+  setPasswordMessage,
+  phoneMessage,
+  setPhoneMessage,
+}) => {
   const onChangeInput = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
     setSignUpInfo({ ...signUpInfo, [name]: value });
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (name === "userEmail") {
+      validateEmail(value);
+    }
 
-    if (name === "userEmail" && !emailRegex.test(value)) {
+    if (name === "userPhone") {
+      validatePhone(value);
+    }
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
       setEmailMessage(false);
     } else {
       setEmailMessage(true);
     }
   };
+
+  const validatePhone = (phone) => {
+    const phoneRegex = /^01[016789][0-9]{3,4}[0-9]{4}$/;
+    if (phoneRegex.test(phone)) {
+      setPhoneMessage(true);
+    } else {
+      setPhoneMessage(false);
+    }
+  };
+
   const onChangePasswordCheck = (e) => {
     const value = e.target.value;
     setPasswordCheck(value);
@@ -34,6 +59,7 @@ const LoginInputBox = ({ userEmail }) => {
       setPasswordMessage(null);
     }
   };
+
   return (
     <>
       {/* 이메일 주소 입력 */}
@@ -44,13 +70,16 @@ const LoginInputBox = ({ userEmail }) => {
         value={signUpInfo.userEmail}
         type="email"
         placeholder="예시) carrot@carrot.com"
+        required
       />
       <>
-        {/* 중복 여부 확인 */}
-        {signUpInfo.userEmail.length == 0 || !emailMessage ? (
+        {/* 이메일 메시지 확인 */}
+        {signUpInfo.userEmail.length === 0 || emailMessage === null ? (
           <Message>.</Message>
-        ) : signUpInfo.userEmail.length > 0 &&
-          userEmail.includes(signUpInfo.userEmail) ? (
+        ) : emailMessage === false &&
+          !userEmail.includes(signUpInfo.userEmail) ? (
+          <ErrorMessage>올바르지 않은 형식입니다.</ErrorMessage>
+        ) : userEmail.includes(signUpInfo.userEmail) ? (
           <ErrorMessage>중복된 이메일입니다.</ErrorMessage>
         ) : (
           emailMessage &&
@@ -60,6 +89,25 @@ const LoginInputBox = ({ userEmail }) => {
           )
         )}
       </>
+      {/* 휴대폰 번호 입력 */}
+      <PTag>휴대폰 번호*</PTag>
+      <LoginInput
+        onChange={onChangeInput}
+        name="userPhone"
+        value={signUpInfo.userPhone}
+        type="text"
+        placeholder="예시) 01012345678"
+        maxLength={11}
+        required
+      />
+      {/* 휴대폰 메시지 확인 */}
+      {signUpInfo.userPhone.length === 0 || phoneMessage === null ? (
+        <Message>.</Message>
+      ) : phoneMessage === false ? (
+        <ErrorMessage>올바르지 않은 형식입니다.</ErrorMessage>
+      ) : (
+        phoneMessage && <OkMessage>유효한 형식입니다.</OkMessage>
+      )}
       {/* 비밀번호 입력 */}
       <PTag>비밀번호*</PTag>
       <LoginInput
@@ -67,6 +115,7 @@ const LoginInputBox = ({ userEmail }) => {
         name="userPassword"
         value={signUpInfo.userPassword}
         type="password"
+        required
       />
 
       {/* 비밀번호 확인 입력 */}
@@ -76,6 +125,7 @@ const LoginInputBox = ({ userEmail }) => {
         name="passwordCheck"
         value={passwordCheck}
         type="password"
+        required
       />
       {passwordCheck.length === 0 ? (
         <Message>.</Message>
@@ -84,9 +134,6 @@ const LoginInputBox = ({ userEmail }) => {
       ) : (
         passwordMessage && <OkMessage>비밀번호가 일치합니다.</OkMessage>
       )}
-      {/* 동의 체크박스 */}
-      <input type="checkbox" id="1" />
-      <label htmlFor="1">동의</label>
     </>
   );
 };

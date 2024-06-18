@@ -14,10 +14,12 @@ public class UserService {
 private UserRepository  userRepository;
 
     public User login(String userEmail, String userPassword){
+        System.out.println("서비스 진입");
         return userRepository.findByUserEmail(userEmail)
         .filter(user -> user.getUserPassword().equals(userPassword))
         .orElse(null);
     }
+
     public List<String> getAllUserEmails() {
         return userRepository.findAllUserEmails();
     }
