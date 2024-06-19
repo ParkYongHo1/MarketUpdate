@@ -1,11 +1,15 @@
-import Body from "./atom/Body";
+import HeaderBody from "./atom/HeaderBody";
 import HeaderContainer from "./atom/HeaderContainer";
 import HeaderContentContainer from "./atom/HeaderContentContainer";
 import HeaderContentDiv from "./atom/HeaderContentDiv";
 import HeaderDiv from "./atom/HeaderDiv";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faPowerOff } from "@fortawesome/free-solid-svg-icons";
 const Header = () => {
   return (
-    <Body>
+    <HeaderBody>
       <HeaderContainer>
         <HeaderDiv>
           <div>
@@ -20,18 +24,24 @@ const Header = () => {
               <div>박용호님 환영합니다</div>
             </HeaderContentDiv>
             <HeaderContentDiv>
-              <div>메시지</div>
+              <div>
+                <FontAwesomeIcon icon={faEnvelope} size="lg" />
+              </div>
             </HeaderContentDiv>
             <HeaderContentDiv>
-              <div>검색</div>
+              <div>
+                <FontAwesomeIcon icon={faMagnifyingGlass} size="lg" />
+              </div>
             </HeaderContentDiv>
             <HeaderContentDiv>
-              <div>로그아웃</div>
+              <div>
+                <FontAwesomeIcon icon={faPowerOff} size="lg" />
+              </div>
             </HeaderContentDiv>
           </HeaderContentContainer>
         </HeaderDiv>
       </HeaderContainer>
-    </Body>
+    </HeaderBody>
   );
 };
 

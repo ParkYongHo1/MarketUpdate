@@ -5,6 +5,7 @@ import Title from "../atoms/Title";
 import { useState } from "react";
 import axios from "axios";
 const LoginForm = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState({
     userEmail: "",
     userPassword: "",
@@ -16,6 +17,7 @@ const LoginForm = () => {
       const res = await axios.post("/api/login", user);
       console.log(res.data);
       if (res.data == "success") {
+        setIsLoggedIn(true);
         console.log(
           "email : " + user.userEmail + "password : " + user.userPassword
         );

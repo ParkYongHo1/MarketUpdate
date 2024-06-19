@@ -1,0 +1,138 @@
+import InfoMessage from "../atoms/InfoMessage";
+import Modal from "react-modal";
+import DaumPostcode from "react-daum-postcode";
+import Xbtn from "../atoms/Xbtn";
+import CheckOptionGroup from "./CheckOptionGroup";
+import { useState } from "react";
+import PTag from "../atoms/PTag";
+import LoginInput from "../atoms/LoginInput";
+import Title from "../atoms/Title";
+import Button from "../atoms/Button";
+import Message from "../atoms/Message";
+import ErrorMessage from "../atoms/ErrorMessage";
+import OkMessage from "../atoms/OkMessage";
+const AddUserInfoInputBox = ({
+  user,
+  setUser,
+  birthMessage,
+  setBirthMessage,
+}) => {
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
+  const handleUser = (e) => {
+    const { name, value } = e.target;
+    setUser({ ...user, [name]: value });
+    if (name == "userBirth") {
+      validateEmail(value);
+    }
+  };
+  const handleComplete = (data) => {
+    setUser({ ...user, userAddress: data.address });
+    setIsModalOpen(false); // 주소 선택 시 모달 닫기
+  };
+
+  const validateEmail = (birth) => {
+    const birthregex = /^[0-9]{8}$/;
+    if (!birthregex.test(birth)) {
+      setBirthMessage(false);
+    } else {
+      setBirthMessage(true);
+    }
+  };
+  const checkOption = [
+    { label: "의상", value: "의상" },
+    { label: "식품", value: "식품" },
+    { label: "가구", value: "가구" },
+    { label: "전자기기", value: "전자기기" },
+    { label: "도서", value: "도서" },
+    { label: "반려동물용품", value: "반려동물용품" },
+    { label: "뷰티", value: "뷰티" },
+    { label: "나눔", value: "나눔" },
+  ];
+  return (
+    <>
+      <Title>추가 정보 입력하기</Title>
+      <InfoMessage>
+        카테고리 선택시 해당 서비스의
+        <br /> 목록을 추천해드릴게요
+      </InfoMessage>
+      <PTag>이름*</PTag>
+      <LoginInput
+        onChange={handleUser}
+        type="text"
+        name="userName"
+        value={user.userName}
+        maxlength={8}
+        placeholder="이름을 입력해주세요"
+      />
+      <PTag>생년월일*</PTag>
+      <LoginInput
+        onChange={handleUser}
+        type="text"
+        name="userBirth"
+        value={user.userBirth}
+        maxlength={8}
+        placeholder="에시) 20001207"
+      />
+      {/* 생년월일 확인 */}
+      {user.userBirth.length === 0 || birthMessage === null ? (
+        <Message>.</Message>
+      ) : birthMessage === false ? (
+        <ErrorMessage>올바르지 않은 형식입니다.</ErrorMessage>
+      ) : (
+        birthMessage && <OkMessage>유효한 형식입니다.</OkMessage>
+      )}
+      <PTag>주소*</PTag>
+      <LoginInput
+        onChange={handleUser}
+        name="userAddress"
+        value={user.userAddress}
+        type="text"
+        readOnly
+        placeholder="주소를 입력해주세요."
+      />
+      <Button type="button" onClick={() => setIsModalOpen(true)}>
+        주소 검색
+      </Button>
+      <Modal
+        style={customModalStyles}
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        appElement={document.getElementById("root")}
+      >
+        <Xbtn onClick={() => setIsModalOpen(false)}>X</Xbtn>
+        <DaumPostcode onComplete={handleComplete} />
+      </Modal>
+      <PTag>관심 카테고리*</PTag>
+      <CheckOptionGroup
+        setUser={setUser}
+        user={user}
+        options={checkOption}
+        name="userCategory"
+      ></CheckOptionGroup>
+    </>
+  );
+};
+const customModalStyles = {
+  overlay: {
+    backgroundColor: " rgba(0, 0, 0, 0.4)",
+    width: "100%",
+    height: "100vh",
+    zIndex: "10",
+    top: "0",
+    left: "0",
+  },
+  content: {
+    width: "600px",
+    height: "500px",
+    zIndex: "150",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    borderRadius: "10px",
+    boxShadow: "2px 2px 2px rgba(0, 0, 0, 0.25)",
+    backgroundColor: "white",
+    justifyContent: "center",
+  },
+};
+export default AddUserInfoInputBox;

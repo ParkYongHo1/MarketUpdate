@@ -1,14 +1,10 @@
 import styled from "@emotion/styled";
 
 const Body = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
   width: 100%;
-  margin: 0;
+  height: 100%;
   padding: 0;
-  position: relative;
+  margin-top: 5%;
 `;
 
 export default Body;
