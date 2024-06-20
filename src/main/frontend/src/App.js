@@ -1,12 +1,15 @@
 import "./App.css";
+import { configureStore } from "redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Main from "./Main/page/Main";
-import LoginPage from "./Login/page/LoginPage";
-import SignUpPage from "./Login/page/SignUpPage";
+import store from "./store";
+import Main from "./pages/Main/page/Main";
+import LoginPage from "./pages/Login/page/LoginPage";
+import SignUpPage from "./pages/Login/page/SignUpPage";
 import Header from "./layout/header/Header";
-import FindByEmailPage from "./Login/page/FindByEmailPage";
-import FindByPasswordPage from "./Login/page/FindByPasswordPage";
-import AddUserInfoPage from "./Login/page/AddUserInfoPage";
+import FindByEmailPage from "./pages/Login/page/FindByEmailPage";
+import FindByPasswordPage from "./pages/Login/page/FindByPasswordPage";
+import AddUserInfoPage from "./pages/Login/page/AddUserInfoPage";
+import CategoryPage from "./pages/Category/page/CategoryPage";
 function App() {
   return (
     <div className="App">
@@ -19,6 +22,7 @@ function App() {
           <Route path="/findemail" element={<FindByEmailPage />} />
           <Route path="/findpassword" element={<FindByPasswordPage />} />
           <Route path="/test" element={<AddUserInfoPage />} />
+          <Route path="/category/:category" element={<CategoryPage />} />
         </Routes>
       </BrowserRouter>
     </div>
