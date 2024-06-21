@@ -17,6 +17,7 @@ public class User {
 
     private String userEmail;
     private String userPassword;
+    private String userAddress;
 
     // Getters and Setters
     public Long getId() {
@@ -31,7 +32,7 @@ public class User {
         return userEmail;
     }
 
-    public void getUserEmail(String userEmail) {
+    public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
     }
 
@@ -41,5 +42,12 @@ public class User {
 
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
+    }
+    public String getUserAddress() {
+        return userAddress;
+    }
+
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
     }
 }

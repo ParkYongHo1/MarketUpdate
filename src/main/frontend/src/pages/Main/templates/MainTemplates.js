@@ -52,39 +52,38 @@ const MainTemplates = () => {
 
   const contents = [
     {
-      img: "",
-      title: "제목",
+      img: `${process.env.PUBLIC_URL + "/test.jpg"}`,
+      title: "바이씨니 클리프 트위드(핑크)",
       writer: "박용호",
-      address:
-        "마포adasdasdasdsadasdasdadasdasdadadasdadadadadadad마포adasdasdasdsadasdasdadasdasdadadasdadadadadadad마포adasdasdasdsadasdasdadasdasdadadasdadadadadadad마포adasdasdasdsadasdasdadasdasdadadasdadadadadadad",
+      address: "마포대로 21 (다보빌딩)",
       time: "1분전",
     },
     {
-      img: "",
-      title: "제목",
+      img: `${process.env.PUBLIC_URL + "/test2.webp"}`,
+      title: "바이씨니 클리프 트위드(핑크)",
       writer: "박용호",
-      address: "마포",
+      address: "마포대로 21 (다보빌딩)",
       time: "1분전",
     },
     {
-      img: "",
-      title: "제목",
+      img: `${process.env.PUBLIC_URL + "/test.jpg"}`,
+      title: "바이씨니 클리프 트위드(핑크)",
       writer: "박용호",
-      address: "마포",
+      address: "마포대로 21 (다보빌딩)",
       time: "1분전",
     },
     {
-      img: "",
-      title: "제목",
+      img: `${process.env.PUBLIC_URL + "/test2.webp"}`,
+      title: "바이씨니 클리프 트위드(핑크)",
       writer: "박용호",
-      address: "마포",
+      address: "마포대로 21 (다보빌딩)",
       time: "1분전",
     },
     {
-      img: "",
-      title: "제목",
+      img: `${process.env.PUBLIC_URL + "/test.jpg"}`,
+      title: "바이씨니 클리프 트위드(핑크)",
       writer: "박용호",
-      address: "마포",
+      address: "마포대로 21 (다보빌딩)",
       time: "1분전",
     },
   ];
@@ -109,10 +108,16 @@ const MainTemplates = () => {
           <MainDivContent>
             {contents.map((content, index) => (
               <MainDivContentBox key={index}>
-                <MainContentImg />
+                <MainContentImg>
+                  <img
+                    style={{ borderRadius: "10px", width: "100%" }}
+                    src={content.img}
+                  ></img>
+                </MainContentImg>
                 <MainContentTitle>{content.title}</MainContentTitle>
                 <MainContentFont>{content.writer}</MainContentFont>
                 <MainContentFont>{content.address}</MainContentFont>
+                <MainContentTitle>150,000원</MainContentTitle>
                 <MainContentFont>{contentTime}</MainContentFont>{" "}
                 {/* Display time ago */}
               </MainDivContentBox>
@@ -128,7 +133,12 @@ const MainTemplates = () => {
             {contents.length > 0 ? (
               contents.map((content, index) => (
                 <MainDivContentBox key={index}>
-                  <MainContentImg />
+                  <MainContentImg>
+                    <img
+                      style={{ borderRadius: "10px", width: "100%" }}
+                      src={content.img}
+                    ></img>
+                  </MainContentImg>
                   <MainContentTitle>{content.title}</MainContentTitle>
                   <MainContentFont>{content.writer}</MainContentFont>
                   <MainContentFont>{content.address}</MainContentFont>

@@ -1,6 +1,5 @@
-import MainTemplates from "../templates/MainTemplates";
-import Body from "../../Login/atoms/Body";
 import MainBody from "../atoms/MainBody";
+import MainTemplates from "../templates/MainTemplates";
 const Main = () => {
   return (
     <MainBody>

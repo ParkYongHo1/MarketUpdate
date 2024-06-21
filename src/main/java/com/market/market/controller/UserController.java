@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
-
-
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -23,16 +21,12 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
+    public User login(@RequestBody User user) {
         System.out.println("로그인 진입");
         System.out.println("userEmail : " + user.getUserEmail() + " userPassword : " + user.getUserPassword());
-        User loggedInUser = userService.login(user.getUserEmail(), user.getUserPassword());
-        System.out.println(loggedInUser);
-        if(loggedInUser != null){
-            return "success";
-        }else{
-            return "fail";
-        }
+        User loginResult = userService.login(user.getUserEmail(), user.getUserPassword());
+        System.out.println("로그인 결과: " + loginResult);
+        return loginResult; // 로그인 결과로 유저 객체 반환
     }
     
     @GetMapping("/user/fetchEmail")
@@ -49,5 +43,4 @@ public class UserController {
         
         return "hi";
     }
-    
 }

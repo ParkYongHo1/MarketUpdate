@@ -15,7 +15,7 @@ function MainSwiper() {
       slidesPerView={1}
       navigation
       pagination={{ clickable: false }}
-      style={{ width: "100%", height: "40vh" }}
+      style={{ width: "100%", height: "50vh" }}
     >
       <SwiperSlide style={{ backgroundColor: "#f8f6e0" }}>
         <img

@@ -4,6 +4,7 @@ const HeaderContainer = styled.div`
   height: 10vh;
   z-index: 10;
   background-color: white;
+  border-bottom: 1px soild black;
 `;
 
 export default HeaderContainer;

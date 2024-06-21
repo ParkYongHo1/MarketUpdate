@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-const MainContentFont = styled.p`
+const MainContentFont = styled.div`
   font-size: 13px;
   width: 100%;
   color: #868e96;

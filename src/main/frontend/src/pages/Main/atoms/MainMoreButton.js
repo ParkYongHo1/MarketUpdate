@@ -9,6 +9,7 @@ const MainMoreButton = styled(Link)`
   font-size: 13px;
   font-weight: 700;
   text-decoration: none;
+  border-bottom: 1px solid white;
   &:hover {
     color: black;
     font-weight: 700;
