@@ -11,6 +11,7 @@ import FindByPasswordPage from "./pages/Login/page/FindByPasswordPage";
 import AddUserInfoPage from "./pages/Login/page/AddUserInfoPage";
 import CategoryPage from "./pages/Category/page/CategoryPage";
 import LoginHandeler from "./pages/Login/page/LoginHeadeler";
+import Footer from "./layout/footer/Footer";
 function App() {
   return (
     <div className="App">
@@ -29,6 +30,7 @@ function App() {
             element={<LoginHandeler />} //당신이 redirect_url에 맞춰 꾸밀 컴포넌트
           />
         </Routes>
+        <Footer></Footer>
       </BrowserRouter>
     </div>
   );

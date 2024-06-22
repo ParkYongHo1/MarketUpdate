@@ -25,7 +25,10 @@ const LoginForm = () => {
       console.log(res.data);
       console.log(res.data.userPassword);
       console.log(res.data.userAddress);
-      if (res.data !== "emailError" && res.data !== "passwordError") {
+      if (
+        res.data.userEmail !== "emailError" &&
+        res.data.userPassword !== "passwordError"
+      ) {
         dispatch(login(user));
         if (res.data.userAddress == null) {
           {
@@ -39,9 +42,9 @@ const LoginForm = () => {
         console.log(
           "email : " + user.userEmail + " password : " + user.userPassword
         );
-      } else if (res.data === "emailError") {
+      } else if (res.data.userEmail === "emailError") {
         dispatch(emailError());
-      } else if (res.data === "passwordError") {
+      } else if (res.data.userPassword === "passwordError") {
         dispatch(passwordError());
       }
     } catch (e) {
