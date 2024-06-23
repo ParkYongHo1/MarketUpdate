@@ -2,9 +2,6 @@ import SocialButton from "../atoms/SocialButton";
 import SocialButtonImg from "../atoms/SocialButtonImg";
 import { KAKAO_AUTH_URL } from "../../../OAuth/OAuth";
 const SocialLoginForm = () => {
-  console.log(process.env.REACT_APP_REST_API_KEY);
-  console.log(process.env.REACT_APP_REDIRECT_URL);
-  console.log(KAKAO_AUTH_URL);
   return (
     <SocialButton to={`${KAKAO_AUTH_URL}`}>
       <SocialButtonImg

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 const LoginHandeler = (props) => {
   const navigate = useNavigate();
   const code = new URL(window.location.href).searchParams.get("code");
+  console.log(code);
   // 인가코드 백으로 보내는 작업 하는곳
   useEffect(() => {
     const KakaoLogin = async () => {
