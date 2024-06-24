@@ -1,29 +1,85 @@
-//LoginHandeler.js
+// LoginHandeler.js
 
 import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { KAKAO_AUTH_URL } from "../../../OAuth/OAuth";
+import { useDispatch } from "react-redux";
+import { login } from "../../../slices/userSlice";
 const LoginHandeler = (props) => {
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const code = new URL(window.location.href).searchParams.get("code");
+  const CLIENT_ID = process.env.REACT_APP_REST_API_KEY;
+  const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
   console.log(code);
-  // 인가코드 백으로 보내는 작업 하는곳
+
+  // Effect hook to handle login
   useEffect(() => {
     const KakaoLogin = async () => {
-      await axios({
-        method: "GET",
-        url: `${process.env.REACT_APP_REDIRECT_URL}/?code=${code}`,
-        headers: {
-          "Content-Type": "application/json;charset=utf-8", //json형태로 데이터를 보내겠다는뜻
-          "Access-Control-Allow-Origin": "*",
-        },
-      }).then((res) => {
-        console.log(res);
-        navigate("/main");
-      });
+      try {
+        // Exchange the authorization code for an access token
+        const tokenResponse = await axios.post(
+          `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&code=${code}`,
+          {}, // Empty data object
+          {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+            },
+          }
+        );
+        console.log(tokenResponse.data); // Log the response data
+
+        const { access_token } = tokenResponse.data;
+        if (access_token) {
+          console.log(`Bearer ${access_token}`);
+
+          // Retrieve user information from Kakao API
+          const userInfoResponse = await axios.post(
+            "https://kapi.kakao.com/v2/user/me",
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${access_token}`,
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+            }
+          );
+          console.log("User information retrieved successfully:");
+          console.log(userInfoResponse.data);
+
+          // Extract user information
+          const userData = {
+            email: userInfoResponse.data.kakao_account.email,
+            nickname: userInfoResponse.data.properties.nickname,
+            profile_image: userInfoResponse.data.properties.profile_image,
+          };
+
+          // Send user information to your backend
+          const backendResponse = await axios.post(
+            "/auth/kakaologin",
+            userData,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          console.log("Backend response:", backendResponse.data);
+
+          // Handle successful login, navigate to the desired route
+          dispatch(login(userData));
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Error during Kakao login:", error);
+      }
     };
-    KakaoLogin();
-  }, [props.history]);
+
+    KakaoLogin(); // Call the KakaoLogin function
+  }, [code, CLIENT_ID, REDIRECT_URI, navigate]); // Dependency array to run effect when dependencies change
+
   return (
     <div className="LoginHandeler">
       <div className="notice">

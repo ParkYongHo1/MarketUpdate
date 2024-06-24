@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserService userService;    
 
     @PostMapping("/login")
     public User login(@RequestBody User user) {
