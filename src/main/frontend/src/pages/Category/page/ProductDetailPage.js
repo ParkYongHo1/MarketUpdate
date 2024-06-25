@@ -6,6 +6,9 @@ import ProductRightDiv from "../atom/ProductRightDiv";
 import ProductInfoDiv from "../atom/ProductInfoDiv";
 import ProductWriterInfoDiv from "../atom/ProductWriterInfoDiv";
 import KakaoMapApi from "../templates/KakaoMapApi";
+import ProductImgSwiper from "../templates/ProductImgSwiper";
+import ProductButtonDiv from "../atom/ProductButtonDiv";
+import Title from "../../Login/atoms/Title";
 
 const ProductDetailPage = () => {
   return (
@@ -17,7 +20,7 @@ const ProductDetailPage = () => {
           </ProductLeftDiv>
           <ProductRightDiv>
             <ProductInfoDiv>
-              <div>제목</div>
+              <Title>제목</Title>
               <ProductWriterInfoDiv>
                 <div>
                   <div>작성자</div>

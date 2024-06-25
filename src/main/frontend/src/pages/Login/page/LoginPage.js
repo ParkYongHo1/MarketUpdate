@@ -24,7 +24,6 @@ const LoginPage = () => {
           </FindUserInfoFormSpanTag>
         </FindUserInfoFormContainer>
         <SocialLoginForm></SocialLoginForm>
-        <a href="/oauth2/authorization/google">google login</a>
       </LoginContainer>
     </Body>
   );

@@ -12,6 +12,7 @@ import AddUserInfoPage from "./pages/Login/page/AddUserInfoPage";
 import CategoryPage from "./pages/Category/page/CategoryPage";
 import LoginHandeler from "./pages/Login/page/LoginHeadeler";
 import Footer from "./layout/footer/Footer";
+import ProductDetailPage from "./pages/Category/page/ProductDetailPage";
 function App() {
   return (
     <div className="App">
@@ -23,8 +24,9 @@ function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/findemail" element={<FindByEmailPage />} />
           <Route path="/findpassword" element={<FindByPasswordPage />} />
-          <Route path="/test" element={<AddUserInfoPage />} />
+          <Route path="/adduserinfo" element={<AddUserInfoPage />} />
           <Route path="/category/:category" element={<CategoryPage />} />
+          <Route path="/test" element={<ProductDetailPage />} />
           <Route
             path="/auth/kakao" //redirect_url
             element={<LoginHandeler />} //당신이 redirect_url에 맞춰 꾸밀 컴포넌트
