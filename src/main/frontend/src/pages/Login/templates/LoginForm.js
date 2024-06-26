@@ -34,7 +34,7 @@ const LoginForm = () => {
           {
             /* 처음 로그인 시 */
           }
-          navigate("/test");
+          navigate("/adduserinfo");
         } else {
           navigate("/");
         }

@@ -17,6 +17,7 @@ const AddUserInfoInputBox = ({
   birthMessage,
   setBirthMessage,
 }) => {
+  const geoCoder = new window.kakao.maps.services.Geocoder();
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
   const handleUser = (e) => {
     const { name, value } = e.target;
@@ -25,9 +26,25 @@ const AddUserInfoInputBox = ({
       validateEmail(value);
     }
   };
+
   const handleComplete = (data) => {
+    console.log(data);
     setUser({ ...user, userAddress: data.address });
     setIsModalOpen(false); // 주소 선택 시 모달 닫기
+
+    // 주소로 위도 경도 값 얻기
+    geoCoder.addressSearch(data.address, function (result, status) {
+      if (status === window.kakao.maps.services.Status.OK) {
+        const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+        setUser({
+          ...user,
+          latitude: coords.getLat(),
+          longitude: coords.getLng(),
+        });
+      } else {
+        console.error("Geocoder 실패:", status);
+      }
+    });
   };
 
   const validateEmail = (birth) => {

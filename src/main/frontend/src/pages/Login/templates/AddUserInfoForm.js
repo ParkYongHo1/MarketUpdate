@@ -9,6 +9,8 @@ const AddUserInfoForm = () => {
     userBirth: "",
     userAddress: "",
     userCategory: [],
+    latitude: "",
+    longitude: "",
   });
   console.log(user);
   const [birthMessage, setBirthMessage] = useState(false);
