@@ -81,7 +81,7 @@ const LoginHandeler = (props) => {
   }, [code, CLIENT_ID, REDIRECT_URI, navigate]); // Dependency array to run effect when dependencies change
 
   return (
-    <div className="LoginHandeler">
+    <div>
       <div className="notice">
         <p>로그인 중입니다.</p>
         <p>잠시만 기다려주세요.</p>

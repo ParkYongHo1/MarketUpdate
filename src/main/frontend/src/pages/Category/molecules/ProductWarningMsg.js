@@ -1,8 +1,8 @@
-import DetailWarnDiv from "../atom/DetailWarnDiv";
-import DetailWarnContainer from "../atom/DetailWarnContainer";
-import Font1 from "../atom/Font1";
-import Font2 from "../atom/Font2";
-import Span from "../atom/Span";
+import DetailWarnDiv from "../atom/ProductDetailUser/DetailWarnDiv";
+import DetailWarnContainer from "../atom/ProductDetailUser/DetailWarnContainer";
+import Font1 from "../atom/ProductDetailUser/Font1";
+import Font2 from "../atom/ProductDetailUser/Font2";
+import Span from "../atom/ProductDetailUser/Span";
 
 const ProductWarningMsg = () => {
   return (

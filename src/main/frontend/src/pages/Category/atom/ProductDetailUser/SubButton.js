@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
-const FlexButton = styled.button`
-  width: 40%;
+const SubButton = styled.button`
+  width: 50px;
   height: 45px;
   text-decoration: none;
 
@@ -8,7 +8,7 @@ const FlexButton = styled.button`
   display: block;
   text-align: center;
   border: none;
-  margin: 10px 10px;
+  margin: 10px 10px 0px 10px;
   line-height: 45px;
   cursor: pointer;
   background: #f5f5f5;
@@ -20,4 +20,5 @@ const FlexButton = styled.button`
     color: #fff;
   }
 `;
-export default FlexButton;
+
+export default SubButton;

@@ -12,43 +12,9 @@ import MainContentImg from "../atoms/MainContentImg";
 import MainContentTitle from "../atoms/MainContentTitle";
 import MainContentFont from "../atoms/MainContentFont";
 import { useState, useEffect } from "react";
-import moment from "moment";
+import useTimeAgo from "../../../hooks/useTimeAgo";
 const MainTemplates = () => {
-  const [contentTime, setContentTime] = useState(""); // Initialize with an empty string
-
-  useEffect(() => {
-    const updateTime = () => {
-      const datetime = moment("2024-06-20 11:22:00"); // 이 형식으로 저장하기
-      const now = moment();
-      const duration = moment.duration(now.diff(datetime));
-
-      let seconds = duration.asSeconds();
-      let minute = duration.asMinutes();
-      let hours = duration.asHours();
-      let days = duration.asDays();
-      let weeks = duration.asWeeks();
-      let month = duration.asMonths();
-      let year = duration.asYears();
-
-      if (minute < 1) {
-        setContentTime(parseInt(seconds) + "초 전");
-      } else if (hours < 1) {
-        setContentTime(parseInt(minute) + "분 전");
-      } else if (hours < 24) {
-        setContentTime(parseInt(hours) + "시간 전");
-      } else if (weeks < 1) {
-        setContentTime(parseInt(days) + "일 전");
-      } else if (month < 1) {
-        setContentTime(parseInt(weeks) + "주 전");
-      } else if (year < 1) {
-        setContentTime(parseInt(month) + "달 전");
-      } else {
-        setContentTime(parseInt(year) + "년 전");
-      }
-    };
-
-    updateTime();
-  }, []); // 새로 고침시 1회 실행
+  const contentTime = useTimeAgo("2024-06-20 11:22:00"); // 인자로 초기 날짜 전달
 
   const contents = [
     {

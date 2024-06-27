@@ -4,7 +4,6 @@ const ProductDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid yellow;
 `;
 
 export default ProductDiv;
