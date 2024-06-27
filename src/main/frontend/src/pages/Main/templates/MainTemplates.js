@@ -14,7 +14,7 @@ import MainContentFont from "../atoms/MainContentFont";
 import { useState, useEffect } from "react";
 import useTimeAgo from "../../../hooks/useTimeAgo";
 const MainTemplates = () => {
-  const contentTime = useTimeAgo("2024-06-20 11:22:00"); // 인자로 초기 날짜 전달
+  const contentTime = useTimeAgo("2024-06-20 11:22:00");
 
   const contents = [
     {
