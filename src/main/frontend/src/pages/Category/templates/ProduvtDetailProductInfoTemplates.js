@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import ProductDiv from "../atom/ProductDetailUser/ProductDiv";
 import ProductLeftDiv from "../atom/ProductDetailUser/ProductLeftDiv";
 import ProductRightDiv from "../atom/ProductDetailUser/ProductRightDiv";
@@ -29,7 +30,7 @@ const ProductDetailProductInfoTemplates = () => {
           <FlexDiv>
             <Title>제목</Title>
             <FontAwesomeIcon
-              icon={faBars}
+              icon={faEllipsisVertical}
               size="lg"
               style={{ cursor: "pointer" }}
             />

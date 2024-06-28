@@ -5,7 +5,7 @@ const FooterDiv = styled.div`
   justify-content: space-between;
   width: 70%;
   padding: 20px 20px;
-  border-top: 1px solid black;
+  border-top: 1px solid #ebebeb;
   margin: 0 auto;
 `;
 

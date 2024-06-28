@@ -5,6 +5,14 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
+
+const images = [
+  { src: process.env.PUBLIC_URL + "/banner1.png", bgColor: "#f8f6e0" },
+  { src: process.env.PUBLIC_URL + "/banner2.png", bgColor: "#dbdbdb" },
+  { src: process.env.PUBLIC_URL + "/banner3.png", bgColor: "#ffffff" },
+  { src: process.env.PUBLIC_URL + "/banner4.png", bgColor: "#ffffff" },
+];
+
 function ProductImgSwiper() {
   return (
     <Swiper
@@ -16,35 +24,17 @@ function ProductImgSwiper() {
       pagination={{ clickable: false }}
       style={{ width: "100%", height: "100vh" }}
     >
-      <SwiperSlide style={{ backgroundColor: "#f8f6e0" }}>
-        <img
-          src={process.env.PUBLIC_URL + "/banner1.png"}
-          style={{ width: "100%", height: "100%", objectFit: "contain" }}
-          alt="logo"
-        />
-      </SwiperSlide>
-      <SwiperSlide style={{ backgroundColor: "#dbdbdb" }}>
-        <img
-          src={process.env.PUBLIC_URL + "/banner2.png"}
-          style={{ width: "100%", height: "100%", objectFit: "contain" }}
-          alt="logo"
-        />
-      </SwiperSlide>
-      <SwiperSlide>
-        <img
-          src={process.env.PUBLIC_URL + "/banner3.png"}
-          style={{ width: "100%", height: "100%", objectFit: "contain" }}
-          alt="logo"
-        />
-      </SwiperSlide>
-      <SwiperSlide>
-        <img
-          src={process.env.PUBLIC_URL + "/banner4.png"}
-          style={{ width: "100%", height: "100%", objectFit: "contain" }}
-          alt="logo"
-        />
-      </SwiperSlide>
+      {images.map((image, index) => (
+        <SwiperSlide key={index} style={{ backgroundColor: image.bgColor }}>
+          <img
+            src={image.src}
+            style={{ width: "100%", height: "100%", objectFit: "contain" }}
+            alt={`slide-${index}`}
+          />
+        </SwiperSlide>
+      ))}
     </Swiper>
   );
 }
+
 export default ProductImgSwiper;
