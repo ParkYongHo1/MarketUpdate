@@ -26,7 +26,7 @@ function App() {
           <Route path="/findpassword" element={<FindByPasswordPage />} />
           <Route path="/adduserinfo" element={<AddUserInfoPage />} />
           <Route path="/category/:category" element={<CategoryPage />} />
-          <Route path="/test" element={<ProductDetailPage />} />
+          <Route path="/product/:productId" element={<ProductDetailPage />} />
           <Route
             path="/auth/kakao" //redirect_url
             element={<LoginHandeler />} //당신이 redirect_url에 맞춰 꾸밀 컴포넌트

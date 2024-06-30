@@ -18,6 +18,7 @@ const MainTemplates = () => {
 
   const contents = [
     {
+      id: "1",
       img: `${process.env.PUBLIC_URL + "/test.jpg"}`,
       title: "바이씨니 클리프 트위드(핑크)",
       writer: "박용호",
@@ -25,6 +26,7 @@ const MainTemplates = () => {
       time: "1분전",
     },
     {
+      id: "2",
       img: `${process.env.PUBLIC_URL + "/test2.webp"}`,
       title: "바이씨니 클리프 트위드(핑크)",
       writer: "박용호",
@@ -32,6 +34,7 @@ const MainTemplates = () => {
       time: "1분전",
     },
     {
+      id: "3",
       img: `${process.env.PUBLIC_URL + "/test.jpg"}`,
       title: "바이씨니 클리프 트위드(핑크)",
       writer: "박용호",
@@ -39,6 +42,7 @@ const MainTemplates = () => {
       time: "1분전",
     },
     {
+      id: "4",
       img: `${process.env.PUBLIC_URL + "/test2.webp"}`,
       title: "바이씨니 클리프 트위드(핑크)",
       writer: "박용호",
@@ -46,6 +50,7 @@ const MainTemplates = () => {
       time: "1분전",
     },
     {
+      id: "5",
       img: `${process.env.PUBLIC_URL + "/test.jpg"}`,
       title: "바이씨니 클리프 트위드(핑크)",
       writer: "박용호",
@@ -73,7 +78,7 @@ const MainTemplates = () => {
 
           <MainDivContent>
             {contents.map((content, index) => (
-              <MainDivContentBox key={index}>
+              <MainDivContentBox key={index} to={`/product/${content.id}`}>
                 <MainContentImg>
                   <img
                     style={{ borderRadius: "10px", width: "100%" }}

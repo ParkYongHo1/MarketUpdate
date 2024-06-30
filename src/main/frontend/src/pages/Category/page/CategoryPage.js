@@ -1,11 +1,13 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
 import HeaderEventBox from "../../../layout/header/atom/HeaderEventBox";
 import HeaderEventContainer from "../../../layout/header/atom/HeaderEventContainer";
 import CategoryPageDiv from "../atom/CategoryPage/CategoryPageDiv";
 import CategoryPageHeader from "../atom/CategoryPage/CategoryPageHeader";
-
+import CategoryTitle from "../atom/CategoryPage/CategoryTitle";
 import MainDiv from "../../Main/atoms/MainDiv";
-import MainDivTitle from "../../Main/atoms/MainDivTitle";
-import MainMoreButton from "../../Main/atoms/MainMoreButton";
 import MainDivContent from "../../Main/atoms/MainDivContent";
 import TitleDiv from "../../Main/atoms/TitleDiv";
 import MainDivContentBox from "../../Main/atoms/MainDivContentBox";
@@ -13,9 +15,13 @@ import MainContentImg from "../../Main/atoms/MainContentImg";
 import MainContentTitle from "../../Main/atoms/MainContentTitle";
 import MainContentFont from "../../Main/atoms/MainContentFont";
 import useTimeAgo from "../../../hooks/useTimeAgo";
-const CategoryPage = () => {
-  const contentTime = useTimeAgo("2024-06-20 11:22:00");
+import ModalDiv from "../atom/CategoryPage/ModalDiv";
+import ModalItem from "../atom/CategoryPage/ModalItem";
 
+const CategoryPage = () => {
+  const [openModal, setOpenModal] = useState(false);
+  const contentTime = useTimeAgo("2024-06-20 11:22:00");
+  const param = useParams();
   const contents = [
     {
       img: `${process.env.PUBLIC_URL + "/test.jpg"}`,
@@ -95,6 +101,7 @@ const CategoryPage = () => {
       time: "1분전",
     },
   ];
+  const handleModal = (e) => {};
   return (
     <>
       <HeaderEventContainer>
@@ -114,8 +121,43 @@ const CategoryPage = () => {
       </HeaderEventContainer>
       <MainDiv>
         <TitleDiv style={{ marginTop: "50px" }}>
-          <MainDivTitle>의상</MainDivTitle>
-          <MainDivTitle>최신순</MainDivTitle>
+          <CategoryTitle>{param.category}</CategoryTitle>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              position: "relative",
+            }}
+          >
+            <CategoryTitle
+              style={{ cursor: "pointer" }}
+              onClick={() => setOpenModal((prev) => !prev)}
+            >
+              최신순
+            </CategoryTitle>
+            {!openModal ? (
+              <FontAwesomeIcon icon={faAngleDown} />
+            ) : (
+              <FontAwesomeIcon icon={faAngleUp} />
+            )}
+            {openModal && (
+              <ModalDiv
+                style={{
+                  position: "absolute",
+                  top: "100%",
+                  padding: "10px 20px",
+                  background: "rgba(255, 255, 255, 1)",
+                  border: "1px solid black",
+                  fontSize: "12px",
+                  width: "80%",
+                }}
+              >
+                <ModalItem>최신순</ModalItem>
+                <ModalItem>인기순</ModalItem>
+                <ModalItem>댓글 많은순</ModalItem>
+              </ModalDiv>
+            )}
+          </div>
         </TitleDiv>
 
         <MainDivContent>
