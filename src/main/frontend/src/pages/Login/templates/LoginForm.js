@@ -28,7 +28,7 @@ const LoginForm = () => {
       if (
         res.data.userEmail !== "emailError" &&
         res.data.userPassword !== "passwordError"
-      ) {
+      ) { 
         dispatch(login(user));
         if (res.data.userAddress == null) {
           {

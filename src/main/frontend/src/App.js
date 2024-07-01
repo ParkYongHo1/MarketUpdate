@@ -12,7 +12,7 @@ import AddUserInfoPage from "./pages/Login/page/AddUserInfoPage";
 import CategoryPage from "./pages/Category/page/CategoryPage";
 import LoginHandeler from "./pages/Login/page/LoginHeadeler";
 import Footer from "./layout/footer/Footer";
-import ProductDetailPage from "./pages/Category/page/ProductDetailPage";
+import ProductDetailPage from "./pages/Product/page/ProductDetailPage";
 function App() {
   return (
     <div className="App">

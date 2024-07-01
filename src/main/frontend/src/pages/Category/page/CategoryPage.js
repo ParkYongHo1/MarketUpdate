@@ -16,10 +16,13 @@ import MainContentTitle from "../../Main/atoms/MainContentTitle";
 import MainContentFont from "../../Main/atoms/MainContentFont";
 import useTimeAgo from "../../../hooks/useTimeAgo";
 import ModalDiv from "../atom/CategoryPage/ModalDiv";
-import ModalItem from "../atom/CategoryPage/ModalItem";
+import ModalItem from "../atom/CategoryPage/ModalItem"; 
+import Paging from "../../../components/Paging";
 
 const CategoryPage = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [page, setPage] = useState(1); // 페이지 상태 추가
+  const itemsPerPage = 10;
   const contentTime = useTimeAgo("2024-06-20 11:22:00");
   const param = useParams();
   const contents = [
@@ -101,7 +104,11 @@ const CategoryPage = () => {
       time: "1분전",
     },
   ];
-  const handleModal = (e) => {};
+  // 현재 페이지에 따라 보여줄 항목 계산
+  const indexOfLastItem = page * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentContents = contents.slice(indexOfFirstItem, indexOfLastItem);
+
   return (
     <>
       <HeaderEventContainer>
@@ -161,7 +168,7 @@ const CategoryPage = () => {
         </TitleDiv>
 
         <MainDivContent>
-          {contents.map((content, index) => (
+          {currentContents.map((content, index) => (
             <MainDivContentBox key={index}>
               <MainContentImg>
                 <img
@@ -174,10 +181,10 @@ const CategoryPage = () => {
               <MainContentFont>{content.address}</MainContentFont>
               <MainContentTitle>150,000원</MainContentTitle>
               <MainContentFont>{contentTime}</MainContentFont>{" "}
-              {/* Display time ago */}
             </MainDivContentBox>
           ))}
         </MainDivContent>
+        <Paging page={page} contents={contents} setPage={setPage} />
       </MainDiv>
     </>
   );
