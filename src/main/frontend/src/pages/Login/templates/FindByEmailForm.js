@@ -9,24 +9,36 @@ import MiddleButton from "../atoms/MiddleButton";
 import MiddleBlackButton from "../atoms/MiddleBlackButton";
 import PTag from "../atoms/PTag";
 import SubPTag from "../atoms/SubPTag";
+import axios from "axios";
 const FindByEmailForm = () => {
-  const [okPage, setOkpage] = useState(true);
+  const [okPage, setOkpage] = useState(false);
   const [failPage, setFailPage] = useState(false);
 
   const [user, setUser] = useState({
     userPhone: "",
   });
+  const handleFindEmailInfo = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("/user/find-email", user);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
-      {!okPage && !failPage && (
-        <FormContainer>
+      {!okPage && (
+        <FormContainer onSubmit={handleFindEmailInfo}>
           <FindTitle>이메일 아이디찾기</FindTitle>
           <FindByEmailInputBox
             user={user}
             setUser={setUser}
           ></FindByEmailInputBox>
+          {failPage == true && (
+            <ErrorMessage>일치하는 휴대폰 번호가 없습니다.</ErrorMessage>
+          )}
           <Button type="submit">이메일 아이디 찾기</Button>
-          <ErrorMessage>일치하는 휴대폰 번호가 없습니다.</ErrorMessage>
         </FormContainer>
       )}
       {okPage && (

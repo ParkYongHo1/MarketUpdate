@@ -3,6 +3,7 @@ import FormContainer from "../atoms/FormContainer";
 import AddUserInfoInputBox from "../molecules/AddUserInfoInputBox";
 import Button from "../atoms/Button";
 import DisabledButton from "../atoms/DisabledButton";
+import axios from "axios";
 const AddUserInfoForm = () => {
   const [user, setUser] = useState({
     userName: "",
@@ -12,10 +13,19 @@ const AddUserInfoForm = () => {
     latitude: "",
     longitude: "",
   });
+  const handleAddUserInfo = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("/user/add-info", user);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   console.log(user);
   const [birthMessage, setBirthMessage] = useState(false);
   return (
-    <FormContainer>
+    <FormContainer onSubmit={handleAddUserInfo}>
       <AddUserInfoInputBox
         user={user}
         setUser={setUser}
