@@ -43,4 +43,11 @@ public class UserController {
         
         return "hi";
     }
+
+    @GetMapping("/user/test")
+    public List<String> test() {
+        System.out.println("모든 유저 이메일 호출 진입");
+        System.out.println(userService.getAllUserEmails());
+        return userService.getAllUserEmails();
+    }
 }
