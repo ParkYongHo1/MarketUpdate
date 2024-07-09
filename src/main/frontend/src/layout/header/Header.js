@@ -16,6 +16,7 @@ import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../slices/userSlice";
 
@@ -73,9 +74,9 @@ const Header = () => {
                     <FontAwesomeIcon icon={faMagnifyingGlass} size="lg" />
                   </div>
                 </HeaderContentDiv>
-                <HeaderContentDiv>
+                <HeaderContentDiv to="/product/write">
                   <div>
-                    <FontAwesomeIcon icon={faHeart} size="lg" />
+                    <FontAwesomeIcon icon={faPenToSquare} size="lg" />
                   </div>
                 </HeaderContentDiv>
               </>
