@@ -1,15 +1,18 @@
 import ErrorMessage from "../atoms/ErrorMessage";
 import LoginInput from "../atoms/LoginInput";
 import PTag from "../atoms/PTag";
-import { useSelector } from "react-redux";
-
-const LoginInputBox = ({ setUser, user }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../../../slices/userSlice";
+const LoginInputBox = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
   const emailError = useSelector((state) => state.user.emailError);
   const passwordError = useSelector((state) => state.user.passwordError);
+  console.log(user);
 
   const onChangeInput = (e) => {
     const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
+    dispatch(setUser({ ...user, [name]: value }));
   };
 
   return (

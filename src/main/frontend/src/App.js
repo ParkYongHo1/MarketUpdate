@@ -14,11 +14,13 @@ import LoginHandeler from "./pages/Login/page/LoginHeadeler";
 import Footer from "./layout/footer/Footer";
 import ProductDetailPage from "./pages/Product/page/ProductDetailPage";
 import WriteProductpage from "./pages/Product/page/WriteProductPage";
+import FloatingButton from "./layout/floating/FloatingButton";
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Header />
+        <FloatingButton></FloatingButton>
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/login" element={<LoginPage />} />

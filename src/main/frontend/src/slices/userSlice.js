@@ -4,7 +4,18 @@ const initialState = {
   emailError: false,
   passwordError: false,
   isLoggedIn: false,
-  user: null,
+  user: {
+    userEmail: "",
+    userPassword: "",
+    userName: "",
+    userBirth: "",
+    userAddress: "",
+    userCategory: [],
+    userPhone: "",
+    latitude: "",
+    longitude: "",
+  },
+  fetchEmail: [],
 };
 
 export const userSlice = createSlice({
@@ -17,7 +28,17 @@ export const userSlice = createSlice({
     },
     logout: (state) => {
       state.isLoggedIn = false;
-      state.user = null;
+      state.user = {
+        userEmail: "",
+        userPassword: "",
+        userName: "",
+        userBirth: "",
+        userAddress: "",
+        userCategory: [],
+        userPhone: "",
+        latitude: "",
+        longitude: "",
+      };
     },
     signup: (state, action) => {
       state.user = action.payload;
@@ -28,8 +49,21 @@ export const userSlice = createSlice({
     passwordError: (state) => {
       state.passwordError = true;
     },
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
+    fetchEmail: (state, action) => {
+      state.fetchEmail = action.payload;
+    },
   },
 });
-export const { login, logout, signup, emailError, passwordError } =
-  userSlice.actions;
+export const {
+  login,
+  logout,
+  signup,
+  emailError,
+  passwordError,
+  setUser,
+  fetchEmail,
+} = userSlice.actions;
 export default userSlice.reducer;
