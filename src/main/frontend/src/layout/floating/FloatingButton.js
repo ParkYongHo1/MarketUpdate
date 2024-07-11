@@ -10,8 +10,8 @@ import FloatingFooter from "./atom/FloatingFooter";
 import Icon from "./atom/Icon";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faComment } from "@fortawesome/free-regular-svg-icons";
+import { faStamp } from "@fortawesome/free-solid-svg-icons";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 
 import Dot from "./atom/Dot";
@@ -112,7 +112,7 @@ const FloatingButton = () => {
                 </Icon>
                 <Icon>
                   <FontAwesomeIcon
-                    icon={faEnvelope}
+                    icon={faComment}
                     size="lg"
                     style={{ cursor: "pointer" }}
                   />
@@ -121,7 +121,7 @@ const FloatingButton = () => {
                 </Icon>
                 <Icon>
                   <FontAwesomeIcon
-                    icon={faMagnifyingGlass}
+                    icon={faStamp}
                     size="lg"
                     style={{ cursor: "pointer" }}
                   />
