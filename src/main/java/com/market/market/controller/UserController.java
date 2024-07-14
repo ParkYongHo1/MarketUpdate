@@ -58,6 +58,4 @@ public class UserController {
         System.out.println(userService.getAllUserEmails());
         return userService.getAllUserEmails();
     }
-
-
 }

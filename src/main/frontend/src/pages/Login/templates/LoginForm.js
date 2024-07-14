@@ -10,25 +10,19 @@ import { useNavigate } from "react-router-dom";
 import { login, emailError, passwordError } from "../../../slices/userSlice";
 
 const LoginForm = () => {
-  const userNull = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [user, setUser] = useState({
-    userEmail: "",
-    userPassword: "",
-  });
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post("/api/login", user);
-      console.log(res.data);
-      console.log(res.data.userPassword);
-      console.log(res.data.userAddress);
+
       if (
         res.data.userEmail !== "emailError" &&
         res.data.userPassword !== "passwordError"
-      ) { 
+      ) {
         dispatch(login(user));
         if (res.data.userAddress == null) {
           {
@@ -58,7 +52,7 @@ const LoginForm = () => {
   return (
     <FormContainer onSubmit={handleLogin}>
       <Title>로그인</Title>
-      <LoginInputBox setUser={setUser} user={user} />
+      <LoginInputBox />
       {isFormValid ? (
         <Button type="submit">로그인</Button>
       ) : (

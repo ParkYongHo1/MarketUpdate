@@ -8,9 +8,9 @@ const CategoryGroup = () => {
     { label: "가구", value: "가구" },
     { label: "전자기기", value: "전자기기" },
     { label: "도서", value: "도서" },
-    { label: "반려동물용품", value: "반려동물용품" },
     { label: "뷰티", value: "뷰티" },
     { label: "나눔", value: "나눔" },
+    { label: "기타", value: "기타" },
   ];
   return (
     <GridContainer>

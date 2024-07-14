@@ -28,8 +28,6 @@ const AddUserInfoInputBox = ({
   };
 
   const handleComplete = (data) => {
-    console.log(data);
-    setUser({ ...user, userAddress: data.address });
     setIsModalOpen(false); // 주소 선택 시 모달 닫기
 
     // 주소로 위도 경도 값 얻기
@@ -40,6 +38,8 @@ const AddUserInfoInputBox = ({
           ...user,
           latitude: coords.getLat(),
           longitude: coords.getLng(),
+          userAddress: data.address,
+          userJibunAddress: data.jibunAddress,
         });
       } else {
         console.error("Geocoder 실패:", status);
@@ -61,9 +61,9 @@ const AddUserInfoInputBox = ({
     { label: "가구", value: "가구" },
     { label: "전자기기", value: "전자기기" },
     { label: "도서", value: "도서" },
-    { label: "반려동물용품", value: "반려동물용품" },
     { label: "뷰티", value: "뷰티" },
     { label: "나눔", value: "나눔" },
+    { label: "기타", value: "기타" },
   ];
   return (
     <>

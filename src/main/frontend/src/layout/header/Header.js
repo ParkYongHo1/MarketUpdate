@@ -9,28 +9,27 @@ import HeaderUserBox from "./atom/HeaderUserBox";
 import HeaderEventBox from "./atom/HeaderEventBox";
 import HeaderEventContainer from "./atom/HeaderEventContainer";
 import HeaderEventDiv from "./atom/HeaderEventDiv";
-import HeaderDot from "./atom/HeaderDot";
 import HeaderImgBox from "./atom/HeaderImgBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../slices/userSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const handleLogout = () => {
     dispatch(logout());
   };
-  console.log(useSelector((state) => state.user.user));
   return (
     <HeaderBody>
       <HeaderUserContainer>
         <HeaderUserDiv>
-          {user != null ? (
+          {isLoggedIn ? (
             <>
               <HeaderUserBox to="/faq">고객센터</HeaderUserBox>
               <HeaderUserBox to="/profile">마이페이지</HeaderUserBox>
@@ -54,28 +53,16 @@ const Header = () => {
             />
           </HeaderImgBox>
           <HeaderContentContainer>
-            {user != null ? (
+            {isLoggedIn ? (
               <>
-                <HeaderContentDiv>
-                  <div style={{ position: "relative" }}>
-                    <FontAwesomeIcon icon={faBell} size="lg" />
-                    <HeaderDot></HeaderDot>
-                  </div>
-                </HeaderContentDiv>
-                <HeaderContentDiv>
-                  <div style={{ position: "relative" }}>
-                    <FontAwesomeIcon icon={faEnvelope} size="lg" />
-                    <HeaderDot></HeaderDot>
-                  </div>
-                </HeaderContentDiv>
                 <HeaderContentDiv>
                   <div>
                     <FontAwesomeIcon icon={faMagnifyingGlass} size="lg" />
                   </div>
                 </HeaderContentDiv>
-                <HeaderContentDiv>
+                <HeaderContentDiv to="/product/write">
                   <div>
-                    <FontAwesomeIcon icon={faHeart} size="lg" />
+                    <FontAwesomeIcon icon={faPenToSquare} size="lg" />
                   </div>
                 </HeaderContentDiv>
               </>
