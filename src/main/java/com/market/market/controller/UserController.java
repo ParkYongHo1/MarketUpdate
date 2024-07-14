@@ -52,14 +52,8 @@ public class UserController {
         return userService.getAllUserEmails();
     }
 
-    @GetMapping("/user/test4")
-    public List<String> test12() {
-        System.out.println("모든 유저 이메일 호출 진입2");
-        System.out.println(userService.getAllUserEmails());
-        return userService.getAllUserEmails();
-    }
-    @GetMapping("/user/test5")
-    public List<String> test123() {
+    @GetMapping("/user/test")
+    public List<String> test234() {
         System.out.println("모든 유저 이메일 호출 진입2");
         System.out.println(userService.getAllUserEmails());
         return userService.getAllUserEmails();
