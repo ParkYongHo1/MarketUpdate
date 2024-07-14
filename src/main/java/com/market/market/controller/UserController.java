@@ -58,4 +58,10 @@ public class UserController {
         System.out.println(userService.getAllUserEmails());
         return userService.getAllUserEmails();
     }
+    @GetMapping("/user/test5")
+    public List<String> test123() {
+        System.out.println("모든 유저 이메일 호출 진입2");
+        System.out.println(userService.getAllUserEmails());
+        return userService.getAllUserEmails();
+    }
 }
