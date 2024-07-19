@@ -1,8 +1,7 @@
 import { useState } from "react";
-import FormContainer from "../atoms/FormContainer";
+import Form from "../atoms/Form";
 import AddUserInfoInputBox from "../molecules/AddUserInfoInputBox";
 import Button from "../atoms/Button";
-import DisabledButton from "../atoms/DisabledButton";
 import axios from "axios";
 const AddUserInfoForm = () => {
   const [user, setUser] = useState({
@@ -25,7 +24,7 @@ const AddUserInfoForm = () => {
   console.log(user);
   const [birthMessage, setBirthMessage] = useState(false);
   return (
-    <FormContainer onSubmit={handleAddUserInfo}>
+    <Form onSubmit={handleAddUserInfo}>
       <AddUserInfoInputBox
         user={user}
         setUser={setUser}
@@ -38,9 +37,9 @@ const AddUserInfoForm = () => {
       user.userCategory.length !== 0 ? (
         <Button type="submit">저장하기</Button>
       ) : (
-        <DisabledButton disabled>저장하기</DisabledButton>
+        <Button disabled>저장하기</Button>
       )}
-    </FormContainer>
+    </Form>
   );
 };
 export default AddUserInfoForm;

@@ -1,16 +1,13 @@
-import InfoMessage from "../atoms/InfoMessage";
 import Modal from "react-modal";
 import DaumPostcode from "react-daum-postcode";
 import Xbtn from "../atoms/Xbtn";
 import CheckOptionGroup from "./CheckOptionGroup";
 import { useState } from "react";
 import PTag from "../atoms/PTag";
-import LoginInput from "../atoms/LoginInput";
+import Input from "../atoms/Input";
 import Title from "../atoms/Title";
 import Button from "../atoms/Button";
 import Message from "../atoms/Message";
-import ErrorMessage from "../atoms/ErrorMessage";
-import OkMessage from "../atoms/OkMessage";
 const AddUserInfoInputBox = ({
   user,
   setUser,
@@ -68,12 +65,12 @@ const AddUserInfoInputBox = ({
   return (
     <>
       <Title>추가 정보 입력하기</Title>
-      <InfoMessage>
+      <Message info>
         카테고리 선택시 해당 서비스의
         <br /> 목록을 추천해드릴게요
-      </InfoMessage>
+      </Message>
       <PTag>이름*</PTag>
-      <LoginInput
+      <Input
         onChange={handleUser}
         type="text"
         name="userName"
@@ -82,7 +79,7 @@ const AddUserInfoInputBox = ({
         placeholder="이름을 입력해주세요"
       />
       <PTag>생년월일*</PTag>
-      <LoginInput
+      <Input
         onChange={handleUser}
         type="text"
         name="userBirth"
@@ -94,12 +91,12 @@ const AddUserInfoInputBox = ({
       {user.userBirth.length === 0 || birthMessage === null ? (
         <Message>.</Message>
       ) : birthMessage === false ? (
-        <ErrorMessage>올바르지 않은 형식입니다.</ErrorMessage>
+        <Message fail>올바르지 않은 형식입니다.</Message>
       ) : (
-        birthMessage && <OkMessage>유효한 형식입니다.</OkMessage>
+        birthMessage && <Message ok>유효한 형식입니다.</Message>
       )}
       <PTag>주소*</PTag>
-      <LoginInput
+      <Input
         onChange={handleUser}
         name="userAddress"
         value={user.userAddress}

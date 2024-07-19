@@ -15,7 +15,6 @@ import SelectOptionGroup from "../molecules/SelectOptionGroup";
 import Textarea from "../atom/Textarea";
 import AddressInput from "../molecules/AddressInput";
 import Button from "../atom/Button";
-import DisabledButton from "../../Login/atoms/DisabledButton";
 
 const WriteProduct = () => {
   const inputRef = useRef(null);
@@ -184,7 +183,7 @@ const WriteProduct = () => {
         user.productCategory?.length !== 0 ? (
           <Button type="submit">작성완료</Button>
         ) : (
-          <DisabledButton disabled>작성완료</DisabledButton>
+          <Button disabled>작성완료</Button>
         )}
       </Wrapper>
     </form>

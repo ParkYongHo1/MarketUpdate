@@ -1,9 +1,8 @@
 import axios from "axios";
 import Button from "../atoms/Button";
-import FormContainer from "../atoms/FormContainer";
+import Form from "../atoms/Form";
 import Title from "../atoms/Title";
 import SignUpInputBox from "../molecules/SignUpInputBox";
-import DisabledButton from "../atoms/DisabledButton";
 import { React, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchEmail as fetchEmailAction } from "../../../slices/userSlice";
@@ -43,7 +42,7 @@ const SignUpForm = () => {
   };
 
   return (
-    <FormContainer onSubmit={handleSignUp}>
+    <Form onSubmit={handleSignUp}>
       <Title>회원가입</Title>
       <SignUpInputBox
         userEmail={userEmail}
@@ -59,9 +58,9 @@ const SignUpForm = () => {
       {emailMessage && phoneMessage && passwordMessage ? (
         <Button type="submit">가입하기</Button>
       ) : (
-        <DisabledButton disabled>가입하기</DisabledButton>
+        <Button disabled>가입하기</Button>
       )}
-    </FormContainer>
+    </Form>
   );
 };
 

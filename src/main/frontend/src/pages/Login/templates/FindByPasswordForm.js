@@ -1,7 +1,7 @@
 import { useState } from "react";
-import FormContainer from "../atoms/FormContainer";
+import Form from "../atoms/Form";
 import FindByPasswordInputBox from "../molecules/FindByPasswordInputBox";
-import FindTitle from "../atoms/FindTitle";
+import Title from "../atoms/Title";
 import Button from "../atoms/Button";
 import axios from "axios";
 const FindByPasswordForm = () => {
@@ -18,14 +18,14 @@ const FindByPasswordForm = () => {
     }
   };
   return (
-    <FormContainer onSubmit={handleFindPasswordInfo}>
-      <FindTitle>비밀번호 찾기</FindTitle>
+    <Form onSubmit={handleFindPasswordInfo}>
+      <Title find>비밀번호 찾기</Title>
       <FindByPasswordInputBox
         user={user}
         setUser={setUser}
       ></FindByPasswordInputBox>
       <Button type="submit">이메일 발송하기</Button>
-    </FormContainer>
+    </Form>
   );
 };
 export default FindByPasswordForm;

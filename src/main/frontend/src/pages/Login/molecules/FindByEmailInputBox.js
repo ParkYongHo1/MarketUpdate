@@ -1,6 +1,6 @@
 import PTag from "../atoms/PTag";
-import LoginInput from "../atoms/LoginInput";
-import InfoMessage from "../atoms/InfoMessage";
+import LoginInput from "../atoms/Input";
+import Message from "../atoms/Message";
 const FindByEmailInputBox = ({ user, setUser }) => {
   const onChangeInput = (e) => {
     const { name, value } = e.target;
@@ -9,10 +9,10 @@ const FindByEmailInputBox = ({ user, setUser }) => {
   };
   return (
     <>
-      <InfoMessage>
+      <Message info>
         가입시 등록했던 휴대폰 번호를 입력하면 <br />
         이메일의 일부를 알려드립니다.
-      </InfoMessage>
+      </Message>
 
       <PTag>휴대폰 번호*</PTag>
       <LoginInput

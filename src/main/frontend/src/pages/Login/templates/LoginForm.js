@@ -1,8 +1,7 @@
-import FormContainer from "../atoms/FormContainer";
+import Form from "../atoms/Form";
 import LoginInputBox from "../molecules/LoginInputBox";
 import Button from "../atoms/Button";
 import Title from "../atoms/Title";
-import DisabledButton from "../atoms/DisabledButton";
 import { useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -50,15 +49,15 @@ const LoginForm = () => {
   const isFormValid = user.userEmail !== "" && user.userPassword !== "";
 
   return (
-    <FormContainer onSubmit={handleLogin}>
+    <Form onSubmit={handleLogin}>
       <Title>로그인</Title>
       <LoginInputBox />
       {isFormValid ? (
         <Button type="submit">로그인</Button>
       ) : (
-        <DisabledButton disabled>로그인하기</DisabledButton>
+        <Button disabled>로그인하기</Button>
       )}
-    </FormContainer>
+    </Form>
   );
 };
 
