@@ -1,5 +1,5 @@
 import CheckOption from "../atoms/CheckOption";
-import FlexDiv from "../atoms/FlexDiv";
+import Div from "../atoms/Div";
 import HiddenCheck from "../atoms/HiddenCheck";
 import StyledLabel from "../atoms/StyledLabel";
 import React, { useState } from "react";
@@ -20,7 +20,7 @@ const CheckOptionGroup = ({ options, name, setUser, user }) => {
     }));
   };
   return (
-    <FlexDiv>
+    <Div wrapFlex>
       {options.map((option) => (
         <CheckOption
           key={option.value}
@@ -36,7 +36,7 @@ const CheckOptionGroup = ({ options, name, setUser, user }) => {
           <StyledLabel htmlFor={option.value}>{option.label}</StyledLabel>
         </CheckOption>
       ))}
-    </FlexDiv>
+    </Div>
   );
 };
 

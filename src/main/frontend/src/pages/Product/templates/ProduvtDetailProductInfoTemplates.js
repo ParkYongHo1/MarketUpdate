@@ -10,7 +10,7 @@ import ProductImgSwiper from "../molecules/ProductImgSwiper";
 import Title from "../../Login/atoms/Title";
 import ProductWarningMsg from "../molecules/ProductWarningMsg";
 import MiddleFont from "../atom/ProductDetailUser/MiddleFont";
-import FlexDiv from "../../Login/atoms/FlexDiv";
+import Div from "../../Login/atoms/Div";
 import useTimeAgo from "../../../hooks/useTimeAgo";
 import DetailInfoSub from "../atom/ProductDetailUser/DetailInfoSub";
 import DetailFont from "../atom/ProductDetailUser/DetailFont";
@@ -27,14 +27,14 @@ const ProductDetailProductInfoTemplates = () => {
       </ProductLeftDiv>
       <ProductRightDiv>
         <ProductInfoDiv>
-          <FlexDiv>
+          <Div wrapFlex>
             <Title>제목</Title>
             <FontAwesomeIcon
               icon={faEllipsisVertical}
               size="lg"
               style={{ cursor: "pointer" }}
             />
-          </FlexDiv>
+          </Div>
           <MiddleFont>150,000원</MiddleFont>
           <DetailInfoSub>
             <DetailFont>

@@ -1,63 +1,35 @@
-import Form from "../atoms/Form";
-import LoginInputBox from "../molecules/LoginInputBox";
-import Button from "../atoms/Button";
-import Title from "../atoms/Title";
-import { useState } from "react";
-import axios from "axios";
+import Message from "../atoms/Message";
+import Input from "../atoms/Input";
+import PTag from "../atoms/PTag";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { login, emailError, passwordError } from "../../../slices/userSlice";
+import { setUser } from "../../../slices/userSlice";
 
 const LoginForm = () => {
-  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const user = useSelector((state) => state.user.user);
+  const emailError = useSelector((state) => state.user.emailError);
+  const passwordError = useSelector((state) => state.user.passwordError);
+  console.log(user);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post("/api/login", user);
-
-      if (
-        res.data.userEmail !== "emailError" &&
-        res.data.userPassword !== "passwordError"
-      ) {
-        dispatch(login(user));
-        if (res.data.userAddress == null) {
-          {
-            /* 처음 로그인 시 */
-          }
-          navigate("/adduserinfo");
-        } else {
-          navigate("/");
-        }
-
-        console.log(
-          "email : " + user.userEmail + " password : " + user.userPassword
-        );
-      } else if (res.data.userEmail === "emailError") {
-        dispatch(emailError());
-      } else if (res.data.userPassword === "passwordError") {
-        dispatch(passwordError());
-      }
-    } catch (e) {
-      console.log(e);
-    }
+  const onChangeInput = (e) => {
+    const { name, value } = e.target;
+    dispatch(setUser({ ...user, [name]: value }));
   };
-
-  // Validate if both email and password are filled
-  const isFormValid = user.userEmail !== "" && user.userPassword !== "";
-
   return (
-    <Form onSubmit={handleLogin}>
-      <Title>로그인</Title>
-      <LoginInputBox />
-      {isFormValid ? (
-        <Button type="submit">로그인</Button>
-      ) : (
-        <Button disabled>로그인하기</Button>
+    <>
+      <PTag>이메일 주소</PTag>
+      <Input value={user.userEmail} name="userEmail" onChange={onChangeInput} />
+      {emailError && !passwordError && (
+        <Message fail>일치하는 이메일 주소가 없습니다.</Message>
       )}
-    </Form>
+      <PTag>비밀번호</PTag>
+      <Input
+        value={user.userPassword}
+        name="userPassword"
+        onChange={onChangeInput}
+      />
+      {passwordError && <Message fail>일치하는 비밀번호가 없습니다.</Message>}
+    </>
   );
 };
 

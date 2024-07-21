@@ -1,68 +1,28 @@
-import { useState } from "react";
-import Form from "../atoms/Form";
-import FindByEmailInputBox from "../molecules/FindByEmailInputBox";
-import Title from "../atoms/Title";
-import Button from "../atoms/Button";
-import ButtonDiv from "../atoms/ButtonDiv";
-import MiddleButton from "../atoms/MiddleButton";
-import MiddleBlackButton from "../atoms/MiddleBlackButton";
 import PTag from "../atoms/PTag";
-import SubPTag from "../atoms/SubPTag";
-import axios from "axios";
+import Input from "../atoms/Input";
 import Message from "../atoms/Message";
-const FindByEmailForm = () => {
-  const [okPage, setOkpage] = useState(false);
-  const [failPage, setFailPage] = useState(false);
-
-  const [user, setUser] = useState({
-    userPhone: "",
-  });
-  const handleFindEmailInfo = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post("/user/find-email", user);
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
+const FindByEmailForm = ({ user, setUser }) => {
+  const onChangeInput = (e) => {
+    const { name, value } = e.target;
+    const numericValue = value.replace(/[^0-9]/g, "");
+    setUser({ ...user, [name]: numericValue });
   };
   return (
     <>
-      {!okPage && (
-        <Form onSubmit={handleFindEmailInfo}>
-          <Title find>이메일 아이디찾기</Title>
-          <FindByEmailInputBox
-            user={user}
-            setUser={setUser}
-          ></FindByEmailInputBox>
-          {failPage == true && (
-            <Message fail>일치하는 휴대폰 번호가 없습니다.</Message>
-          )}
-          <Button type="submit">이메일 아이디 찾기</Button>
-        </Form>
-      )}
-      {okPage && (
-        <Form>
-          <Title find>이메일 주소를 찾았습니다.</Title>
-          <PTag>이메일 주소</PTag>
-          <SubPTag>q*******3@naver.com</SubPTag>
-          <ButtonDiv>
-            <MiddleButton>비밀번호 찾기</MiddleButton>
-            <MiddleBlackButton>로그인하기</MiddleBlackButton>
-          </ButtonDiv>
-        </Form>
-      )}
-      {failPage && (
-        <Form>
-          <Title find>이메일 아이디찾기</Title>
-          <FindByEmailInputBox
-            user={user}
-            setUser={setUser}
-          ></FindByEmailInputBox>
-          <Message fail>일치하는 휴대폰 번호가 없습니다.</Message>
-          <Button type="submit">이메일 아이디 찾기</Button>
-        </Form>
-      )}
+      <Message info>
+        가입시 등록했던 휴대폰 번호를 입력하면 <br />
+        이메일의 일부를 알려드립니다.
+      </Message>
+
+      <PTag>휴대폰 번호*</PTag>
+      <Input
+        onChange={onChangeInput}
+        name="userPhone"
+        value={user.userPhone}
+        type="test"
+        maxLength={11}
+        placeholder="예시) 01012345678"
+      />
     </>
   );
 };

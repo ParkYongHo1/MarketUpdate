@@ -52,6 +52,38 @@ cursor: default;
 margin-left: 5px;
   }
   `}
+  ${(props) =>
+    props.middleButton &&
+    `
+  height: 45px;
+  width: 50%;
+  border-radius: 10px;
+  margin: 10px 0px;
+  color: black;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-left: 5px;
+  background-color: white;
+  border: 1px solid #d3d3d3;
+  }
+  `}
+  ${(props) =>
+    props.middleBlackButton &&
+    `
+    height: 45px;
+  width: 50%;
+  border-radius: 10px;
+  margin: 10px 0px;
+  color: white;
+  font-size: 15px;
+  background-color: black;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  margin-left: 5px;
+  }
+  `}
 `;
 
 export default Button;

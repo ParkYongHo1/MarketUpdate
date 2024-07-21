@@ -1,31 +1,28 @@
-import { useState } from "react";
-import Form from "../atoms/Form";
-import FindByPasswordInputBox from "../molecules/FindByPasswordInputBox";
-import Title from "../atoms/Title";
-import Button from "../atoms/Button";
-import axios from "axios";
-const FindByPasswordForm = () => {
-  const [user, setUser] = useState({
-    userEmail: "",
-  });
-  const handleFindPasswordInfo = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post("/user/find-password", user);
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
+import PTag from "../atoms/PTag";
+import Input from "../atoms/Input";
+import Message from "../atoms/Message";
+const FindByPasswordForm = ({ user, setUser }) => {
+  const onChangeInput = (e) => {
+    const { name, value } = e.target;
+    setUser({ ...user, [name]: value });
   };
   return (
-    <Form onSubmit={handleFindPasswordInfo}>
-      <Title find>비밀번호 찾기</Title>
-      <FindByPasswordInputBox
-        user={user}
-        setUser={setUser}
-      ></FindByPasswordInputBox>
-      <Button type="submit">이메일 발송하기</Button>
-    </Form>
+    <>
+      <Message info>
+        가입시 등록했던 이메일 주소를 입력하면 <br />
+        이메일주소로 임시 비밀번호를 알려드리겠습니다.
+      </Message>
+
+      <PTag>이메일 주소*</PTag>
+      <Input
+        onChange={onChangeInput}
+        name="userEmail"
+        value={user.userEmail}
+        type="email"
+        maxLength={11}
+        placeholder="예시) carrot@carrot.com"
+      />
+    </>
   );
 };
 export default FindByPasswordForm;

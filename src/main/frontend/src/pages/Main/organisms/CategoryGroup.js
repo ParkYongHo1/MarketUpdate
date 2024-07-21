@@ -1,4 +1,3 @@
-import FlexDiv from "../../Login/atoms/FlexDiv";
 import Button from "../atoms/Button";
 import GridContainer from "../atoms/GridContainer";
 const CategoryGroup = () => {
