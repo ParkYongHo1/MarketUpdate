@@ -25,6 +25,7 @@ public class KakaoController {
     public String login(@RequestBody Member user) {
        
         System.out.println("Received user email: " + user.getEmail());
+        System.out.println("Received user image: " + user.getProfile_image());
         return user.getEmail(); // 로그인 결과로 유저 객체 반환
     }
 }
