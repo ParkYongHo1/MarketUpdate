@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = "com.market.market.mapper")
-@EntityScan(basePackages = "com.market.market.dto")
+@EnableJpaRepositories(basePackages = "com.market.market.member.repository")
+@EntityScan(basePackages = "com.market.market.member.entity")
 public class MarketApplication {
 
 	public static void main(String[] args) {
