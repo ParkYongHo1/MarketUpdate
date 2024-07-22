@@ -10,7 +10,7 @@ import axios from "axios";
 import Message from "../atoms/Message";
 import Div from "../atoms/Div";
 const FindByEmailPage = () => {
-  const [okPage, setOkpage] = useState(true);
+  const [okPage, setOkpage] = useState(false);
   const [failPage, setFailPage] = useState(false);
 
   const [user, setUser] = useState({
