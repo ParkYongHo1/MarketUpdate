@@ -24,7 +24,7 @@ public class AuthController {
         //Builder를 사용한 Insert
         Member member = Member.builder()
                 .id("test")
-                .pwd("1234")
+                .password("1234")
                 .email("test@naver.com")
                 .phone("01012345678")
                 .nickname("테스트")
