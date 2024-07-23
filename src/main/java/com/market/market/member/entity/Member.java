@@ -26,7 +26,7 @@ public class Member {
     private String id;
 
     @Column(length = 20,nullable = false)
-    private String pwd;
+    private String password;
 
     @Column(length = 30)
     private String email;  
@@ -61,10 +61,10 @@ public class Member {
     private int level;
 
     @Builder
-    public Member(String id, String pwd, String email, String phone, String nickname, String location, 
+    public Member(String id, String password, String email, String phone, String nickname, String location, 
         String profile_image, double manner_temp, int auth, String category, String birth, int level){
             this.id = id;
-            this.pwd = pwd;
+            this.password = password;
             this.email = email;
             this.phone = phone;
             this.nickname = nickname;
