@@ -13,7 +13,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login, emailError, passwordError } from "../../../slices/userSlice";
+import { login, passwordError } from "../../../slices/userSlice";
 const LoginPage = () => {
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const LoginPage = () => {
       const res = await axios.post("/api/login", user);
 
       if (
-        res.data.userEmail !== "emailError" &&
+        res.data.userEmail !== "" &&
         res.data.userPassword !== "passwordError"
       ) {
         dispatch(login(user));
@@ -41,8 +41,7 @@ const LoginPage = () => {
         console.log(
           "email : " + user.userEmail + " password : " + user.userPassword
         );
-      } else if (res.data.userEmail === "emailError") {
-        dispatch(emailError());
+      } else if (res.data.userEmail === "") {
       } else if (res.data.userPassword === "passwordError") {
         dispatch(passwordError());
       }

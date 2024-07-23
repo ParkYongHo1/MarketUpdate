@@ -1,9 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  emailError: false,
-  passwordError: false,
+  emailMessage: "",
+  phoneMessage: "",
   isLoggedIn: false,
+  isEmailTaken: "",
+  isPhoneTaken: "",
+  checkPassword: "",
+  isNotPassword: "",
   user: {
     userEmail: "",
     userPassword: "",
@@ -15,7 +19,6 @@ const initialState = {
     latitude: "",
     longitude: "",
   },
-  fetchEmail: [],
 };
 
 export const userSlice = createSlice({
@@ -43,17 +46,23 @@ export const userSlice = createSlice({
     signup: (state, action) => {
       state.user = action.payload;
     },
-    emailError: (state) => {
-      state.emailError = true;
+    setEmailMessage: (state, action) => {
+      state.emailMessage = action.payload.message;
+      state.isEmailTaken = action.payload.isEmailTaken;
     },
-    passwordError: (state) => {
-      state.passwordError = true;
+    setPhoneMessage: (state, action) => {
+      state.phoneMessage = action.payload.message;
+      state.isPhoneTaken = action.payload.isPhoneTaken;
     },
+
     setUser: (state, action) => {
       state.user = action.payload;
     },
-    fetchEmail: (state, action) => {
-      state.fetchEmail = action.payload;
+    setPassword: (state, action) => {
+      state.isNotPassword = action.payload.message;
+    },
+    setCheckPassword: (state, action) => {
+      state.checkPassword = action.payload.message;
     },
   },
 });
@@ -61,9 +70,12 @@ export const {
   login,
   logout,
   signup,
-  emailError,
+  setEmailMessage,
+  setPhoneMessage,
   passwordError,
   setUser,
   fetchEmail,
+  setPassword,
+  setCheckPassword,
 } = userSlice.actions;
 export default userSlice.reducer;

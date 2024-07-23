@@ -7,36 +7,31 @@ import Title from "../atoms/Title";
 
 import { React, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchEmail as fetchEmailAction } from "../../../slices/userSlice";
+import { Link } from "react-router-dom";
 const SignUpPage = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
-  const [userEmail, setUserEmail] = useState("");
-  const [passwordCheck, setPasswordCheck] = useState("");
-  const [emailMessage, setEmailMessage] = useState(false);
-  const [passwordMessage, setPasswordMessage] = useState(null);
-  const [phoneMessage, setPhoneMessage] = useState(false);
 
-  useEffect(() => {
-    const fetchEmailData = async () => {
-      try {
-        const res = await axios.get("/api/user/fetchEmail");
-        dispatch(fetchEmailAction(res.data));
-        console.log(res.data);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    fetchEmailData();
-  }, [dispatch]);
-
+  const isNotPassword = useSelector((state) => state.user.isNotPassword);
+  const checkPassword = useSelector((state) => state.user.checkPassword);
+  const isEmailTaken = useSelector((state) => state.user.isEmailTaken);
+  const isPhoneTaken = useSelector((state) => state.user.isPhoneTaken);
+  console.log(user);
+  console.log("checkPassword==" + checkPassword);
+  console.log("isNotPassword ==" + isNotPassword);
+  /********************
+   * 회원가입 API (/member/signup)
+   ********************/
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/user/signup", user);
+      const res = await axios.post("/member/signup", user);
       console.log(user);
-      if (res.data === "hi") console.log(res.data);
+      if (res.data === 200) {
+        <Link to="/login"></Link>;
+      } else if (res.data === 400) {
+        alert("일시적인 서버 에러가 발생했습니다.");
+      }
     } catch (e) {
       console.log(e);
     }
@@ -47,18 +42,11 @@ const SignUpPage = () => {
       <div>
         <Form onSubmit={handleSignUp}>
           <Title>회원가입</Title>
-          <SignUpForm
-            userEmail={userEmail}
-            passwordCheck={passwordCheck}
-            setPasswordCheck={setPasswordCheck}
-            emailMessage={emailMessage}
-            setEmailMessage={setEmailMessage}
-            passwordMessage={passwordMessage}
-            setPasswordMessage={setPasswordMessage}
-            phoneMessage={phoneMessage}
-            setPhoneMessage={setPhoneMessage}
-          />
-          {emailMessage && phoneMessage && passwordMessage ? (
+          <SignUpForm />
+          {isNotPassword === "YES" &&
+          isEmailTaken === "YES" &&
+          isPhoneTaken === "YES" &&
+          checkPassword === "YES" ? (
             <Button type="submit">가입하기</Button>
           ) : (
             <Button disabled>가입하기</Button>
