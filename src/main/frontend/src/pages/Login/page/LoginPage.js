@@ -22,12 +22,9 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/login", user);
-
-      if (
-        res.data.userEmail !== "" &&
-        res.data.userPassword !== "passwordError"
-      ) {
+      const res = await axios.post("/member/login", user);
+      console.log(res.data);
+      if (res.data.state == 200) {
         dispatch(login(user));
         if (res.data.userAddress == null) {
           {
@@ -41,9 +38,6 @@ const LoginPage = () => {
         console.log(
           "email : " + user.userEmail + " password : " + user.userPassword
         );
-      } else if (res.data.userEmail === "") {
-      } else if (res.data.userPassword === "passwordError") {
-        dispatch(passwordError());
       }
     } catch (e) {
       console.log(e);

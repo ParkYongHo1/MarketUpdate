@@ -17,7 +17,7 @@ const PhoneModal = ({ phoneModal, setPhoneModal }) => {
   const dispatch = useDispatch();
   const phoneMessage = useSelector((state) => state.user.phoneMessage);
   /********************
-   * 인증번호 확인 API (/suth/checknum-email)
+   * 인증번호 확인 API (/suth/checknum-phone)
    ********************/
   const onChangeInput = async (e) => {
     const { value } = e.target;

@@ -7,9 +7,9 @@ import Title from "../atoms/Title";
 
 import { React, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const SignUpPage = () => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
 
   const isNotPassword = useSelector((state) => state.user.isNotPassword);
@@ -28,7 +28,7 @@ const SignUpPage = () => {
       const res = await axios.post("/member/signup", user);
       console.log(user);
       if (res.data === 200) {
-        <Link to="/login"></Link>;
+        navigate("/login");
       } else if (res.data === 400) {
         alert("일시적인 서버 에러가 발생했습니다.");
       }

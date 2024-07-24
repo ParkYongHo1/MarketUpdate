@@ -147,7 +147,7 @@ const SignUpForm = () => {
     }
   };
   /********************
-   * 휴대폰 인증번호 전송 API(/auth/fetch-email)
+   * 휴대폰 인증번호 전송 API(/auth/fetch-phone)
    ********************/
   const onSendPhone = async (e) => {
     setPhoneModal(true);
