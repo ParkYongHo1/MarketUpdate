@@ -1,5 +1,6 @@
 package com.market.market.member.controller;
 
+import com.market.market.member.dto.MemberDto;
 import com.market.market.member.entity.Member;
 import com.market.market.member.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +22,17 @@ public class AuthController {
     public void test()
     {
 
+        MemberDto memberDto = MemberDto.builder()
+        .id("test")
+        .password("1234")
+        .email("test@naver.com")
+        .phone("01012345678")
+        .nickname("테스트")
+        .build();
+
+
         //Builder를 사용한 Insert
-        Member member = Member.builder()
-                .id("test")
-                .password("1234")
-                .email("test@naver.com")
-                .phone("01012345678")
-                .nickname("테스트")
-                .build();
+        Member member = Member.toEntity(memberDto);
 
         memberRepository.save(member);
 

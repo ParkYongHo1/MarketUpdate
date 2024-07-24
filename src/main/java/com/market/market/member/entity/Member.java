@@ -7,6 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.market.market.member.dto.MemberDto;
+
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,8 +19,9 @@ import lombok.ToString;
 @Entity
 @Table(name = "member")
 @Getter
-@Setter
 @ToString
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class Member {
 
@@ -60,20 +64,21 @@ public class Member {
     @Column
     private int level;
 
-    @Builder
-    public Member(String id, String password, String email, String phone, String nickname, String location, 
-        String profile_image, double manner_temp, int auth, String category, String birth, int level){
-            this.id = id;
-            this.password = password;
-            this.email = email;
-            this.phone = phone;
-            this.nickname = nickname;
-            this.location = location;
-            this.profile_image = profile_image;
-            this.manner_temp = manner_temp;
-            this.auth = auth;
-            this.category = category;
-            this.birth = birth;
-            this.level = level;
+    public static Member toEntity(MemberDto dto)
+    {
+        return Member.builder()
+        .id(dto.getId())
+        .password(dto.getPassword())
+        .email(dto.getEmail())
+        .phone(dto.getPhone())
+        .nickname(dto.getNickname())
+        .location(dto.getLocation())
+        .profile_image(dto.getProfile_image())
+        .manner_temp(dto.getManner_temp())
+        .auth(dto.getAuth())
+        .category(dto.getCategory())
+        .birth(dto.getBirth())
+        .level(dto.getLevel())
+        .build();
     }
 }
