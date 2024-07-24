@@ -1,7 +1,14 @@
+package com.market.market.member.dto;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 
+import com.market.market.member.entity.Member;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -9,6 +16,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class MemberDto{
     private String id;
     private String password;
@@ -22,4 +32,23 @@ public class MemberDto{
     private String category;
     private String birth;
     private int level;  // 0: 사용자, 1 : 관리자
+
+
+    public static MemberDto toDto(Member entity)
+    {
+        return MemberDto.builder()
+        .id(entity.getId())
+        .password(entity.getPassword())
+        .email(entity.getEmail())
+        .phone(entity.getPhone())
+        .nickname(entity.getNickname())
+        .location(entity.getLocation())
+        .profile_image(entity.getProfile_image())
+        .manner_temp(entity.getManner_temp())
+        .auth(entity.getAuth())
+        .category(entity.getCategory())
+        .birth(entity.getBirth())
+        .level(entity.getLevel())
+        .build();
+    }
 }
