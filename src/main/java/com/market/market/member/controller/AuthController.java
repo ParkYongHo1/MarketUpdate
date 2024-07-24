@@ -23,7 +23,7 @@ public class AuthController {
     {
 
         MemberDto memberDto = MemberDto.builder()
-        .id("test")
+        .id("test4")
         .password("1234")
         .email("test@naver.com")
         .phone("01012345678")
