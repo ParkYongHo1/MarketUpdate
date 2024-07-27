@@ -7,7 +7,7 @@ import HeaderEventContainer from "../../../layout/header/atom/HeaderEventContain
 import CategoryPageDiv from "../atom/CategoryPage/CategoryPageDiv";
 import CategoryPageHeader from "../atom/CategoryPage/CategoryPageHeader";
 import CategoryTitle from "../atom/CategoryPage/CategoryTitle";
-import MainDiv from "../../Main/atoms/MainDiv";
+import Div from "../../Main/atoms/Div";
 import MainDivContent from "../../Main/atoms/MainDivContent";
 import TitleDiv from "../../Main/atoms/TitleDiv";
 import MainDivContentBox from "../../Main/atoms/MainDivContentBox";
@@ -16,7 +16,7 @@ import MainContentTitle from "../../Main/atoms/MainContentTitle";
 import MainContentFont from "../../Main/atoms/MainContentFont";
 import useTimeAgo from "../../../hooks/useTimeAgo";
 import ModalDiv from "../atom/CategoryPage/ModalDiv";
-import ModalItem from "../atom/CategoryPage/ModalItem"; 
+import ModalItem from "../atom/CategoryPage/ModalItem";
 import Paging from "../../../components/Paging";
 
 const CategoryPage = () => {
@@ -126,7 +126,7 @@ const CategoryPage = () => {
           </div>
         </CategoryPageDiv>
       </HeaderEventContainer>
-      <MainDiv>
+      <Div>
         <TitleDiv style={{ marginTop: "50px" }}>
           <CategoryTitle>{param.category}</CategoryTitle>
           <div
@@ -185,7 +185,7 @@ const CategoryPage = () => {
           ))}
         </MainDivContent>
         <Paging page={page} contents={contents} setPage={setPage} />
-      </MainDiv>
+      </Div>
     </>
   );
 };

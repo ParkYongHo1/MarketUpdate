@@ -1,4 +1,4 @@
-import Button from "../../Main/atoms/Button";
+import Button from "../../Main/atoms/StyledLink";
 import Modal from "react-modal";
 import DaumPostcode from "react-daum-postcode";
 import Xbtn from "../../Login/atoms/Xbtn";

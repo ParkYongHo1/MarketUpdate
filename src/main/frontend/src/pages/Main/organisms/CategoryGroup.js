@@ -1,4 +1,4 @@
-import Button from "../atoms/Button";
+import StyledLink from "../atoms/StyledLink";
 import GridContainer from "../atoms/GridContainer";
 const CategoryGroup = () => {
   const checkOption = [
@@ -14,9 +14,13 @@ const CategoryGroup = () => {
   return (
     <GridContainer>
       {checkOption.map((checkOption) => (
-        <Button to={`/category/${checkOption.value}`} key={checkOption.value}>
+        <StyledLink
+          button
+          to={`/category/${checkOption.value}`}
+          key={checkOption.value}
+        >
           {checkOption.label}
-        </Button>
+        </StyledLink>
       ))}
     </GridContainer>
   );
