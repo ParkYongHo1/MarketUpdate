@@ -16,6 +16,7 @@ const EmailModal = ({ emailModal, setEmailModal }) => {
   const [checkNum, setCheckNum] = useState("");
   const [authState, setAuthState] = useState("");
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
   const emailMessage = useSelector((state) => state.user.emailMessage);
 
   /********************
@@ -29,8 +30,9 @@ const EmailModal = ({ emailModal, setEmailModal }) => {
       try {
         const res = await axios.post("/auth/checknum-email", {
           checkNum: value,
+          email: user.email,
         });
-        if (res.data == 200) {
+        if (res.data == "200") {
           setAuthState("YES");
           dispatch(
             setEmailMessage({
@@ -39,7 +41,7 @@ const EmailModal = ({ emailModal, setEmailModal }) => {
               isEmailTaken: "YES",
             })
           );
-        } else if (res.data == 400) {
+        } else if (res.data == "400") {
           setAuthState("NO");
         }
         console.log(res);
