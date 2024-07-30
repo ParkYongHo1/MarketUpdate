@@ -1,8 +1,109 @@
 package com.market.market.member.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties.Lettuce.Cluster.Refresh;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.market.jwt.TokenProvider;
+import com.market.market.member.dto.JwtDto;
+import com.market.market.member.dto.MemberDto;
+import com.market.market.member.dto.RefreshTokenDto;
+import com.market.market.member.entity.Member;
+import com.market.market.member.entity.RefreshToken;
+import com.market.market.member.repository.MemberRepository;
+import com.market.market.member.repository.RefreshTokenRepository;
+
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class MemberService {
 
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    //private final MemberRepository memberRepository;
+    //private final PasswordEncoder passwordEncoder;
+    private final TokenProvider tokenProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final MemberRepository memberRepository;
+
+    @Transactional
+    public Map<String,Object> login(Map<String,Object> requestMemberData){
+
+        String id = requestMemberData.get("userEmail").toString();
+        String password = requestMemberData.get("userPassword").toString();
+        Map<String, Object> responseMap = new HashMap<>();
+
+
+        if (id == null || id.isEmpty() || password == null || password.isEmpty()) {          
+            responseMap.put("status", "400");
+            return responseMap;
+        }
+
+        Member member = memberRepository.findById(id)
+        .orElse(null);
+
+        if (member == null) {
+            responseMap.put("status", "400");
+            return responseMap;
+        }
+
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(id,password);
+
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
+        JwtDto jwtDto = tokenProvider.generateTokenDto(authentication);
+
+        RefreshTokenDto refreshTokenDto = RefreshTokenDto.builder()
+        .key(authentication.getName())
+        .value(jwtDto.getRefreshToken())
+        .build();
+
+        refreshTokenRepository.save(RefreshToken.toEntity(refreshTokenDto));
+
+        MemberDto memberDto = MemberDto.toDto(member);
+
+
+        responseMap.put("status", "200");
+        responseMap.put("member", memberDto);
+        responseMap.put("token", jwtDto);
+
+        return responseMap;
+    }
+
+    @Transactional
+    public JwtDto reissue(Map<String,String> requestJwtData){
+
+        if(!tokenProvider.validateToken(requestJwtData.get("refresh_token").toString())){
+            throw new RuntimeException("Refresh Token이 유효하지 않습니다.");
+        }
+
+        Authentication authentication = tokenProvider.getAuthentication(requestJwtData.get("access_token").toString());
+
+
+        RefreshToken refreshToken = refreshTokenRepository.findByKey(authentication.getName())
+        .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
+
+        if(!refreshToken.getValue().equals(requestJwtData.get("refresh_token"))){
+            throw new RuntimeException("토큰의 유저 정보가 일치하지 않습니다.");
+        }
+
+        JwtDto jwtDto = tokenProvider.generateTokenDto(authentication);
+
+        RefreshTokenDto refreshTokenDto = RefreshTokenDto.builder().key(refreshToken.getKey()).value(refreshToken.getValue()).build();
+
+        RefreshToken newRefreshToken = RefreshToken.toEntity(refreshTokenDto.updateValue(jwtDto.getRefreshToken()));
+        refreshTokenRepository.save(newRefreshToken);
+
+        return jwtDto;
+    }
 }
