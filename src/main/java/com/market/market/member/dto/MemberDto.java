@@ -1,7 +1,18 @@
 package com.market.market.member.dto;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.market.market.member.entity.Member;
 
@@ -32,7 +43,6 @@ public class MemberDto{
     private String category;
     private String birth;
     private int level;  // 0: 사용자, 1 : 관리자
-
 
     public static MemberDto toDto(Member entity)
     {
