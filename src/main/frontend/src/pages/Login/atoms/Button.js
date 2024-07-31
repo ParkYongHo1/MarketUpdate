@@ -32,7 +32,7 @@ const Button = styled.button`
     `}
 
   ${(props) =>
-    props.disabled &&
+    props.disable &&
     `
       background-color: #ebebeb;
       cursor: default;

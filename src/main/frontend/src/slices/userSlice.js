@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-
 const initialState = {
   emailMessage: "",
   phoneMessage: "",
@@ -9,38 +8,63 @@ const initialState = {
   checkPassword: "",
   isNotPassword: "",
   user: {
-    userEmail: "",
-    userPassword: "",
-    userName: "",
-    userBirth: "",
-    userAddress: "",
-    userCategory: [],
-    userPhone: "",
-    latitude: "",
-    longitude: "",
+    id: "",
+    level: "",
+    profile_image: "",
+    auth: "",
+    email: "",
+    password: "",
+    nickname: "",
+    birth: "",
+    category: [],
+    phone: "",
+    location: {
+      adderss: "",
+      latitude: "",
+      longitude: "",
+    },
+    manner_temp: "",
+  },
+  jwt: {
+    accessToken: "",
+    refreshToken: "",
+    expirationTime: "",
   },
 };
 
 export const userSlice = createSlice({
-  name: "user", // useSelector(state => state.슬라이스키.슬라이스키의 속성); 여기서 슬라이스키가 name:"슬라이스키" initalState가 슬라이스 속성(isLoggedIn)
+  name: "user",
   initialState,
   reducers: {
     login: (state, action) => {
       state.isLoggedIn = true;
-      state.user = action.payload;
+      state.user = action.payload.user;
+      state.jwt = action.payload.jwt;
     },
     logout: (state) => {
       state.isLoggedIn = false;
       state.user = {
-        userEmail: "",
-        userPassword: "",
-        userName: "",
-        userBirth: "",
-        userAddress: "",
-        userCategory: [],
-        userPhone: "",
-        latitude: "",
-        longitude: "",
+        id: "",
+        level: "",
+        profile_image: "",
+        auth: "",
+        email: "",
+        password: "",
+        nickname: "",
+        birth: "",
+        category: [],
+        phone: "",
+        location: {
+          adderss: "",
+          latitude: "",
+          longitude: "",
+        },
+        manner_temp: "",
+      };
+      state.jwt = {
+        accessToken: "",
+        refreshToken: "",
+        expirationTime: "",
       };
     },
     signup: (state, action) => {
@@ -54,7 +78,6 @@ export const userSlice = createSlice({
       state.phoneMessage = action.payload.message;
       state.isPhoneTaken = action.payload.isPhoneTaken;
     },
-
     setUser: (state, action) => {
       state.user = action.payload;
     },
@@ -64,18 +87,22 @@ export const userSlice = createSlice({
     setCheckPassword: (state, action) => {
       state.checkPassword = action.payload.message;
     },
+    setJwt: (state, action) => {
+      state.jwt = action.payload;
+    },
   },
 });
+
 export const {
   login,
   logout,
   signup,
   setEmailMessage,
   setPhoneMessage,
-  passwordError,
   setUser,
-  fetchEmail,
   setPassword,
   setCheckPassword,
+  setJwt,
 } = userSlice.actions;
+
 export default userSlice.reducer;

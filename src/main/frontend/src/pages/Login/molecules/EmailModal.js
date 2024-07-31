@@ -92,7 +92,7 @@ const EmailModal = ({ emailModal, setEmailModal }) => {
                 확인
               </Button>
             ) : (
-              <Button middleBlackButton disabled>
+              <Button middleBlackButton disable>
                 확인
               </Button>
             )}

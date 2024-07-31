@@ -9,43 +9,47 @@ import { KAKAO_AUTH_URL } from "../../../OAuth/OAuth";
 import Form from "../atoms/Form";
 import Button from "../atoms/Button";
 import Title from "../atoms/Title";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login, passwordError } from "../../../slices/userSlice";
+import { login, setJwt } from "../../../slices/userSlice";
 const LoginPage = () => {
   const user = useSelector((state) => state.user.user);
+  const jwt = useSelector((state) => state.user.jwt);
+  console.log(user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isFormValid = user?.email !== "" && user?.password !== "";
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/member/login", user);
+      const res = await axios.post("/member/login", {
+        email: user.email,
+        password: user.password,
+      });
       console.log(res.data);
-      if (res.data.state == 200) {
-        dispatch(login(user));
-        if (res.data.userAddress == null) {
-          {
-            /* 처음 로그인 시 */
-          }
+      const jwtData = {
+        access: res.data.token.accessToken,
+        expirationTime: res.data.token.accessTokenExpiresIn,
+        refresh: res.data.token.refreshToken,
+      };
+
+      sessionStorage.setItem("jwt", JSON.stringify(jwtData));
+      if (res.data.status == "200") {
+        dispatch(login(res.data.member));
+        dispatch(setJwt(jwtData));
+        if (res.data.member.location == null) {
           navigate("/adduserinfo");
         } else {
           navigate("/");
         }
-
-        console.log(
-          "email : " + user.userEmail + " password : " + user.userPassword
-        );
       }
     } catch (e) {
       console.log(e);
     }
   };
-
-  // Validate if both email and password are filled
-  const isFormValid = user.userEmail !== "" && user.userPassword !== "";
 
   return (
     <Body>
@@ -56,7 +60,7 @@ const LoginPage = () => {
           {isFormValid ? (
             <Button type="submit">로그인</Button>
           ) : (
-            <Button disabled>로그인하기</Button>
+            <Button disable>로그인하기</Button>
           )}
         </Form>
         <Div login>

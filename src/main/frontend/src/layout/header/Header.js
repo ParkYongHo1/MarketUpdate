@@ -17,23 +17,37 @@ import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../slices/userSlice";
+import { logout, setJwt } from "../../slices/userSlice";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const storedJwt = sessionStorage.getItem("jwt");
+    if (storedJwt) {
+      const jwtData = JSON.parse(storedJwt);
+      dispatch(setJwt(jwtData));
+    }
+  }, [dispatch]);
+
+  const jwt = useSelector((state) => state.user.jwt);
   const handleLogout = () => {
     dispatch(logout());
+    JSON.parse(sessionStorage.removeItem("jwt"));
   };
   return (
     <HeaderBody>
       <HeaderUserContainer>
         <HeaderUserDiv>
-          {isLoggedIn ? (
+          {jwt.accessToken !== "" ? (
             <>
               <HeaderUserBox to="/faq">고객센터</HeaderUserBox>
               <HeaderUserBox to="/profile">마이페이지</HeaderUserBox>
-              <HeaderUserBox onClick={handleLogout}>로그아웃</HeaderUserBox>
+              <HeaderUserBox onClick={handleLogout} to="/">
+                로그아웃
+              </HeaderUserBox>
             </>
           ) : (
             <>
@@ -53,7 +67,7 @@ const Header = () => {
             />
           </HeaderImgBox>
           <HeaderContentContainer>
-            {isLoggedIn ? (
+            {jwt.accessToken !== "" ? (
               <>
                 <HeaderContentDiv>
                   <div>

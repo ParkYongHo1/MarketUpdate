@@ -39,8 +39,8 @@ public class MemberService {
     @Transactional
     public Map<String,Object> login(Map<String,Object> requestMemberData){
 
-        String id = requestMemberData.get("userEmail").toString();
-        String password = requestMemberData.get("userPassword").toString();
+        String id = requestMemberData.get("email").toString();
+        String password = requestMemberData.get("password").toString();
         Map<String, Object> responseMap = new HashMap<>();
 
 
