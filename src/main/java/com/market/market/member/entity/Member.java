@@ -3,6 +3,7 @@ package com.market.market.member.entity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.persistence.Column;
@@ -14,10 +15,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.market.market.member.dto.LocationDto;
 import com.market.market.member.dto.MemberDto;
 
 import lombok.AllArgsConstructor;
@@ -58,11 +62,15 @@ public class Member implements UserDetails{
     private String profile_image; 
     
     @Column
-    private double manner_temp;
+    @ColumnDefault("36.5")
+    @Builder.Default
+    private double manner_temp = 36.5;
 
     //0 : 일반 로그인 , 1 : 소셜 로그인
     @Column
-    private int auth;
+    @ColumnDefault("0")
+    @Builder.Default
+    private int auth = 0;
 
     @Column(length = 20)
     private String category;
@@ -72,7 +80,9 @@ public class Member implements UserDetails{
 
     // 0: 사용자, 1 : 관리자
     @Column
-    private int level;
+    @ColumnDefault("0")
+    @Builder.Default
+    private int level = 0;
 
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -112,13 +122,23 @@ public class Member implements UserDetails{
 
     public static Member toEntity(MemberDto dto)
     {
+        String locations = "";
+         try {
+            if (dto.getLocation() != null) {
+                locations = dto.getLocation().toString();
+            }
+        } catch (Exception e) {
+            System.out.println("Error Message : "+e.getMessage());           
+        }
+
+
         return Member.builder()
         .id(dto.getId())
         .password(dto.getPassword())
         .email(dto.getEmail())
         .phone(dto.getPhone())
         .nickname(dto.getNickname())
-        .location(dto.getLocation())
+        .location(locations)
         .profile_image(dto.getProfile_image())
         .manner_temp(dto.getManner_temp())
         .auth(dto.getAuth())
