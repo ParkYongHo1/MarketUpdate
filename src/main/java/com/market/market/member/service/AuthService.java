@@ -19,6 +19,7 @@ public class AuthService {
 
     public Map<String,String> insertTest(Map<String,String> body)
     {
+
         //결과를 return        
         Map<String,String> resultMap = new HashMap<>();
 
@@ -29,8 +30,11 @@ public class AuthService {
         .email(body.get("email"))
         .nickname(body.get("nickname")).build();
 
+        
         //DTO -> Entity 변환
         Member member = Member.toEntity(memberDto);
+
+        System.out.println("인서트 값 : "+member.toString());
 
         //Repository로 CRUD
         memberRepository.save(member);
