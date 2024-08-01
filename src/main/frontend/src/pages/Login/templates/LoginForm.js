@@ -8,8 +8,6 @@ const LoginForm = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
 
-  console.log(user);
-
   const onChangeInput = (e) => {
     const { name, value } = e.target;
     dispatch(setUser({ ...user, [name]: value }));

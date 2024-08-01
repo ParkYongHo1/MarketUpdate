@@ -54,18 +54,15 @@ const LoginHandeler = (props) => {
             email: userInfoResponse.data.kakao_account.email,
             nickname: userInfoResponse.data.properties.nickname,
             profile_image: userInfoResponse.data.properties.profile_image,
+            auth: "1",
           };
 
           // Send user information to your backend
-          const backendResponse = await axios.post(
-            "/auth/kakaologin",
-            userData,
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
+          const backendResponse = await axios.post("/member/login", userData, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
           console.log("Backend response:", backendResponse.data);
 
           // Handle successful login, navigate to the desired route

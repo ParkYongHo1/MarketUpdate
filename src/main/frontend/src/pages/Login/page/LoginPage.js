@@ -13,23 +13,24 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login, setJwt } from "../../../slices/userSlice";
+import { login, setJwt, setUser } from "../../../slices/userSlice";
+import Message from "../atoms/Message";
 const LoginPage = () => {
   const user = useSelector((state) => state.user.user);
   const jwt = useSelector((state) => state.user.jwt);
-  console.log(user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isFormValid = user?.email !== "" && user?.password !== "";
-
+  const [fail, setFail] = useState(false);
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post("/member/login", {
         email: user.email,
         password: user.password,
+        auth: "1",
       });
-      console.log(res.data);
+      const memberData = res.data.member;
       const jwtData = {
         access: res.data.token.accessToken,
         expirationTime: res.data.token.accessTokenExpiresIn,
@@ -38,29 +39,37 @@ const LoginPage = () => {
 
       sessionStorage.setItem("jwt", JSON.stringify(jwtData));
       if (res.data.status == "200") {
-        dispatch(login(res.data.member));
+        dispatch(login({ user: memberData }));
         dispatch(setJwt(jwtData));
         if (res.data.member.location == null) {
           navigate("/adduserinfo");
         } else {
           navigate("/");
         }
+      } else if (res.data.status == "400") {
+        setFail(true);
+        console.log("123");
       }
     } catch (e) {
+      setFail(true);
       console.log(e);
     }
   };
-
   return (
     <Body>
       <div>
         <Form onSubmit={handleLogin}>
           <Title>로그인</Title>
           <LoginForm />
+          {fail && (
+            <Message style={{ marginTop: "10px" }} fail>
+              일치하는 이메일/비밀번호가 없습니다.
+            </Message>
+          )}
           {isFormValid ? (
             <Button type="submit">로그인</Button>
           ) : (
-            <Button disable>로그인하기</Button>
+            <Button disabledButton>로그인하기</Button>
           )}
         </Form>
         <Div login>
