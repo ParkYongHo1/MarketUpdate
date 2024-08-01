@@ -28,7 +28,7 @@ const LoginPage = () => {
       const res = await axios.post("/member/login", {
         email: user.email,
         password: user.password,
-        auth: "1",
+        auth: "0",
       });
       const memberData = res.data.member;
       const jwtData = {

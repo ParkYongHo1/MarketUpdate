@@ -40,10 +40,4 @@ public class MemberController {
         return responseMap;
     }
 
-    @RequestMapping(value="/test", method = RequestMethod.POST)
-    public void test()
-    {
-        System.out.println("gd");
-    }
-
 }
