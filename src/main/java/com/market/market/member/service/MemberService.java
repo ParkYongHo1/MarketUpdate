@@ -39,44 +39,69 @@ public class MemberService {
     @Transactional
     public Map<String,Object> login(Map<String,Object> requestMemberData){
 
-        String id = requestMemberData.get("email").toString();
-        String password = requestMemberData.get("password").toString();
+        String auth = requestMemberData.get("auth").toString();
         Map<String, Object> responseMap = new HashMap<>();
 
+        //일반 로그인
+        if(auth.equals("0"))
+        {
 
-        if (id == null || id.isEmpty() || password == null || password.isEmpty()) {          
-            responseMap.put("status", "400");
-            return responseMap;
+            System.out.println("===Login===");
+
+            String id = requestMemberData.get("email").toString();
+            String password = requestMemberData.get("password").toString();
+
+
+
+            if (id == null || id.isEmpty() || password == null || password.isEmpty()) {          
+                responseMap.put("status", "400");
+                return responseMap;
+            }
+
+            Member member = memberRepository.findById(id)
+            .orElse(null);
+
+            if (member == null) {
+                responseMap.put("status", "400");
+                return responseMap;
+            }
+
+
+            //일반 로그인
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(id,password);
+
+            Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
+            JwtDto jwtDto = tokenProvider.generateTokenDto(authentication);
+
+            RefreshTokenDto refreshTokenDto = RefreshTokenDto.builder()
+            .key(authentication.getName())
+            .value(jwtDto.getRefreshToken())
+            .build();
+
+            refreshTokenRepository.save(RefreshToken.toEntity(refreshTokenDto));
+
+            MemberDto memberDto = MemberDto.toDto(member);
+
+
+            responseMap.put("status", "200");
+            responseMap.put("member", memberDto);
+            responseMap.put("token", jwtDto);
+
+
+        }
+        //소셜 로그인
+        else if(auth.equals("1"))
+        {
+            System.out.println("===KaKao Login===");
+
+            String id = requestMemberData.get("email").toString();
+            String nickname = requestMemberData.get("nickname").toString();
+            String profile_img = requestMemberData.get("profile_image").toString();
+
         }
 
-        Member member = memberRepository.findById(id)
-        .orElse(null);
-
-        if (member == null) {
-            responseMap.put("status", "400");
-            return responseMap;
-        }
-
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(id,password);
-
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-
-        JwtDto jwtDto = tokenProvider.generateTokenDto(authentication);
-
-        RefreshTokenDto refreshTokenDto = RefreshTokenDto.builder()
-        .key(authentication.getName())
-        .value(jwtDto.getRefreshToken())
-        .build();
-
-        refreshTokenRepository.save(RefreshToken.toEntity(refreshTokenDto));
-
-        MemberDto memberDto = MemberDto.toDto(member);
-
-
-        responseMap.put("status", "200");
-        responseMap.put("member", memberDto);
-        responseMap.put("token", jwtDto);
-
+        
         return responseMap;
     }
 
