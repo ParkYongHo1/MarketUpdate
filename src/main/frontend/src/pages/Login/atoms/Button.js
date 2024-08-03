@@ -32,7 +32,7 @@ const Button = styled.button`
     `}
 
   ${(props) =>
-    props.disable &&
+    props.disabledButton &&
     `
       background-color: #ebebeb;
       cursor: default;
@@ -63,7 +63,7 @@ const Button = styled.button`
 
   ${(props) =>
     props.middleBlackButton &&
-    props.disabled &&
+    props.disabledButton &&
     `
       background-color: #ebebeb;
       cursor: default;

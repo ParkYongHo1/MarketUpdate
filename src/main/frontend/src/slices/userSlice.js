@@ -39,7 +39,6 @@ export const userSlice = createSlice({
     login: (state, action) => {
       state.isLoggedIn = true;
       state.user = action.payload.user;
-      state.jwt = action.payload.jwt;
     },
     logout: (state) => {
       state.isLoggedIn = false;

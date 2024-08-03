@@ -1,13 +1,15 @@
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
-const StyledLink = styled(Link)`
+
+const StyledLink = styled(Link, {
+  shouldForwardProp: (prop) => !["button", "moreButton"].includes(prop),
+})`
   ${(props) =>
     props.button &&
     `  
   width: 50%;
   height: 45px;
   text-decoration: none;
-
   border-radius: 10px;
   display: block;
   text-align: center;
@@ -25,7 +27,7 @@ const StyledLink = styled(Link)`
   }
     `}
   ${(props) =>
-    props.more &&
+    props.moreButton &&
     `
   margin: 10px 30px;
   border: none;

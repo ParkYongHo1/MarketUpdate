@@ -67,12 +67,15 @@ const MainTemplates = () => {
           <Div title>
             <MainDivTitle>카테고리</MainDivTitle>
           </Div>
-          <CategoryGroup></CategoryGroup>
         </Div>
-
+        <CategoryGroup></CategoryGroup>
+        <div>
+          <div>관심 카테고리 상품 보기</div>
+          <button>바로가기</button>
+        </div>
         <Div title>
           <MainDivTitle>방금 등록된 상품</MainDivTitle>
-          <StyledLink more to="/latest">
+          <StyledLink moreButton to="/latest">
             더보기
           </StyledLink>
         </Div>

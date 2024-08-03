@@ -49,7 +49,7 @@ const SignUpPage = () => {
           checkPassword === "YES" ? (
             <Button type="submit">가입하기</Button>
           ) : (
-            <Button disable>가입하기</Button>
+            <Button disabledButton>가입하기</Button>
           )}
         </Form>
       </div>
