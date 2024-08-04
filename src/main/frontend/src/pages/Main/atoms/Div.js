@@ -1,5 +1,9 @@
 import styled from "@emotion/styled";
-const Div = styled.div`
+import { shouldForwardProp } from "@emotion/styled";
+
+const Div = styled("div", {
+  shouldForwardProp: (prop) => prop !== "title",
+})`
   width: 1200px;
   margin: 20px auto;
   ${(props) =>
@@ -13,7 +17,6 @@ const Div = styled.div`
   font-size: 20px;
   font-weight: 700;
   padding: 10px 10px;
-  }
   `}
 `;
 

@@ -40,7 +40,7 @@ const AddUserInfoPage = () => {
           user.userCategory.length !== 0 ? (
             <Button type="submit">저장하기</Button>
           ) : (
-            <Button disable>저장하기</Button>
+            <Button disabledButton>저장하기</Button>
           )}
         </Form>
       </div>
