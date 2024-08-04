@@ -70,13 +70,16 @@ public class MailService {
     }
 
     public boolean CheckAuthNum(String email,String authNum){
+        System.out.println(redisUtil.getData(authNum).equals(email));
         if(redisUtil.getData(authNum)==null){
+            System.out.println("authNum == null ======");
             return false;
         }
         else if(redisUtil.getData(authNum).equals(email)){
              return true;
          }
          else{
+            System.out.println("authNum == false =======");
              return false;
          }
     }
