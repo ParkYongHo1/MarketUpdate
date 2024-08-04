@@ -11,7 +11,6 @@ import javax.persistence.ElementCollection;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 
-import org.hibernate.annotations.common.util.impl.Log_.logger;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
