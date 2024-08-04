@@ -25,14 +25,14 @@ const EmailModal = ({ emailModal, setEmailModal }) => {
   const onChangeInput = async (e) => {
     const { value } = e.target;
     setCheckNum(value);
-
-    if (value.length === 6) {
+    console.log(user.email);
+    if (value.length == 6) {
       try {
         const res = await axios.post("/auth/checknum-email", {
           checkNum: value,
           email: user.email,
         });
-        if (res.data == "200") {
+        if (res.data == 200) {
           setAuthState("YES");
           dispatch(
             setEmailMessage({
@@ -41,7 +41,7 @@ const EmailModal = ({ emailModal, setEmailModal }) => {
               isEmailTaken: "YES",
             })
           );
-        } else if (res.data == "400") {
+        } else if (res.data == 400) {
           setAuthState("NO");
         }
         console.log(res);

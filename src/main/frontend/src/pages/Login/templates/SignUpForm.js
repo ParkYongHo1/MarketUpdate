@@ -109,11 +109,12 @@ const SignUpForm = () => {
       );
     }
   };
+  console.log(user.email);
   /********************
    * 이메일 인증번호 전송 API(/auth/fetch-email)
    ********************/
   const onSendEmail = async (e) => {
-    if (!user.userEmail) {
+    if (!user.email) {
       setIsNotEmail("이메일 주소를 입력해주세요");
       emailInputRef.current.focus();
       return;
@@ -121,7 +122,7 @@ const SignUpForm = () => {
     setEmailModal(true);
     try {
       const res = await axios.post("/auth/fetch-email", {
-        email: user.userEmail,
+        email: user.email,
       });
       if (res.data == 200) {
         dispatch(
@@ -150,12 +151,12 @@ const SignUpForm = () => {
    * 휴대폰 인증번호 전송 API(/auth/fetch-phone)
    ********************/
   const onSendPhone = async (e) => {
-    setPhoneModal(true);
     if (!user.userPhone) {
       setIsNotPhone("휴대폰 번호를 입력해주세요");
       phoneInputRef.current.focus();
       return;
     }
+    setPhoneModal(true);
     try {
       const res = await axios.post("/auth/fetch-phone", {
         phone: user.userPhone,
@@ -188,8 +189,8 @@ const SignUpForm = () => {
           send
           ref={emailInputRef} // 참조 추가
           onChange={onChangeInput}
-          name="userEmail"
-          value={user.userEmail}
+          name="email"
+          value={user.email}
           type="email"
           placeholder="예시) carrot@carrot.com"
           required
