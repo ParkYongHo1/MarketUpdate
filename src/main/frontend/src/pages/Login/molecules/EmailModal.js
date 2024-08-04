@@ -32,7 +32,8 @@ const EmailModal = ({ emailModal, setEmailModal }) => {
           checkNum: value,
           email: user.email,
         });
-        if (res.data == 200) {
+        console.log(res.data);
+        if (res.status == "200") {
           setAuthState("YES");
           dispatch(
             setEmailMessage({
@@ -41,7 +42,7 @@ const EmailModal = ({ emailModal, setEmailModal }) => {
               isEmailTaken: "YES",
             })
           );
-        } else if (res.data == 400) {
+        } else if (res.data == "405") {
           setAuthState("NO");
         }
         console.log(res);

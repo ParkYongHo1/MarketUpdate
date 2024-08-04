@@ -30,7 +30,7 @@ public class AuthController {
     MailService mailService;
     
     private Map<String,String> resultMap = new HashMap<>();
-
+    Map<String, Object> responseMap = new HashMap<>();
     @RequestMapping(value = "/test", method = RequestMethod.POST)
     public @ResponseBody Map<String,String> test(@RequestBody Map<String,String> body)
     {
@@ -40,22 +40,27 @@ public class AuthController {
 
     @RequestMapping(value = "/fetch-email", method = RequestMethod.POST)
     @ResponseBody
-    public int fetchEmail(@RequestBody MemberDto memberDto){
-        
+    public Map<String,Object> fetchEmail(@RequestBody MemberDto memberDto){
+       
         String email = memberDto.getEmail();
         mailService.fetchEmail(email);
-        return 200;
+
+        responseMap.put("status", "200");
+        return responseMap;
     }
 
     @PostMapping("/checknum-email")
-    public int CheckNumEmail(@RequestBody @Valid EmailCheckDto emailCheckDto){
-       
+    public Map<String,Object> CheckNumEmail(@RequestBody @Valid EmailCheckDto emailCheckDto){
+        System.out.println("emailCheckDto" + emailCheckDto.getEmail());
+        System.out.println("emailCheckDto" + emailCheckDto.getCheckNum());
         Boolean Checked=mailService.CheckAuthNum(emailCheckDto.getEmail(),emailCheckDto.getCheckNum());
         if(Checked){
-            return 200;
+            responseMap.put("status", "200");
+            return responseMap;
         }
         else{
-            return 405;
+            responseMap.put("status", "405");
+            return responseMap;
         }
     }
 }
