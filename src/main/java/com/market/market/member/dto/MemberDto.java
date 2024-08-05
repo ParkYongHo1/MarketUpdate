@@ -56,7 +56,7 @@ public class MemberDto{
     public static MemberDto toDto(Member entity)
     {
 
-        ObjectMapper objectMapper = new ObjectMapper();
+       ObjectMapper objectMapper = new ObjectMapper();
        LocationDto locations = new LocationDto();
         try {
             if (entity.getLocation() != null) {

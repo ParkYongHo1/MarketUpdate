@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = "com.market.market.member.repository")
-@EntityScan(basePackages = "com.market.market.member.entity")
+@EnableJpaRepositories(basePackages = {"com.market.market.member.repository" , "com.market.market.product.repository"})
+@EntityScan(basePackages = {"com.market.market.member.entity","com.market.market.product.entity"})
 @ComponentScan(basePackages = {"com.market"})
 public class MarketApplication {
 

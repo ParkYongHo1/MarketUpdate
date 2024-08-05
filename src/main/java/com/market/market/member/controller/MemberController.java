@@ -27,15 +27,11 @@ public class MemberController {
     {
 
         System.out.println("====Request Body====" + body.toString());
-
-       //Map<String,Object> resultMap = new HashMap<>();
         
         Map<String,Object> responseMap = memberService.login(body);
 
 
-        // resultMap.put("access_token" , responseMap.get("token").getAccessToken());
-        // resultMap.put("refresh_token",jwtDto.getRefreshToken());
-        // resultMap.put("token_expire",Long.toString(jwtDto.getAccessTokenExpiresIn()));
+        System.out.println("응답 값 : "+responseMap.toString());
 
         return responseMap;
     }

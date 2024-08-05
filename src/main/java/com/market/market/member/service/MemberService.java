@@ -84,6 +84,7 @@ public class MemberService {
 
             MemberDto memberDto = MemberDto.toDto(member);
 
+            System.out.println("Location : "+memberDto.getLocation().toString());
 
             responseMap.put("status", "200");
             responseMap.put("member", memberDto);
