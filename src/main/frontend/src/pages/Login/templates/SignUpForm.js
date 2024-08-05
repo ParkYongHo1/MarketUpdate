@@ -42,7 +42,7 @@ const SignUpForm = () => {
     if (name === "userPhone") {
       validatePhone(value);
     }
-    if (name === "userEmail") {
+    if (name === "email") {
       validateEmail(value);
     }
     if (name === "userPassword") {
@@ -59,7 +59,7 @@ const SignUpForm = () => {
     if (!emailRegex.test(email)) {
       setIsNotEmail("이메일 주소를 정확히 입력해주세요");
     } else {
-      setIsNotEmail("");
+      setIsNotEmail("유효한 이메일입니다.");
     }
   };
 
@@ -114,37 +114,40 @@ const SignUpForm = () => {
    * 이메일 인증번호 전송 API(/auth/fetch-email)
    ********************/
   const onSendEmail = async (e) => {
+    console.log(isNotEmail);
+
     if (!user.email) {
       setIsNotEmail("이메일 주소를 입력해주세요");
       emailInputRef.current.focus();
       return;
-    }
-    setEmailModal(true);
-    try {
-      const res = await axios.post("/auth/fetch-email", {
-        email: user.email,
-      });
-      if (res.data == 200) {
-        dispatch(
-          setEmailMessage({
-            ...emailMessage,
-            message: "해당 이메일로 인증메일을 보내드렸습니다.",
-            isEmailTaken: "",
-          })
-        );
+    } else if (isNotEmail === "유효한 이메일입니다.") {
+      setEmailModal(true);
+      try {
+        const res = await axios.post("/auth/fetch-email", {
+          email: user.email,
+        });
+        if (res.data == 200) {
+          dispatch(
+            setEmailMessage({
+              ...emailMessage,
+              message: "해당 이메일로 인증메일을 보내드렸습니다.",
+              isEmailTaken: "",
+            })
+          );
 
-        setEmailModal(true);
-      } else if (res.data == 405) {
-        dispatch(
-          setEmailMessage({
-            ...emailMessage,
-            message: "이미 존재하는 이메일입니다.",
-            isEmailTaken: "NO",
-          })
-        );
+          setEmailModal(true);
+        } else if (res.data == 405) {
+          dispatch(
+            setEmailMessage({
+              ...emailMessage,
+              message: "이미 존재하는 이메일입니다.",
+              isEmailTaken: "NO",
+            })
+          );
+        }
+      } catch (e) {
+        console.log(e);
       }
-    } catch (e) {
-      console.log(e);
     }
   };
   /********************
