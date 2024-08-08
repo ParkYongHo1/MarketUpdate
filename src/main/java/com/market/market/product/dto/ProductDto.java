@@ -2,6 +2,7 @@ package com.market.market.product.dto;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.FetchType;
@@ -22,6 +23,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -39,7 +41,7 @@ public class ProductDto {
 
     private Date reg_date;
 
-    private List<String> product_image;
+    private List<MultipartFile> product_image;
 
     private int view_cnt;
 

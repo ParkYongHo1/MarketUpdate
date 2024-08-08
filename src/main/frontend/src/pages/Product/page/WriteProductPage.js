@@ -83,7 +83,7 @@ const WriteProduct = () => {
             product_image: imageLists, // 이미지경로 저장
           })
         );
-        handleUploadImage(product?.product_image);
+        handleUploadImage(imageLists);
       })
       .catch((error) => {
         console.error("Error encoding images:", error);
