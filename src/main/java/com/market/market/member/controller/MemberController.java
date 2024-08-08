@@ -40,4 +40,17 @@ public class MemberController {
         return responseMap;
     }
 
+    @PostMapping(value = "/adduserinfo")
+    public @ResponseBody Map<String,String> adduserinfo(@RequestBody Map<String,String> body)
+    {
+        System.out.println("===Request Body===" + body.toString());
+
+        Map<String,String> resultMap = memberService.adduserinfo(body);
+
+        return resultMap;
+    }
+
+    
+    
+
 }

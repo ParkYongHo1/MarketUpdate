@@ -5,14 +5,20 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.io.IOException;
 
+import javax.persistence.AttributeConverter;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Converter;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.ColumnDefault;
@@ -20,7 +26,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.market.market.member.dto.LocationDto;
 import com.market.market.member.dto.MemberDto;
 
@@ -72,8 +80,10 @@ public class Member implements UserDetails{
     @Builder.Default
     private int auth = 0;
 
-    @Column(length = 20)
-    private String category;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "member_categories", joinColumns = @JoinColumn(name = "member_id"))
+    @Column(name = "category")
+    private List<String> category = new ArrayList<>();  // List<String>으로 정의
 
     @Column(length = 10)
     private String birth;
@@ -88,6 +98,7 @@ public class Member implements UserDetails{
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
@@ -119,6 +130,8 @@ public class Member implements UserDetails{
     public String getUsername() {
         throw new UnsupportedOperationException("Unimplemented method 'getUsername'");
     }
+
+    
 
     public static Member toEntity(MemberDto dto)
     {
