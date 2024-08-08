@@ -137,13 +137,13 @@ public class MemberService {
     }
 
     @Transactional
-    public Map<String,String> adduserinfo(Map<String,String> body){
+    public Map<String,Object> adduserinfo(Map<String,Object> body){
         
-        Map<String,String> resultMap = new HashMap<>();
+        Map<String,Object> resultMap = new HashMap<>();
 
         LocationDto locations = new LocationDto();
 
-        String nickname = body.get("nickname");
+        String nickname = body.get("nickname").toString();
         if (nickname != null && !nickname.isEmpty()) {
             if (isNicknameTaken(nickname)) {
                 resultMap.put("STATUS", "400");
@@ -153,13 +153,13 @@ public class MemberService {
         }
 
          // 카테고리를 쉼표로 구분된 문자열로 입력받고, 이를 List<String>으로 변환
-         List<String> categories = List.of(body.get("category").split(","));
+         List<String> categories = List.of(body.get("category").toString().split(","));
          
         MemberDto memberDto = MemberDto.builder()
-        .nickname(body.get("nickname"))
-        .birth(body.get("birth"))
+        .nickname(body.get("nickname").toString())
+        .birth(body.get("birth").toString())
         .location(locations)
-        .category(categories).build();
+        .category(categories.toString()).build();
 
         Member member = Member.toEntity(memberDto);
 

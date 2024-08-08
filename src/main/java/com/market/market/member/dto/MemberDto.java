@@ -48,7 +48,7 @@ public class MemberDto{
 
     @Builder.Default
     private int auth = 0;  //0 : 일반 로그인 , 1 : 소셜 로그인
-    private List<String> category;
+    private String category;
     private String birth;
 
     @Builder.Default

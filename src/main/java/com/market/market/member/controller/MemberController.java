@@ -41,11 +41,11 @@ public class MemberController {
     }
 
     @PostMapping(value = "/adduserinfo")
-    public @ResponseBody Map<String,String> adduserinfo(@RequestBody Map<String,String> body)
+    public @ResponseBody Map<String,Object> adduserinfo(@RequestBody Map<String,Object> body)
     {
         System.out.println("===Request Body===" + body.toString());
 
-        Map<String,String> resultMap = memberService.adduserinfo(body);
+        Map<String,Object> resultMap = memberService.adduserinfo(body);
 
         return resultMap;
     }

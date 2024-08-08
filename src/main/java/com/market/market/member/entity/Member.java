@@ -80,10 +80,9 @@ public class Member implements UserDetails{
     @Builder.Default
     private int auth = 0;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "member_categories", joinColumns = @JoinColumn(name = "member_id"))
+    
     @Column(name = "category")
-    private List<String> category = new ArrayList<>();  // List<String>으로 정의
+    private String category;  // List<String>으로 정의
 
     @Column(length = 10)
     private String birth;
