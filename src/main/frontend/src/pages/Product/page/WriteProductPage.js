@@ -36,8 +36,6 @@ const WriteProduct = () => {
   };
 
   const handleUploadImage = async (files) => {
-    console.log(files[0]);
-
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
       formData.append(`images${[i]}`, files[i]); // images라는 키로 formData에 저장
@@ -85,7 +83,7 @@ const WriteProduct = () => {
             product_image: imageLists, // 이미지경로 저장
           })
         );
-        handleUploadImage(product.product_image);
+        handleUploadImage(product?.product_image);
       })
       .catch((error) => {
         console.error("Error encoding images:", error);
