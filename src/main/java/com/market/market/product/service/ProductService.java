@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mysql.cj.protocol.x.OkBuilder;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ProductService {
@@ -27,46 +28,68 @@ public class ProductService {
 
     private Map<String, Object> respoonseMap = new HashMap<>();
 
-    public void writeProduct(Map<String,Object> body)
+    public Map<String, Object> writeProduct(Map<String,Object> body)
     {
-        Map<String,Object> locations = (Map)body.get("location");
 
-        LocationDto locationDto = LocationDto.builder()
-                .address(locations.get("address").toString())
-                .latitude(locations.get("latitude").toString())
-                .longitude(locations.get("longitude").toString())
-                .jibunAddress(locations.get("jibunAddress").toString())
-                .build();
+        System.out.println("Body : "+body.toString());
 
-        List<String> product_image = (List)body.get("product-image");
-        List<String> category = (List)body.get("category");
-        int price = (int)body.get("price");
-        String content = body.get("content").toString();
-        String title = body.get("title").toString();
-        String id = body.get("reg-member").toString();
+        //try{
 
-        // 현재 시간의 LocalDateTime을 가져옴
-        LocalDateTime localDateTime = LocalDateTime.now();
+            
+            Map<String,Object> locations = (Map)body.get("location");
 
-        // LocalDateTime을 Date로 변환
-        Date reg_date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+            LocationDto locationDto = LocationDto.builder()
+                    .address(locations.get("address").toString())
+                    .latitude(locations.get("latitude").toString())
+                    .longitude(locations.get("longitude").toString())
+                    .jibunAddress(locations.get("jibunAddress").toString())
+                    .build();
+
+            //List<MultipartFile> product_image = (List)body.get("product_image");
+            List<String> category = (List)body.get("category");
+            int price = Integer.parseInt(body.get("price").toString());
+            String content = body.get("content").toString();
+            String title = body.get("title").toString();
+            String id = body.get("reg_member").toString();
+    
+            // 현재 시간의 LocalDateTime을 가져옴
+            LocalDateTime localDateTime = LocalDateTime.now();
+    
+            // LocalDateTime을 Date로 변환
+            Date reg_date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    
+    
+            ProductDto productDto = ProductDto.builder()
+                    .title(title)
+                    .price(price)
+                    .content(content)
+                    .category(category)
+                    //.product_image(product_image)
+                    .locationDto(locationDto)
+                    .reg_date(reg_date)
+                    .build();
+    
+            Member member =Member.toEntity(MemberDto.builder().id(id).build());
+    
+            productRepository.save(Product.toEntity(productDto,member));
+
+            System.out.println("====물품등록성공====");
+            respoonseMap.put("status", "200");
+        //}catch(Exception e)
+//        {
+//            System.out.println("====물품등록실패====");
+//            System.out.println("에러 : "+e.getMessage());
+//            respoonseMap.put("status", "400");
+//        }
+
+       return respoonseMap;
+    }
 
 
-        ProductDto productDto = ProductDto.builder()
-                .title(title)
-                .price(price)
-                .content(content)
-                .category(category)
-                .product_image(product_image)
-                .locationDto(locationDto)
-                .reg_date(reg_date)
-                .build();
 
-        Member member =Member.toEntity(MemberDto.builder().id(id).build());
-
-        productRepository.save(Product.toEntity(productDto,member));
-
-        System.out.println("DTO : "+productDto.toString());
+    public void imageUpload(Map<String, MultipartFile> files)
+    {
+        System.out.println("파일 : "+files);
     }
 
 }
