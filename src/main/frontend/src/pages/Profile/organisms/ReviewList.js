@@ -3,11 +3,11 @@ import styled from "@emotion/styled";
 const ReviewList = () => {
   return (
     <>
-      <Container></Container>
+      <Container>
+        <Test></Test>
+      </Container>
     </>
   );
 };
-const Container = styled.div`
-  width: 100%;
-`;
+const Test = styled.div``;
 export default ReviewList;

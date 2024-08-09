@@ -1,13 +1,15 @@
-import Container from "../atom/Container";
 import styled from "@emotion/styled";
+import Container from "../atom/Container";
 const WriteList = () => {
   return (
     <>
-      <Container></Container>
+      <Container>
+        <Test></Test>
+      </Container>
     </>
   );
 };
-const Container = styled.div`
+const Test = styled.div`
   width: 100%;
 `;
 export default WriteList;
