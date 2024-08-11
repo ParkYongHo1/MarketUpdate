@@ -27,8 +27,9 @@ const PhoneModal = ({ phoneModal, setPhoneModal }) => {
       try {
         const res = await axios.post("/auth/checknum-phone", {
           checkNum: value,
+          phone: user.phone,
         });
-        if (res.data == 200) {
+        if (res.data == "200") {
           setAuthState("YES");
           dispatch(
             setPhoneMessage({
@@ -37,7 +38,7 @@ const PhoneModal = ({ phoneModal, setPhoneModal }) => {
               isPhoneTaken: "YES",
             })
           );
-        } else if (res.data == 400) {
+        } else if (res.data == "405") {
           setAuthState("NO");
         }
         console.log(res);

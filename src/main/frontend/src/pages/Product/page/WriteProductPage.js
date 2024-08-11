@@ -20,12 +20,13 @@ import { write, reset } from "../../../slices/productSlice";
 
 const WriteProduct = () => {
   const inputRef = useRef(null);
-  const [showImages, setShowImages] = useState([]);
+  const [showImages, setShowImages] = useState([]); // 인코딩 이미지 파일 저장
+  const [imageFiles, setImageFiles] = useState([]); // 원본 이미지 파일들 저장
   const product = useSelector((state) => state.product.product);
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(write({ ...product, reg_member: user.nickname }));
+    dispatch(write({ ...product, reg_member: user.email }));
   }, []);
   console.log(product);
 
@@ -35,72 +36,37 @@ const WriteProduct = () => {
     }
   };
 
-  const handleUploadImage = async (files) => {
-    const formData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      formData.append(`images${[i]}`, files[i]); // images라는 키로 formData에 저장
-    }
-    try {
-      const res = await axios.post("/product/image", formData);
-      if (res.status === "200") {
-        const data = await res.data;
-        // Assuming the response contains an array of image URLs
-
-        console.log("Images uploaded successfully:", data);
-      } else {
-        console.error("Image upload failed");
-      }
-    } catch (error) {
-      console.error("Error uploading images:", error);
-    }
-  };
-
   console.log(product);
 
   const handleChangeImage = (e) => {
-    const imageLists = e.target.files;
-    let imageUrlLists = [...showImages];
+    const files = e.target.files;
+    let imageUrlLists = [...showImages]; // 불변성 유지
+    let fileLists = [...imageFiles]; // 불변성 유지
 
-    const readAndEncodeImage = (file) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = (event) => resolve(event.target.result);
-        reader.onerror = (error) => reject(error);
-        reader.readAsDataURL(file);
-      });
-    };
-    Promise.all(Array.from(imageLists).map(readAndEncodeImage))
-      .then((encodedImages) => {
-        imageUrlLists.push(...encodedImages);
+    Array.from(files).forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        imageUrlLists = [...imageUrlLists, event.target.result]; // push 대신 스프레드 사용
+        fileLists = [...fileLists, file]; // push 대신 스프레드 사용
         if (imageUrlLists.length > 6) {
           imageUrlLists = imageUrlLists.slice(0, 6);
+          fileLists = fileLists.slice(0, 6);
         }
         setShowImages(imageUrlLists);
-        console.log(imageLists);
-        dispatch(
-          write({
-            ...product,
-            product_image: imageLists, // 이미지경로 저장
-          })
-        );
-        handleUploadImage(imageLists);
-      })
-      .catch((error) => {
-        console.error("Error encoding images:", error);
-      });
+        setImageFiles(fileLists);
+        dispatch(write({ ...product, product_image: fileLists }));
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   const handleDeleteImage = (id) => {
     const updatedImages = showImages.filter((_, index) => index !== id);
+    const updatedFiles = imageFiles.filter((_, index) => index !== id);
     setShowImages(updatedImages);
-    dispatch(
-      write({
-        ...product,
-        product_image: updatedImages, // Update Redux state with remaining images
-      })
-    );
+    setImageFiles(updatedFiles);
+    dispatch(write({ ...product, product_image: updatedFiles }));
   };
-
   const checkOption = [
     { label: "의상", value: "의상" },
     { label: "식품", value: "식품" },
@@ -119,14 +85,26 @@ const WriteProduct = () => {
   };
   const heandleWriteProduct = async (e) => {
     e.preventDefault();
+
+    // FormData 객체 생성
+    const formData = new FormData();
+
+    // 이미지 파일들을 FormData에 추가
+    imageFiles.forEach((file) => {
+      formData.append("product_image", file);
+    });
     try {
-      const res = await axios.post("/product/write", product);
+      const res = await axios.post("/product/write", product, formData);
       if (res.data.status == "200") {
         dispatch(reset()); // 상태 초기화
         setShowImages([]); // 로컬 이미지 상태 초기화
+        setImageFiles([]); // 로컬 파일 리스트 초기화
         console.log("good");
       }
     } catch (error) {
+      dispatch(reset()); // 상태 초기화
+      setShowImages([]); // 로컬 이미지 상태 초기화
+      setImageFiles([]); // 로컬 파일 리스트 초기화
       console.log(error);
     }
   };
