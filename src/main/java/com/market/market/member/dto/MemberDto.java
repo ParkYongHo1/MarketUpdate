@@ -39,7 +39,7 @@ public class MemberDto{
     private String email;  
     private String phone;  
     private String nickname;  
-    private LocationDto location;
+    private LocationDto locationDto;
     private String profile_image; 
 
     @Builder.Default
@@ -72,7 +72,7 @@ public class MemberDto{
         .email(entity.getEmail())
         .phone(entity.getPhone())
         .nickname(entity.getNickname())
-        .location(locations)
+        .locationDto(locations)
         .profile_image(entity.getProfile_image())
         .manner_temp(entity.getManner_temp())
         .auth(entity.getAuth())

@@ -1,5 +1,6 @@
 package com.market.market.member.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -156,38 +157,80 @@ public class MemberService {
         
         Map<String,Object> resultMap = new HashMap<>();
 
-        LocationDto locations = new LocationDto();
-
-        String nickname = body.get("nickname").toString();
-        if (nickname != null && !nickname.isEmpty()) {
-            if (isNicknameTaken(nickname)) {
-                resultMap.put("STATUS", "400");
-                resultMap.put("MESSAGE", "fail");
-                return resultMap;
-            }
-        }
-
-         // 카테고리를 쉼표로 구분된 문자열로 입력받고, 이를 List<String>으로 변환
-         List<String> categories = List.of(body.get("category").toString().split(","));
-         
-        MemberDto memberDto = MemberDto.builder()
-        .nickname(body.get("nickname").toString())
-        .birth(body.get("birth").toString())
-        .location(locations)
-        .category(categories.toString()).build();
-
-        Member member = Member.toEntity(memberDto);
-
-        System.out.println("인서트 값 : "+member.toString());
-
-        //Repository로 CRUD
-        memberRepository.save(member);
-
-        //결과값 세팅
-        resultMap.put("STATUS", "200");
-        resultMap.put("MESSAGE", "SUCCESS");
-
+         Map<String, Object> locations = (Map<String, Object>) body.get("location");
+    if (locations == null) {
+        resultMap.put("status", "400");
+        resultMap.put("message", "Location data is missing");
         return resultMap;
+    }
+
+    // Check if all required location fields are present and not null
+    String address = (String) locations.get("address");
+    String latitude = (String) locations.get("latitude");
+    String longitude = (String) locations.get("longitude");
+    String jibunAddress = (String) locations.get("jibunAddress");
+
+    if (address == null || latitude == null || longitude == null || jibunAddress == null) {
+        resultMap.put("status", "400");
+        resultMap.put("message", "Incomplete location data");
+        return resultMap;
+    }
+
+    LocationDto locationDto = LocationDto.builder()
+            .address(address)
+            .latitude(latitude)
+            .longitude(longitude)
+            .jibunAddress(jibunAddress)
+            .build();
+
+    // Check and handle nickname
+    String nickname = (String) body.get("nickname");
+    if (nickname == null || nickname.isEmpty()) {
+        resultMap.put("status", "400");
+        resultMap.put("message", "Nickname is required");
+        return resultMap;
+    }
+    if (isNicknameTaken(nickname)) {
+        resultMap.put("status", "400");
+        resultMap.put("message", "Nickname is already taken");
+        return resultMap;
+    }
+
+    // Process categories
+    String categoryStr = (String) body.get("category");
+    List<String> categories = categoryStr != null ? List.of(categoryStr.split(",")) : new ArrayList<>();
+
+    String id = body.get("id") != null ? String.valueOf(body.get("id").toString()) : null;
+    String password = (String) body.get("password"); // Ensure password is present
+
+    if (password == null || password.isEmpty()) { // Check if password is provided
+        resultMap.put("status", "400");
+        resultMap.put("message", "Password is required");
+        return resultMap;
+    }
+
+    // Build MemberDto and convert to Member entity
+    MemberDto memberDto = MemberDto.builder()
+            .id(id)
+            .nickname(nickname)
+            .birth((String) body.get("birth"))
+            .locationDto(locationDto)
+            .category(categories.toString())
+            .password(password)
+            .build();
+
+    Member member = Member.toEntity(memberDto);
+
+    System.out.println("Insert value: " + member.toString());
+
+    // Save entity
+    memberRepository.save(member);
+
+    // Set result map
+    resultMap.put("status", "200");
+    resultMap.put("message", "SUCCESS");
+
+    return resultMap;
     }
 
 
