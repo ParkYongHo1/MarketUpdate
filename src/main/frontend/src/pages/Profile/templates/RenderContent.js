@@ -1,13 +1,15 @@
 import { useSelector } from "react-redux";
+import WriteList from "../organisms/WriteList";
+import ReviewList from "../organisms/ReviewList";
 
 const RenderContent = () => {
   const activeTab = useSelector((state) => state.profile.activeTab);
 
   switch (activeTab) {
     case "writeList":
-      return "작성 글 목록";
+      return <WriteList />;
     case "reviewList":
-      return "받은 거래 후기";
+      return <ReviewList />;
     case "heartList":
       return "관심 목록";
     case "changeEmail":

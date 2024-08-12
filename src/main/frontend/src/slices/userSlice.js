@@ -57,6 +57,7 @@ export const userSlice = createSlice({
           adderss: "",
           latitude: "",
           longitude: "",
+          jibunAddress: "",
         },
         manner_temp: "",
       };

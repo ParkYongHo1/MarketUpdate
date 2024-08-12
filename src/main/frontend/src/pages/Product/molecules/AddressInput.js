@@ -4,17 +4,18 @@ import DaumPostcode from "react-daum-postcode";
 import Xbtn from "../../Login/atoms/Xbtn";
 import { useState } from "react";
 import Input from "../atom/Input";
-
+import { useDispatch, useSelector } from "react-redux";
+import { write } from "../../../slices/productSlice";
 const AddressInput = ({ user, setUser }) => {
   const geoCoder = new window.kakao.maps.services.Geocoder();
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
+  const dispatch = useDispatch();
+  const product = useSelector((state) => state.product.product);
   const handleUser = (e) => {
     const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
+    dispatch(write({ ...product, [name]: value }));
   };
-  console.log(user.productAddress);
-  console.log(user.latitude);
-  console.log(user.longitude);
+
   const handleComplete = (data) => {
     setIsModalOpen(false); // 주소 선택 시 모달 닫기
 
@@ -22,13 +23,17 @@ const AddressInput = ({ user, setUser }) => {
     geoCoder.addressSearch(data.address, function (result, status) {
       if (status === window.kakao.maps.services.Status.OK) {
         const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
-        setUser({
-          ...user,
-          latitude: coords.getLat(),
-          longitude: coords.getLng(),
-          productAddress: data.address,
-          productJibunAddress: data.jibunAddress,
-        });
+        dispatch(
+          write({
+            ...product,
+            location: {
+              latitude: coords.getLat(),
+              longitude: coords.getLng(),
+              address: data.address,
+              jibunAddress: data.jibunAddress,
+            },
+          })
+        );
       } else {
         console.error("Geocoder 실패:", status);
       }
@@ -38,13 +43,13 @@ const AddressInput = ({ user, setUser }) => {
     <>
       <Input
         onChange={handleUser}
-        name="productAddress"
+        name="location.address"
         type="text"
         readOnly
         placeholder="주소를 입력해주세요."
-        value={user.productAddress}
+        value={product?.location?.address}
       />
-      <Button type="button" onClick={() => setIsModalOpen(true)}>
+      <Button type="button" button onClick={() => setIsModalOpen(true)}>
         주소 검색
       </Button>
       <Modal
