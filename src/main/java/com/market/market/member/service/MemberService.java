@@ -214,7 +214,7 @@ public class MemberService {
             .id(id)
             .nickname(nickname)
             .birth((String) body.get("birth"))
-            .locationDto(locationDto)
+            .location(locationDto)
             .category(categories.toString())
             .password(password)
             .build();
