@@ -158,19 +158,19 @@ public class MemberService {
         Map<String,Object> resultMap = new HashMap<>();
 
          Map<String, Object> locations = (Map<String, Object>) body.get("location");
-    if (locations == null) {
-        resultMap.put("status", "400");
-        resultMap.put("message", "Location data is missing");
-        return resultMap;
-    }
+        if (locations == null) {
+            resultMap.put("status", "400");
+            resultMap.put("message", "Location data is missing");
+            return resultMap;
+        }
 
     // Check if all required location fields are present and not null
     String address = (String) locations.get("address");
-    String latitude = (String) locations.get("latitude");
-    String longitude = (String) locations.get("longitude");
-    String jibunAddress = (String) locations.get("jibunAddress");
+    double latitude = Double.parseDouble(locations.get("latitude").toString());
+    double longitude = Double.parseDouble(locations.get("longitude").toString());
+    String jibun_address = (String) locations.get("jibunAddress");
 
-    if (address == null || latitude == null || longitude == null || jibunAddress == null) {
+    if (address == null || latitude == 0 || longitude == 0 || jibun_address == null) {
         resultMap.put("status", "400");
         resultMap.put("message", "Incomplete location data");
         return resultMap;
@@ -180,7 +180,7 @@ public class MemberService {
             .address(address)
             .latitude(latitude)
             .longitude(longitude)
-            .jibunAddress(jibunAddress)
+            .jibun_address(jibun_address)
             .build();
 
     // Check and handle nickname
@@ -197,7 +197,7 @@ public class MemberService {
     }
 
     // Process categories
-    String categoryStr = (String) body.get("category");
+    String categoryStr = body.get("category").toString();
     List<String> categories = categoryStr != null ? List.of(categoryStr.split(",")) : new ArrayList<>();
 
     String id = body.get("id") != null ? String.valueOf(body.get("id").toString()) : null;

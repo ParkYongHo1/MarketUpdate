@@ -49,7 +49,7 @@ public class ProductDto {
 
     private int price;
 
-    private LocationDto locationDto;
+    private LocationDto location;
 
     private int product_status;
 

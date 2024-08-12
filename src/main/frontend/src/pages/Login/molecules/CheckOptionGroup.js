@@ -19,8 +19,8 @@ const CheckOptionGroup = ({ options, name }) => {
       setUser({
         ...user,
         category: checked
-          ? [...user.category, value]
-          : user.category.filter((category) => category !== value),
+        ? [...(user.category || []), value]  // null일 경우 빈 배열로 처리
+        : (user.category || []).filter((category) => category !== value),
       })
     );
   };

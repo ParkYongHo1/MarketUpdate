@@ -40,9 +40,9 @@ public class ProductService {
 
             LocationDto locationDto = LocationDto.builder()
                     .address(locations.get("address").toString())
-                    .latitude(locations.get("latitude").toString())
-                    .longitude(locations.get("longitude").toString())
-                    .jibunAddress(locations.get("jibunAddress").toString())
+                    .latitude((double) locations.get("latitude"))
+                    .longitude((double)locations.get("longitude"))
+                    .jibun_address(locations.get("jibunAddress").toString())
                     .build();
 
             //List<MultipartFile> product_image = (List)body.get("product_image");
@@ -65,7 +65,7 @@ public class ProductService {
                     .content(content)
                     .category(category)
                     //.product_image(product_image)
-                    .locationDto(locationDto)
+                    .location(locationDto)                
                     .reg_date(reg_date)
                     .build();
     

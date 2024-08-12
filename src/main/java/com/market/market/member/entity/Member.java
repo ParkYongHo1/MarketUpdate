@@ -63,8 +63,20 @@ public class Member implements UserDetails{
     @Column(length = 20, nullable = false, unique = true)
     private String nickname;  
 
-    @Column(columnDefinition = "TEXT", nullable = false)
-    private String location;
+    // @Column(columnDefinition = "TEXT", nullable = false)
+    // private String location;
+
+    @Column
+    private String address;
+
+    @Column
+    private String jibun_address;
+
+    @Column
+    private Double latitude;
+
+    @Column
+    private Double longitude;
 
     @Column(columnDefinition = "TEXT")
     private String profile_image; 
@@ -134,14 +146,13 @@ public class Member implements UserDetails{
 
     public static Member toEntity(MemberDto dto)
     {
-        String locations = "";
-         try {
-            if (dto.getLocation() != null) {
-                locations = dto.getLocation().toString();
-            }
-        } catch (Exception e) {
-            System.out.println("Error Message : "+e.getMessage());           
-        }
+        LocationDto location = dto.getLocation();
+
+        // LocationDto가 null인지 체크
+        String address = (location != null) ? location.getAddress() : null;
+        String jibunAddress = (location != null) ? location.getJibun_address() : null;
+        Double longitude = (location != null) ? location.getLongitude() : null;
+        Double latitude = (location != null) ? location.getLatitude() : null;
 
 
         return Member.builder()
@@ -150,7 +161,11 @@ public class Member implements UserDetails{
         .email(dto.getEmail())
         .phone(dto.getPhone())
         .nickname(dto.getNickname())
-        .location(locations)
+        //.location(locations)
+        .address(address)
+        .jibun_address(jibunAddress)
+        .longitude(longitude)
+        .latitude(latitude)
         .profile_image(dto.getProfile_image())
         .manner_temp(dto.getManner_temp())
         .auth(dto.getAuth())

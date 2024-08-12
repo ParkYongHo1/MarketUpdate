@@ -16,7 +16,7 @@ const initialState = {
     password: "",
     nickname: "",
     birth: "",
-    category: [],
+    category: "",
     phone: "",
     location: {
       adderss: "",
