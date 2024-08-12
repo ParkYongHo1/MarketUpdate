@@ -41,7 +41,9 @@ const LoginPage = () => {
       if (res.data.status == "200") {
         dispatch(login({ user: memberData }));
         dispatch(setJwt(jwtData));
-        if (res.data.member.location == null) {
+        console.log(user);
+
+        if (res.data.member.location.address == null) {
           navigate("/adduserinfo");
         } else {
           navigate("/");
@@ -69,7 +71,9 @@ const LoginPage = () => {
           {isFormValid ? (
             <Button type="submit">로그인</Button>
           ) : (
-            <Button disabledButton>로그인하기</Button>
+            <Button disabledButton disabled>
+              로그인하기
+            </Button>
           )}
         </Form>
         <Div login>

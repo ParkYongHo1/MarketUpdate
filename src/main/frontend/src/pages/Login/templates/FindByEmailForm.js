@@ -17,8 +17,8 @@ const FindByEmailForm = ({ user, setUser }) => {
       <PTag>휴대폰 번호*</PTag>
       <Input
         onChange={onChangeInput}
-        name="userPhone"
-        value={user.userPhone}
+        name="phone"
+        value={user.phone}
         type="test"
         maxLength={11}
         placeholder="예시) 01012345678"

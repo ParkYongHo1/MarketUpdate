@@ -65,6 +65,7 @@ public class MemberService {
             Member member = memberRepository.findById(id)
             .orElse(null);
 
+            //회원정보가 없을 때
             if (member == null) {
                 responseMap.put("status", "400");
                 return responseMap;
@@ -87,6 +88,7 @@ public class MemberService {
 
             MemberDto memberDto = MemberDto.toDto(member);
 
+            System.out.println("Location : "+memberDto.getLocation().toString());
 
             responseMap.put("status", "200");
             responseMap.put("member", memberDto);
@@ -103,6 +105,19 @@ public class MemberService {
             String nickname = requestMemberData.get("nickname").toString();
             String profile_img = requestMemberData.get("profile_image").toString();
 
+            Member member = memberRepository.findById(id).orElse(null);
+            //회원정보가 없을 때
+            if (member == null) {
+                MemberDto kakaoMemberDto = MemberDto.builder().auth(Integer.parseInt(auth)).id(id).nickname(nickname).profile_image(profile_img).password("kakao_password").build();
+                memberRepository.save(Member.toEntity(kakaoMemberDto));
+
+                member = memberRepository.findById(id).orElse(null);
+            }
+
+            MemberDto memberDto = MemberDto.toDto(member);
+
+            responseMap.put("status", "200");
+            responseMap.put("member", memberDto);
         }
 
         

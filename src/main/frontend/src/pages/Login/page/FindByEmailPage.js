@@ -4,17 +4,16 @@ import { useState } from "react";
 import Form from "../atoms/Form";
 import Title from "../atoms/Title";
 import Button from "../atoms/Button";
-
 import PTag from "../atoms/PTag";
 import axios from "axios";
 import Message from "../atoms/Message";
 import Div from "../atoms/Div";
 const FindByEmailPage = () => {
-  const [okPage, setOkpage] = useState(false);
+  const [okPage, setOkpage] = useState(true);
   const [failPage, setFailPage] = useState(false);
 
   const [user, setUser] = useState({
-    userPhone: "",
+    phone: "",
   });
   const handleFindEmailInfo = async (e) => {
     e.preventDefault();
