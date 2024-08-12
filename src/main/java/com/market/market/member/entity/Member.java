@@ -60,7 +60,7 @@ public class Member implements UserDetails{
     @Column(length = 20)
     private String phone;  
 
-    @Column(length = 20, nullable = false, unique = true)
+    @Column(length = 20, unique = true)
     private String nickname;  
 
     // @Column(columnDefinition = "TEXT", nullable = false)
@@ -93,10 +93,10 @@ public class Member implements UserDetails{
     private int auth = 0;
 
     
-    @Column(name = "category", nullable = false)
+    @Column(name = "category")
     private String category;  // List<String>으로 정의
 
-    @Column(length = 10, nullable = false)
+    @Column(length = 10)
     private String birth;
 
     // 0: 사용자, 1 : 관리자
