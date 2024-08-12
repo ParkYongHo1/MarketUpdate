@@ -1,6 +1,7 @@
 package com.market.market.member.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.transaction.Transactional;
@@ -14,8 +15,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.market.jwt.TokenProvider;
 import com.market.market.member.dto.JwtDto;
+import com.market.market.member.dto.LocationDto;
 import com.market.market.member.dto.MemberDto;
 import com.market.market.member.dto.RefreshTokenDto;
 import com.market.market.member.entity.Member;
@@ -146,4 +150,50 @@ public class MemberService {
 
         return jwtDto;
     }
+
+    @Transactional
+    public Map<String,Object> adduserinfo(Map<String,Object> body){
+        
+        Map<String,Object> resultMap = new HashMap<>();
+
+        LocationDto locations = new LocationDto();
+
+        String nickname = body.get("nickname").toString();
+        if (nickname != null && !nickname.isEmpty()) {
+            if (isNicknameTaken(nickname)) {
+                resultMap.put("STATUS", "400");
+                resultMap.put("MESSAGE", "fail");
+                return resultMap;
+            }
+        }
+
+         // 카테고리를 쉼표로 구분된 문자열로 입력받고, 이를 List<String>으로 변환
+         List<String> categories = List.of(body.get("category").toString().split(","));
+         
+        MemberDto memberDto = MemberDto.builder()
+        .nickname(body.get("nickname").toString())
+        .birth(body.get("birth").toString())
+        .location(locations)
+        .category(categories.toString()).build();
+
+        Member member = Member.toEntity(memberDto);
+
+        System.out.println("인서트 값 : "+member.toString());
+
+        //Repository로 CRUD
+        memberRepository.save(member);
+
+        //결과값 세팅
+        resultMap.put("STATUS", "200");
+        resultMap.put("MESSAGE", "SUCCESS");
+
+        return resultMap;
+    }
+
+
+    private boolean isNicknameTaken(String nickname) {
+        return memberRepository.existsByNickname(nickname);
+    }
+
 }
+
