@@ -136,8 +136,8 @@ public class Member implements UserDetails{
     {
         String locations = "";
          try {
-            if (dto.getLocationDto() != null) {
-                locations = dto.getLocationDto().toString();
+            if (dto.getLocation() != null) {
+                locations = dto.getLocation().toString();
             }
         } catch (Exception e) {
             System.out.println("Error Message : "+e.getMessage());           
