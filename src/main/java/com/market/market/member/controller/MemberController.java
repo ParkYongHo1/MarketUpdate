@@ -36,7 +36,7 @@ public class MemberController {
         return responseMap;
     }
 
-    @PostMapping(value = "/adduserinfo")
+    @PostMapping(value = "/add-info")
     public @ResponseBody Map<String,Object> adduserinfo(@RequestBody Map<String,Object> body)
     {
         System.out.println("===Request Body===" + body.toString());

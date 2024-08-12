@@ -48,7 +48,7 @@ import lombok.ToString;
 public class Member implements UserDetails{
 
     @Id
-    @Column(length = 20)
+    @Column(length = 20, nullable = false, unique = true)
     private String id;
 
     @Column(length = 20,nullable = false)
@@ -60,10 +60,10 @@ public class Member implements UserDetails{
     @Column(length = 20)
     private String phone;  
 
-    @Column(length = 20)
+    @Column(length = 20, nullable = false, unique = true)
     private String nickname;  
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String location;
 
     @Column(columnDefinition = "TEXT")
@@ -81,10 +81,10 @@ public class Member implements UserDetails{
     private int auth = 0;
 
     
-    @Column(name = "category")
+    @Column(name = "category", nullable = false)
     private String category;  // List<String>으로 정의
 
-    @Column(length = 10)
+    @Column(length = 10, nullable = false)
     private String birth;
 
     // 0: 사용자, 1 : 관리자
@@ -136,8 +136,8 @@ public class Member implements UserDetails{
     {
         String locations = "";
          try {
-            if (dto.getLocation() != null) {
-                locations = dto.getLocation().toString();
+            if (dto.getLocationDto() != null) {
+                locations = dto.getLocationDto().toString();
             }
         } catch (Exception e) {
             System.out.println("Error Message : "+e.getMessage());           
