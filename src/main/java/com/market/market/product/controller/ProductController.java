@@ -22,6 +22,9 @@ public class ProductController {
     @PostMapping(value = "/write")
     public Map<String, Object> writeProduct(@RequestBody Map<String,Object> body)
     {
+
+        System.out.println("======RequestBody======"+body.toString());
+
        resultMap = productService.writeProduct(body); 
        return resultMap;
     }

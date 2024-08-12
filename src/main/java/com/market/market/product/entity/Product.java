@@ -48,8 +48,20 @@ public class Product {
     @Column
     private int price;
 
-    @Column(columnDefinition = "TEXT")
-    private String location;
+    // @Column(columnDefinition = "TEXT")
+    // private String location;
+
+    @Column
+    private String address;
+
+    @Column
+    private String jibun_address;
+
+    @Column
+    private Double latitude;
+
+    @Column
+    private Double longitude;
 
     @Column
     private int product_status;
@@ -62,17 +74,11 @@ public class Product {
     private Member member;
 
 
-    public static Product toEntity(ProductDto dto, Member member){
-
-        String locations = "";
+    public static Product toEntity(ProductDto dto, Member member){       
         String imageData = "";
         String category = "";
 
-        try {
-           if (dto.getLocationDto() != null) {
-               locations = dto.getLocationDto().toString();
-           }
-           
+        try {          
            if (dto.getCategory() != null){
                category = dto.getCategory().toString();
            }
@@ -93,7 +99,11 @@ public class Product {
        .view_cnt(dto.getView_cnt())
        .like_cnt(dto.getLike_cnt())
        .price(dto.getPrice())
-       .location(locations)
+       //.location(locations)
+       .address(dto.getLocation().getAddress())
+       .jibun_address(dto.getLocation().getJibun_address())
+       .latitude(dto.getLocation().getLatitude())
+       .longitude(dto.getLocation().getLongitude())
        .product_status(dto.getProduct_status())
        .category(category)
        .member(member)
