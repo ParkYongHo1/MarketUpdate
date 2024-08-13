@@ -17,6 +17,7 @@ const PhoneModal = ({ phoneModal, setPhoneModal }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const phoneMessage = useSelector((state) => state.user.phoneMessage);
+  
   /********************
    * 인증번호 확인 API (/suth/checknum-phone)
    ********************/
@@ -90,7 +91,7 @@ const PhoneModal = ({ phoneModal, setPhoneModal }) => {
                 확인
               </Button>
             ) : (
-              <Button middleBlackButton disabledButton>
+              <Button middleBlackButton disabledButton disabled>
                 확인
               </Button>
             )}
