@@ -53,7 +53,7 @@ public class MemberService {
 
             System.out.println("===Login===");
 
-            String id = requestMemberData.get("email").toString();
+            String id = requestMemberData.get("id").toString();
             String password = requestMemberData.get("password").toString();
 
 
@@ -102,7 +102,7 @@ public class MemberService {
         {
             System.out.println("===KaKao Login===");
 
-            String id = requestMemberData.get("email").toString();
+            String id = requestMemberData.get("id").toString();
             String nickname = requestMemberData.get("nickname").toString();
             String profile_img = requestMemberData.get("profile_image").toString();
 
