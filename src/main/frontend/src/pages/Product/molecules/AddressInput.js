@@ -26,12 +26,10 @@ const AddressInput = ({ user, setUser }) => {
         dispatch(
           write({
             ...product,
-            location: {
-              latitude: coords.getLat(),
-              longitude: coords.getLng(),
-              address: data.address,
-              jibunAddress: data.jibunAddress,
-            },
+            latitude: coords.getLat(),
+            longitude: coords.getLng(),
+            address: data.address,
+            jibunAddress: data.jibunAddress,
           })
         );
       } else {
@@ -43,11 +41,11 @@ const AddressInput = ({ user, setUser }) => {
     <>
       <Input
         onChange={handleUser}
-        name="location.address"
+        name="address"
         type="text"
         readOnly
         placeholder="주소를 입력해주세요."
-        value={product?.location?.address}
+        value={product?.address}
       />
       <Button type="button" button onClick={() => setIsModalOpen(true)}>
         주소 검색

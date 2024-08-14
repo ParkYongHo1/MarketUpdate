@@ -98,6 +98,7 @@ const WriteProduct = () => {
     Object.keys(product).forEach((key) => {
       formData.append(key, product[key]);
     });
+    console.log(formData);
 
     try {
       const res = await axios.post("/product/write", formData, {

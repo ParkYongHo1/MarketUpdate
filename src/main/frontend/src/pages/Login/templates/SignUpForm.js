@@ -39,13 +39,13 @@ const SignUpForm = () => {
   const onChangeInput = (e) => {
     const { name, value } = e.target;
     dispatch(setUser({ ...user, [name]: value }));
-    if (name === "userPhone") {
+    if (name === "phone") {
       validatePhone(value);
     }
     if (name === "email") {
       validateEmail(value);
     }
-    if (name === "userPassword") {
+    if (name === "password") {
       validatePassword(value);
     }
     if (name === "passwordCheck") {
@@ -154,7 +154,7 @@ const SignUpForm = () => {
    * 휴대폰 인증번호 전송 API(/auth/fetch-phone)
    ********************/
   const onSendPhone = async (e) => {
-    if (!user.userPhone) {
+    if (!user.phone) {
       setIsNotPhone("휴대폰 번호를 입력해주세요");
       phoneInputRef.current.focus();
       return;
@@ -162,7 +162,7 @@ const SignUpForm = () => {
     setPhoneModal(true);
     try {
       const res = await axios.post("/auth/fetch-phone", {
-        phone: user.userPhone,
+        phone: user.phone,
       });
       if (res.data == 200) {
         dispatch(
@@ -234,8 +234,8 @@ const SignUpForm = () => {
           send
           ref={phoneInputRef} // 참조 추가
           onChange={onChangeInput}
-          name="userPhone"
-          value={user.userPhone}
+          name="phone"
+          value={user.phone}
           type="text"
           placeholder="예시) 01012345678"
           maxLength={11}
@@ -274,8 +274,8 @@ const SignUpForm = () => {
       <Div margin>
         <Input
           onChange={onChangeInput}
-          name="userPassword"
-          value={user.userPassword}
+          name="password"
+          value={user.password}
           type="password"
           placeholder="영문자 + 숫자 + 특수문자를 포함하여 8자 이상 입력해주세요"
           required

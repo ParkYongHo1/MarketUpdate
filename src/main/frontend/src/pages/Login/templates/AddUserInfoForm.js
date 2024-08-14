@@ -34,12 +34,10 @@ const AddUserInfoForm = () => {
         dispatch(
           setUser({
             ...user,
-            location: {
-              latitude: coords.getLat(),
-              longitude: coords.getLng(),
-              address: data.address,
-              jibunAddress: data.jibunAddress,
-            },
+            latitude: coords.getLat(),
+            longitude: coords.getLng(),
+            address: data.address,
+            jibunAddress: data.jibunAddress,
           })
         );
       } else {
@@ -102,8 +100,8 @@ const AddUserInfoForm = () => {
       <PTag>주소*</PTag>
       <Input
         onChange={handleUser}
-        name="location.address"
-        value={user.location.address}
+        name="address"
+        value={user.address}
         type="text"
         readOnly
         placeholder="주소를 입력해주세요."
