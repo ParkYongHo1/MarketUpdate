@@ -26,7 +26,7 @@ const WriteProduct = () => {
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(write({ ...product, reg_member: user.email }));
+    dispatch(write({ ...product, reg_member: user.id }));
   }, []);
   console.log(product);
 
@@ -93,9 +93,20 @@ const WriteProduct = () => {
     imageFiles.forEach((file) => {
       formData.append("product_image", file);
     });
+
+    // 다른 제품 정보를 FormData에 추가
+    Object.keys(product).forEach((key) => {
+      formData.append(key, product[key]);
+    });
+
     try {
-      const res = await axios.post("/product/write", product, formData);
-      if (res.data.status == "200") {
+      const res = await axios.post("/product/write", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (res.data.status === "200") {
         dispatch(reset()); // 상태 초기화
         setShowImages([]); // 로컬 이미지 상태 초기화
         setImageFiles([]); // 로컬 파일 리스트 초기화
