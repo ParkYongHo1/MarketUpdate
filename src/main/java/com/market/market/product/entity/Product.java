@@ -48,9 +48,6 @@ public class Product {
     @Column
     private int price;
 
-    // @Column(columnDefinition = "TEXT")
-    // private String location;
-
     @Column
     private String address;
 
@@ -75,7 +72,7 @@ public class Product {
 
 
     public static Product toEntity(ProductDto dto, Member member){       
-        String imageData = "";
+        String imagePath = "";
         String category = "";
 
         try {          
@@ -84,7 +81,7 @@ public class Product {
            }
 
            if(dto.getProduct_image() != null){
-               imageData = dto.getProduct_image().toString();
+               imagePath = dto.getProduct_image().toString();
            }
 
        } catch (Exception e) {
@@ -95,11 +92,10 @@ public class Product {
        .title(dto.getTitle())
        .content(dto.getContent())
        .reg_date(dto.getReg_date())
-       .product_image(imageData)
+       .product_image(imagePath)
        .view_cnt(dto.getView_cnt())
        .like_cnt(dto.getLike_cnt())
        .price(dto.getPrice())
-       //.location(locations)
        .address(dto.getLocation().getAddress())
        .jibun_address(dto.getLocation().getJibun_address())
        .latitude(dto.getLocation().getLatitude())

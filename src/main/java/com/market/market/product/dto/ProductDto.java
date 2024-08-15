@@ -41,7 +41,7 @@ public class ProductDto {
 
     private Date reg_date;
 
-    private List<MultipartFile> product_image;
+    private List<String> product_image;
 
     private int view_cnt;
 

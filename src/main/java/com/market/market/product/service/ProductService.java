@@ -1,12 +1,12 @@
 package com.market.market.product.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.market.market.member.dto.LocationDto;
 import com.market.market.member.dto.MemberDto;
@@ -23,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class ProductService {
 
+    private static String uploadDir = "C:/market/images/";
+
     @Autowired
     ProductRepository productRepository;
 
@@ -33,19 +35,16 @@ public class ProductService {
 
         System.out.println("Body : "+body.toString());
 
-        //try{
-
-            
-            Map<String,Object> locations = (Map)body.get("location");
+        try{
 
             LocationDto locationDto = LocationDto.builder()
-                    .address(locations.get("address").toString())
-                    .latitude((double) locations.get("latitude"))
-                    .longitude((double)locations.get("longitude"))
-                    .jibun_address(locations.get("jibunAddress").toString())
+                    .address(body.get("address").toString())
+                    .latitude((double) body.get("latitude"))
+                    .longitude((double)body.get("longitude"))
+                    .jibun_address(body.get("jibun_address").toString())
                     .build();
 
-            //List<MultipartFile> product_image = (List)body.get("product_image");
+
             List<String> category = (List)body.get("category");
             int price = Integer.parseInt(body.get("price").toString());
             String content = body.get("content").toString();
@@ -57,14 +56,16 @@ public class ProductService {
     
             // LocalDateTime을 Date로 변환
             Date reg_date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-    
+
+            //파일 업로드 및 경로 저장
+            List<String> uploadPath = imageUpload((List<MultipartFile>)body.get("product_image"));
     
             ProductDto productDto = ProductDto.builder()
                     .title(title)
                     .price(price)
                     .content(content)
                     .category(category)
-                    //.product_image(product_image)
+                    .product_image(uploadPath)
                     .location(locationDto)                
                     .reg_date(reg_date)
                     .build();
@@ -75,21 +76,62 @@ public class ProductService {
 
             System.out.println("====물품등록성공====");
             respoonseMap.put("status", "200");
-        //}catch(Exception e)
-//        {
-//            System.out.println("====물품등록실패====");
-//            System.out.println("에러 : "+e.getMessage());
-//            respoonseMap.put("status", "400");
-//        }
+        }catch(Exception e)
+        {
+            System.out.println("====물품등록실패====");
+            System.out.println("에러 : "+e.getMessage());
+            respoonseMap.put("status", "400");
+        }
 
        return respoonseMap;
     }
 
 
 
-    public void imageUpload(Map<String, MultipartFile> files)
+    public List<String> imageUpload(List<MultipartFile> files)
     {
-        System.out.println("파일 : "+files);
+        List<String> uploadPath = new ArrayList<>();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+
+        try {
+
+
+            File uploadDirFile = new File(uploadDir);
+
+            if (!uploadDirFile.exists()) {
+                boolean dirsCreated = uploadDirFile.mkdirs();
+
+                if (!dirsCreated) {
+                    throw new IOException("디렉터리 생성 실패: " + uploadDir);
+                }
+            }
+
+            for (MultipartFile file : files) {
+
+                String currentTime = sdf.format(new Date());
+                String originalFilename = file.getOriginalFilename();
+                String fileExtension = "";
+                if (originalFilename != null && originalFilename.contains(".")) {
+                    fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+                }
+
+                String uuid = UUID.randomUUID().toString();
+                String newFilename = currentTime+"_"+uuid + fileExtension;
+
+                String filePath = uploadDir + newFilename;
+
+                file.transferTo(new File(filePath));
+
+                uploadPath.add(filePath);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // 예외 처리 로직을 추가합니다.
+        }
+
+        return uploadPath;
     }
 
 }
