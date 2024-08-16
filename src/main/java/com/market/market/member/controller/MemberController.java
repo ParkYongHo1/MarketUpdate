@@ -36,6 +36,15 @@ public class MemberController {
         return responseMap;
     }
 
+
+    @PostMapping(value = "/request-token")
+    public @ResponseBody Map<String,Object> requestToken(@RequestBody Map<String,String> tokenData){
+        Map<String,Object> responseMap = new HashMap<>();
+        responseMap = memberService.reissue(tokenData);
+
+        return responseMap;
+    }
+
     @PostMapping(value = "/add-info")
     public @ResponseBody Map<String,Object> adduserinfo(@RequestBody Map<String,Object> body)
     {
@@ -44,9 +53,6 @@ public class MemberController {
         Map<String,Object> resultMap = memberService.adduserinfo(body);
 
         return resultMap;
-    }
-
-    
-    
+    } 
 
 }
