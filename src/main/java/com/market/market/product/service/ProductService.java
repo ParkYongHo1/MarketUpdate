@@ -34,9 +34,8 @@ public class ProductService {
     {
 
         System.out.println("Body : "+body.toString());
-
+        
         try{
-
             LocationDto locationDto = LocationDto.builder()
                     .address(body.get("address").toString())
                     .latitude((double) body.get("latitude"))

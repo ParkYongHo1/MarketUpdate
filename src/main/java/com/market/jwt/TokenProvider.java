@@ -4,6 +4,8 @@ import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -52,10 +54,20 @@ public class TokenProvider {
 
         long now = (new Date()).getTime();
 
+        Map<String,Object> claims = new HashMap<>();
+
+        String id = authentication.getName();
+
+        claims.put("id", id);
+
+        System.out.println("ID : "+id);
+
+
         //Access Token 생성
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         String accessToken = Jwts.builder()
-        .setSubject(authentication.getName())
+        .setSubject(id)
+        .setClaims(claims)
         .claim(AUTHORITIES_KEY, authorities)
         .setExpiration(accessTokenExpiresIn)
         .signWith(key,SignatureAlgorithm.HS256)
@@ -80,6 +92,9 @@ public class TokenProvider {
     {
         Claims claims = parseClaims(accessToken);
 
+        System.out.println("클레임 : "+claims.toString());
+
+
         if(claims.get(AUTHORITIES_KEY) == null)
         {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
@@ -89,7 +104,8 @@ public class TokenProvider {
                                                             .map(SimpleGrantedAuthority::new)
                                                             .collect(Collectors.toList());
 
-        UserDetails principal = new User(claims.getSubject(), "", authorities);
+    
+        UserDetails principal = new User(claims.get("id").toString(), "", authorities);
         return new UsernamePasswordAuthenticationToken(principal, "",authorities);
     }
 

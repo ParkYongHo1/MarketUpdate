@@ -14,6 +14,8 @@ import javax.persistence.Convert;
 import javax.persistence.Converter;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,6 +33,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.market.market.member.dto.LocationDto;
 import com.market.market.member.dto.MemberDto;
+import com.market.market.util.Authority;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -80,6 +83,9 @@ public class Member implements UserDetails{
 
     @Column(columnDefinition = "TEXT")
     private String profile_image; 
+
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
     
     @Column
     @ColumnDefault("36.5")
@@ -139,7 +145,7 @@ public class Member implements UserDetails{
 
     @Override
     public String getUsername() {
-        throw new UnsupportedOperationException("Unimplemented method 'getUsername'");
+        return this.id;
     }
 
     
