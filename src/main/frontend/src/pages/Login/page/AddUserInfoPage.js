@@ -9,10 +9,14 @@ import { useNavigate } from "react-router-dom";
 const AddUserInfoPage = () => {
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
+  console.log(user);
+
   const handleAddUserInfo = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post("/member/add-info", user);
+      console.log(res.data);
+
       if (res.data.status == "200") {
         navigate("/");
       }

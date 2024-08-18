@@ -1,6 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
-  product: [],
+  product: {
+    title: "",
+    price: "",
+    category: [],
+    content: "",
+    product_image: [],
+    address: "",
+    jibunAddress: "",
+    latitude: "",
+    longitude: "",
+  },
 };
 
 export const productSlice = createSlice({
@@ -8,10 +18,10 @@ export const productSlice = createSlice({
   initialState,
   reducers: {
     write: (state, action) => {
-      state.product = action.payload;
+      state.product = { ...state.product, ...action.payload };
     },
     reset: (state) => {
-      state.product = [];
+      state.product = initialState.product;
     },
   },
 });

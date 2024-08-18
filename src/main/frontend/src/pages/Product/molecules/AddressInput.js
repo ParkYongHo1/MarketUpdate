@@ -10,7 +10,7 @@ const AddressInput = ({ user, setUser }) => {
   const geoCoder = new window.kakao.maps.services.Geocoder();
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
   const dispatch = useDispatch();
-  const product = useSelector((state) => state.product.product);
+  const product = useSelector((state) => state.product);
   const handleUser = (e) => {
     const { name, value } = e.target;
     dispatch(write({ ...product, [name]: value }));
@@ -45,7 +45,7 @@ const AddressInput = ({ user, setUser }) => {
         type="text"
         readOnly
         placeholder="주소를 입력해주세요."
-        value={product?.address}
+        value={product.address}
       />
       <Button type="button" button onClick={() => setIsModalOpen(true)}>
         주소 검색
