@@ -125,30 +125,41 @@ public class MemberService {
     }
 
     @Transactional
-    public JwtDto reissue(Map<String,String> requestJwtData){
+    public Map<String,Object> reissue(Map<String,String> requestJwtData){
 
-        if(!tokenProvider.validateToken(requestJwtData.get("refresh_token").toString())){
-            throw new RuntimeException("Refresh Token이 유효하지 않습니다.");
+        Map<String,Object> responseMap = new HashMap<>();
+
+        try{
+            if(!tokenProvider.validateToken(requestJwtData.get("refreshToken").toString())){
+                throw new RuntimeException("Refresh Token이 유효하지 않습니다.");
+            }
+    
+            Authentication authentication = tokenProvider.getAuthentication(requestJwtData.get("accessToken").toString());
+    
+    
+            RefreshToken refreshToken = refreshTokenRepository.findByKey(authentication.getName())
+            .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
+    
+            if(!refreshToken.getValue().equals(requestJwtData.get("refreshToken"))){
+                throw new RuntimeException("토큰의 유저 정보가 일치하지 않습니다.");
+            }
+    
+            JwtDto jwtDto = tokenProvider.generateTokenDto(authentication);
+    
+            RefreshTokenDto refreshTokenDto = RefreshTokenDto.builder().key(refreshToken.getKey()).value(refreshToken.getValue()).build();
+    
+            RefreshToken newRefreshToken = RefreshToken.toEntity(refreshTokenDto.updateValue(jwtDto.getRefreshToken()));
+            refreshTokenRepository.save(newRefreshToken);
+
+            responseMap.put("status", "200");
+            responseMap.put("token", jwtDto);
+
+        } catch(Exception e)
+        {
+            responseMap.put("status", "400");
         }
 
-        Authentication authentication = tokenProvider.getAuthentication(requestJwtData.get("access_token").toString());
-
-
-        RefreshToken refreshToken = refreshTokenRepository.findByKey(authentication.getName())
-        .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
-
-        if(!refreshToken.getValue().equals(requestJwtData.get("refresh_token"))){
-            throw new RuntimeException("토큰의 유저 정보가 일치하지 않습니다.");
-        }
-
-        JwtDto jwtDto = tokenProvider.generateTokenDto(authentication);
-
-        RefreshTokenDto refreshTokenDto = RefreshTokenDto.builder().key(refreshToken.getKey()).value(refreshToken.getValue()).build();
-
-        RefreshToken newRefreshToken = RefreshToken.toEntity(refreshTokenDto.updateValue(jwtDto.getRefreshToken()));
-        refreshTokenRepository.save(newRefreshToken);
-
-        return jwtDto;
+        return responseMap;
     }
 
     @Transactional
