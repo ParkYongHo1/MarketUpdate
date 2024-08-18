@@ -51,10 +51,10 @@ import lombok.ToString;
 public class Member implements UserDetails{
 
     @Id
-    @Column(length = 20, nullable = false, unique = true)
+    @Column(length = 100, nullable = false, unique = true)
     private String id;
 
-    @Column(length = 20,nullable = false)
+    @Column(length = 100,nullable = false)
     private String password;
 
     @Column(length = 30)
@@ -83,10 +83,10 @@ public class Member implements UserDetails{
 
     @Column(columnDefinition = "TEXT")
     private String profile_image; 
-
+    
     @Enumerated(EnumType.STRING)
     private Authority authority;
-    
+
     @Column
     @ColumnDefault("36.5")
     @Builder.Default
@@ -147,8 +147,6 @@ public class Member implements UserDetails{
     public String getUsername() {
         return this.id;
     }
-
-    
 
     public static Member toEntity(MemberDto dto)
     {
