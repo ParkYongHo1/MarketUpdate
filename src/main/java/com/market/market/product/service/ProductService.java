@@ -15,6 +15,7 @@ import com.market.market.product.dto.ProductDto;
 import com.market.market.product.entity.Product;
 import com.market.market.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.mysql.cj.protocol.x.OkBuilder;
@@ -23,7 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class ProductService {
 
-    private static String uploadDir = "C:/market/images/";
+    @Value("${spring.file.path}")
+    private String uploadDir;
 
     @Autowired
     ProductRepository productRepository;
@@ -95,6 +97,7 @@ public class ProductService {
 
         try {
 
+            System.out.println("파일 경로 : "+uploadDir);
 
             File uploadDirFile = new File(uploadDir);
 
@@ -107,27 +110,27 @@ public class ProductService {
             }
 
             for (MultipartFile file : files) {
-
-                String currentTime = sdf.format(new Date());
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss_SSSSSSSSS");
+                String currentTime = LocalDateTime.now().format(dtf);
                 String originalFilename = file.getOriginalFilename();
                 String fileExtension = "";
                 if (originalFilename != null && originalFilename.contains(".")) {
                     fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
                 }
 
-                String uuid = UUID.randomUUID().toString();
+                String uuid = UUID.randomUUID().toString().substring(0,8);
+
                 String newFilename = currentTime+"_"+uuid + fileExtension;
 
                 String filePath = uploadDir + newFilename;
 
                 file.transferTo(new File(filePath));
 
-                uploadPath.add(filePath);
-            }
+                uploadPath.add(newFilename);
+           }
 
         } catch (IOException e) {
-            e.printStackTrace();
-            // 예외 처리 로직을 추가합니다.
+            System.out.println("Error Message : "+e.getMessage());
         }
 
         return uploadPath;
