@@ -56,8 +56,6 @@ public class MemberService {
             String id = requestMemberData.get("id").toString();
             String password = requestMemberData.get("password").toString();
 
-
-
             if (id == null || id.isEmpty() || password == null || password.isEmpty()) {          
                 responseMap.put("status", "400");
                 return responseMap;
@@ -102,26 +100,27 @@ public class MemberService {
         {
             System.out.println("===KaKao Login===");
 
-            String id = requestMemberData.get("id").toString();
+            String id = requestMemberData.get("email").toString();
             String nickname = requestMemberData.get("nickname").toString();
             String profile_img = requestMemberData.get("profile_image").toString();
 
+            MemberDto memberDto = MemberDto.builder().id(id).password("kakaoPw").nickname(nickname).profile_image(profile_img).build();
+
+            memberRepository.save(Member.toEntity(memberDto));
+
             Member member = memberRepository.findById(id).orElse(null);
+
             //회원정보가 없을 때
             if (member == null) {
-                MemberDto kakaoMemberDto = MemberDto.builder().auth(Integer.parseInt(auth)).id(id).nickname(nickname).profile_image(profile_img).password("kakao_password").build();
-                memberRepository.save(Member.toEntity(kakaoMemberDto));
-
                 member = memberRepository.findById(id).orElse(null);
-            }
-
-            MemberDto memberDto = MemberDto.toDto(member);
-
+            }          
             responseMap.put("status", "200");
-            responseMap.put("member", memberDto);
+            responseMap.put("member", MemberDto.toDto(member));
         }
 
-        
+
+        System.out.println("전달값 : "+responseMap.toString());
+
         return responseMap;
     }
 
@@ -157,7 +156,7 @@ public class MemberService {
         
         Map<String,Object> resultMap = new HashMap<>();
 
-         Map<String, Object> locations = (Map<String, Object>) body.get("location");
+        Map<String, Object> locations = (Map<String, Object>) body.get("location");
         if (locations == null) {
             resultMap.put("status", "400");
             resultMap.put("message", "Location data is missing");
