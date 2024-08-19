@@ -116,7 +116,7 @@ const SignUpForm = () => {
   const onSendEmail = async (e) => {
     console.log(isNotEmail);
 
-    if (!user.email) {
+    if (!user.id) {
       setIsNotEmail("이메일 주소를 입력해주세요");
       emailInputRef.current.focus();
       return;
@@ -124,7 +124,7 @@ const SignUpForm = () => {
       setEmailModal(true);
       try {
         const res = await axios.post("/auth/fetch-email", {
-          email: user.email,
+          id: user.id,
         });
         if (res.data == 200) {
           dispatch(
@@ -154,6 +154,8 @@ const SignUpForm = () => {
    * 휴대폰 인증번호 전송 API(/auth/fetch-phone)
    ********************/
   const onSendPhone = async (e) => {
+    console.log(user.phone);
+
     if (!user.phone) {
       setIsNotPhone("휴대폰 번호를 입력해주세요");
       phoneInputRef.current.focus();

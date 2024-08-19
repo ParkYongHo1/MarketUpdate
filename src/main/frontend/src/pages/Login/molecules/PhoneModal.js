@@ -15,9 +15,10 @@ const PhoneModal = ({ phoneModal, setPhoneModal }) => {
   const [checkNum, setCheckNum] = useState("");
   const [authState, setAuthState] = useState("");
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user.user);
   const phoneMessage = useSelector((state) => state.user.phoneMessage);
-  
+  console.log(user.phone);
+
   /********************
    * 인증번호 확인 API (/suth/checknum-phone)
    ********************/

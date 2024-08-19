@@ -8,8 +8,8 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const AddUserInfoPage = () => {
   const user = useSelector((state) => state.user.user);
-  const navigate = useNavigate();
   console.log(user);
+  const navigate = useNavigate();
 
   const handleAddUserInfo = async (e) => {
     e.preventDefault();
@@ -30,7 +30,7 @@ const AddUserInfoPage = () => {
       <div>
         <Form onSubmit={handleAddUserInfo}>
           <AddUserInfoForm></AddUserInfoForm>
-          {user.address !== null && user.nickname !== "" ? (
+          {user?.address !== null && user?.nickname !== "" ? (
             <Button type="submit">저장하기</Button>
           ) : (
             <Button disabledButton disabled>

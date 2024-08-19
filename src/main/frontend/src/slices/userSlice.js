@@ -52,7 +52,7 @@ export const userSlice = createSlice({
         birth: "",
         category: [],
         phone: "",
-        adderss: "",
+        address: "",
         latitude: "",
         longitude: "",
         jibunAddress: "",
