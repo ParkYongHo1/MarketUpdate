@@ -42,7 +42,7 @@ const SignUpForm = () => {
     if (name === "phone") {
       validatePhone(value);
     }
-    if (name === "email") {
+    if (name === "id") {
       validateEmail(value);
     }
     if (name === "password") {
@@ -194,8 +194,8 @@ const SignUpForm = () => {
           send
           ref={emailInputRef} // 참조 추가
           onChange={onChangeInput}
-          name="email"
-          value={user.email}
+          name="id"
+          value={user.id}
           type="email"
           placeholder="예시) carrot@carrot.com"
           required
