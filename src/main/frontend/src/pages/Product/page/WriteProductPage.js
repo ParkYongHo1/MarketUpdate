@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons";
 import Font from "../atom/Font";
@@ -15,68 +15,20 @@ import SelectOptionGroup from "../molecules/SelectOptionGroup";
 import Textarea from "../atom/Textarea";
 import AddressInput from "../molecules/AddressInput";
 import Button from "../atom/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { write, reset } from "../../../slices/productSlice";
+import { useNavigate } from "react-router-dom";
 
 const WriteProduct = () => {
   const inputRef = useRef(null);
   const [showImages, setShowImages] = useState([]);
-  const [user, setUser] = useState({
-    productWriter: "",
-    productTitle: "",
-    productPrice: "",
-    productCategory: [],
-    productContent: "",
-    productAddress: "",
-    longitude: "",
-    latitude: "",
-    productJibunAddress: "",
-  });
+  const [imageFiles, setImageFiles] = useState([]);
+  const product = useSelector((state) => state.product.product);
+  const user = useSelector((state) => state.user.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  console.log(product);
 
-  const handleInputFile = () => {
-    if (inputRef.current) {
-      inputRef.current.click();
-    }
-  };
-
-  const handleUploadImage = async (files) => {
-    const formData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      formData.append("images", files[i]); // images라는 키로 formData에 저장
-      console.log(formData);
-    }
-
-    try {
-      const res = await axios.post("/product/image", formData);
-      console.log(res);
-      if (res.status == 200) {
-        const data = await res.data;
-        console.log("Images uploaded successfully:", data);
-      } else {
-        console.error("Image upload failed");
-      }
-    } catch (error) {
-      console.error("Error uploading images:", error);
-    }
-  };
-
-  const handleChangeImage = (e) => {
-    const imageLists = e.target.files;
-    let imageUrlLists = [...showImages];
-    for (let i = 0; i < imageLists.length; i++) {
-      const currentImageUrl = URL.createObjectURL(imageLists[i]);
-      imageUrlLists.push(currentImageUrl);
-    }
-
-    if (imageUrlLists.length > 6) {
-      imageUrlLists = imageUrlLists.slice(0, 6);
-    }
-
-    setShowImages(imageUrlLists);
-    handleUploadImage(imageLists); // 선택한 이미지 벡엔드로 보내기
-  };
-
-  const handleDeleteImage = (id) => {
-    setShowImages(showImages.filter((_, index) => index !== id));
-  };
   const checkOption = [
     { label: "의상", value: "의상" },
     { label: "식품", value: "식품" },
@@ -87,14 +39,86 @@ const WriteProduct = () => {
     { label: "나눔", value: "나눔" },
     { label: "기타", value: "기타" },
   ];
-  const handleProduct = (e) => {
-    const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
+  useEffect(() => {
+    dispatch(write({ reg_member: user.id }));
+  }, [dispatch, user.id]);
+
+  const handleInputFile = () => {
+    if (inputRef.current) {
+      inputRef.current.click();
+    }
   };
-  console.log(user);
+
+  const handleChangeImage = (e) => {
+    const files = e.target.files;
+    let imageUrlLists = [...showImages];
+    let fileLists = [...imageFiles];
+
+    Array.from(files).forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        imageUrlLists = [...imageUrlLists, event.target.result];
+        fileLists = [...fileLists, file];
+
+        if (imageUrlLists.length > 6) {
+          imageUrlLists = imageUrlLists.slice(0, 6);
+          fileLists = fileLists.slice(0, 6);
+        }
+
+        setShowImages(imageUrlLists);
+        setImageFiles(fileLists);
+        dispatch(write({ product_image: fileLists }));
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleDeleteImage = (id) => {
+    const updatedImages = showImages.filter((_, index) => index !== id);
+    const updatedFiles = imageFiles.filter((_, index) => index !== id);
+    setShowImages(updatedImages);
+    setImageFiles(updatedFiles);
+    dispatch(write({ product_image: updatedFiles }));
+  };
+
+  const handleProductChange = (e) => {
+    const { name, value } = e.target;
+    dispatch(write({ [name]: value }));
+  };
+
+  const heandleWriteProduct = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    imageFiles.forEach((file) => formData.append("product_image", file));
+
+    Object.keys(product).forEach((key) => {
+      formData.append(key, product[key]);
+    });
+
+    try {
+      const res = await axios.post("/product/write", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (res.data.status === "200") {
+        dispatch(reset());
+        setShowImages([]);
+        setImageFiles([]);
+        navigate("/");
+        console.log("good");
+      }
+    } catch (error) {
+      dispatch(reset());
+      setShowImages([]);
+      setImageFiles([]);
+      console.log(error);
+    }
+  };
   return (
-    <form encType="multipart/form-data" multiple>
-      <input type="hidden"></input>
+    <form encType="multipart/form-data" multiple onSubmit={heandleWriteProduct}>
+      <input type="hidden" />
       <Wrapper>
         <Span>판매글 작성</Span>
         <Font padding>
@@ -111,7 +135,7 @@ const WriteProduct = () => {
               ref={inputRef}
               accept="image/jpg, image/jpeg, image/png, image/gif"
               onChange={handleChangeImage}
-            ></input>
+            />
             <FontAwesomeIcon
               onClick={handleInputFile}
               icon={faCloudArrowUp}
@@ -122,12 +146,7 @@ const WriteProduct = () => {
           <FlexDiv>
             {showImages.map((image, id) => (
               <PositionDiv key={id}>
-                <img
-                  src={image}
-                  alt={`${image}-${id}`}
-                  width={100}
-                  height={100}
-                />
+                <img src={image} alt={`image-${id}`} width={100} height={100} />
                 <Xbtn onClick={() => handleDeleteImage(id)}>X</Xbtn>
               </PositionDiv>
             ))}
@@ -139,51 +158,53 @@ const WriteProduct = () => {
         </Font>
         <P>❗직관적인 상품명을 입력하시면 클릭률이 올라갑니다.</P>
         <Input
-          onChange={handleProduct}
+          onChange={handleProductChange}
           type="text"
           placeholder="상품 제목을 입력해주세요"
-          name="productTitle"
-          value={user.productTitle}
-        ></Input>
+          name="title"
+          value={product.title || ""}
+        />
         <Font padding>
           상품가격<Span required>*</Span>
         </Font>
         <Input
-          onChange={handleProduct}
+          onChange={handleProductChange}
           type="text"
-          placeholder="상품 가격을 입력해주세요 "
-          name="productPrice"
-          value={user.productPrice}
-        ></Input>
+          placeholder="상품 가격을 입력해주세요"
+          name="price"
+          value={product.price || ""}
+        />
         <Font padding>
           상품카테고리<Span required>*</Span>
         </Font>
-        <SelectOptionGroup
-          setUser={setUser}
-          user={user}
-          options={checkOption}
-          name="productCategory"
-        ></SelectOptionGroup>
+        <SelectOptionGroup options={checkOption} name="category" />
         <Font padding>거래희망장소</Font>
-        <AddressInput user={user} setUser={setUser}></AddressInput>
+        <AddressInput
+          user={product}
+          setUser={(newLocation) =>
+            dispatch(write({ ...product, newLocation }))
+          }
+        />
         <Font padding>
           상품정보<Span required>*</Span>
         </Font>
         <Textarea
-          onChange={handleProduct}
+          onChange={handleProductChange}
           rows="20"
           cols="100"
           wrap="hard"
-          name="productContent"
-          value={user.productContent}
-        ></Textarea>
-        {user.productTitle !== "" &&
-        user.productPrice !== "" &&
-        user.productContent !== "" &&
-        user.productCategory?.length !== 0 ? (
+          name="content"
+          value={product.content || ""}
+        />
+        {product.title &&
+        product.price &&
+        product.content &&
+        product.category?.length !== 0 ? (
           <Button type="submit">작성완료</Button>
         ) : (
-          <Button disabled>작성완료</Button>
+          <Button disabled disabledButton>
+            작성완료
+          </Button>
         )}
       </Wrapper>
     </form>

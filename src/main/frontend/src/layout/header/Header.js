@@ -35,7 +35,7 @@ const Header = () => {
   const jwt = useSelector((state) => state.user.jwt);
   const handleLogout = () => {
     dispatch(logout());
-    sessionStorage.removeItem("jwt")
+    sessionStorage.removeItem("jwt");
   };
   return (
     <HeaderBody>

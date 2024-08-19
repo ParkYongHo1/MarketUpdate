@@ -23,10 +23,11 @@ import RenderContent from "./templates/RenderContent";
 import { useNavigate } from "react-router-dom";
 const Profile = () => {
   const activetab = useSelector((state) => state.profile.activeTab);
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user.user.member);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
+  console.log(user);
 
   useEffect(() => {
     const initMypage = async () => {

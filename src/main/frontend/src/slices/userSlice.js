@@ -16,13 +16,12 @@ const initialState = {
     password: "",
     nickname: "",
     birth: "",
-    category: [],
+    category: "",
     phone: "",
-    location: {
-      adderss: "",
-      latitude: "",
-      longitude: "",
-    },
+    address: "",
+    latitude: "",
+    longitude: "",
+    jibunAddress: "",
     manner_temp: "",
   },
   jwt: {
@@ -53,11 +52,10 @@ export const userSlice = createSlice({
         birth: "",
         category: [],
         phone: "",
-        location: {
-          adderss: "",
-          latitude: "",
-          longitude: "",
-        },
+        address: "",
+        latitude: "",
+        longitude: "",
+        jibunAddress: "",
         manner_temp: "",
       };
       state.jwt = {

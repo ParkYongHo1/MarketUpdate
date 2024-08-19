@@ -8,13 +8,18 @@ import Input from "../atoms/Input";
 import Title from "../atoms/Title";
 import Button from "../atoms/Button";
 import Message from "../atoms/Message";
-const AddUserInfoForm = ({ user, setUser, birthMessage, setBirthMessage }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../../../slices/userSlice";
+const AddUserInfoForm = () => {
   const geoCoder = new window.kakao.maps.services.Geocoder();
+  const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
+  const [birthMessage, setBirthMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
   const handleUser = (e) => {
     const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
-    if (name == "userBirth") {
+    dispatch(setUser({ ...user, [name]: value }));
+    if (name == "birth") {
       validateEmail(value);
     }
   };
@@ -26,13 +31,15 @@ const AddUserInfoForm = ({ user, setUser, birthMessage, setBirthMessage }) => {
     geoCoder.addressSearch(data.address, function (result, status) {
       if (status === window.kakao.maps.services.Status.OK) {
         const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
-        setUser({
-          ...user,
-          latitude: coords.getLat(),
-          longitude: coords.getLng(),
-          userAddress: data.address,
-          userJibunAddress: data.jibunAddress,
-        });
+        dispatch(
+          setUser({
+            ...user,
+            latitude: coords.getLat(),
+            longitude: coords.getLng(),
+            address: data.address,
+            jibunAddress: data.jibunAddress,
+          })
+        );
       } else {
         console.error("Geocoder 실패:", status);
       }
@@ -42,9 +49,9 @@ const AddUserInfoForm = ({ user, setUser, birthMessage, setBirthMessage }) => {
   const validateEmail = (birth) => {
     const birthregex = /^[0-9]{8}$/;
     if (!birthregex.test(birth)) {
-      setBirthMessage(false);
+      setBirthMessage("NO");
     } else {
-      setBirthMessage(true);
+      setBirthMessage("YES");
     }
   };
   const checkOption = [
@@ -57,6 +64,8 @@ const AddUserInfoForm = ({ user, setUser, birthMessage, setBirthMessage }) => {
     { label: "나눔", value: "나눔" },
     { label: "기타", value: "기타" },
   ];
+  console.log(user);
+
   return (
     <>
       <Title>추가 정보 입력하기</Title>
@@ -68,8 +77,8 @@ const AddUserInfoForm = ({ user, setUser, birthMessage, setBirthMessage }) => {
       <Input
         onChange={handleUser}
         type="text"
-        name="userName"
-        value={user.userName}
+        name="nickname"
+        value={user.nickname}
         maxlength={8}
         placeholder="이름을 입력해주세요"
       />
@@ -77,25 +86,22 @@ const AddUserInfoForm = ({ user, setUser, birthMessage, setBirthMessage }) => {
       <Input
         onChange={handleUser}
         type="text"
-        name="userBirth"
-        value={user.userBirth}
-        maxlength={8}
+        name="birth"
+        value={user.birth}
+        maxLength={8}
         placeholder="에시) 20001207"
       />
       {/* 생년월일 확인 */}
-      {user.userBirth.length === 0 || birthMessage === null ? (
-        <Message>.</Message>
-      ) : birthMessage === false ? (
+      {birthMessage == "NO" ? (
         <Message fail>올바르지 않은 형식입니다.</Message>
       ) : (
-        birthMessage && <Message ok>유효한 형식입니다.</Message>
+        birthMessage == "YES" && <Message ok>유효한 형식입니다.</Message>
       )}
-
       <PTag>주소*</PTag>
       <Input
         onChange={handleUser}
-        name="userAddress"
-        value={user.userAddress}
+        name="address"
+        value={user.address}
         type="text"
         readOnly
         placeholder="주소를 입력해주세요."
@@ -114,10 +120,8 @@ const AddUserInfoForm = ({ user, setUser, birthMessage, setBirthMessage }) => {
       </Modal>
       <PTag>관심 카테고리*</PTag>
       <CheckOptionGroup
-        setUser={setUser}
-        user={user}
         options={checkOption}
-        name="userCategory"
+        name="category"
       ></CheckOptionGroup>
     </>
   );

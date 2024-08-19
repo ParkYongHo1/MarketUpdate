@@ -1,4 +1,4 @@
-package com.market.market.uitl;
+package com.market.market.util;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;

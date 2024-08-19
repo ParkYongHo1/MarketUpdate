@@ -20,13 +20,13 @@ const LoginPage = () => {
   const jwt = useSelector((state) => state.user.jwt);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isFormValid = user?.email !== "" && user?.password !== "";
+  const isFormValid = user?.id !== "" && user?.password !== "";
   const [fail, setFail] = useState(false);
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post("/member/login", {
-        email: user.email,
+        id: user.id,
         password: user.password,
         auth: "0",
       });
@@ -41,9 +41,12 @@ const LoginPage = () => {
       if (res.data.status == "200") {
         dispatch(login({ user: memberData }));
         dispatch(setJwt(jwtData));
-        if (res.data.member.location == null) {
+        console.log(res.data);
+
+        if (res.data.member.location.address == null) {
           navigate("/adduserinfo");
         } else {
+          console.log("true22");
           navigate("/");
         }
       } else if (res.data.status == "400") {
@@ -52,6 +55,8 @@ const LoginPage = () => {
       }
     } catch (e) {
       setFail(true);
+      console.log("err");
+
       console.log(e);
     }
   };
@@ -69,7 +74,9 @@ const LoginPage = () => {
           {isFormValid ? (
             <Button type="submit">로그인</Button>
           ) : (
-            <Button disabledButton>로그인하기</Button>
+            <Button disabledButton disabled>
+              로그인하기
+            </Button>
           )}
         </Form>
         <Div login>

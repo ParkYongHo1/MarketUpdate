@@ -39,13 +39,13 @@ const SignUpForm = () => {
   const onChangeInput = (e) => {
     const { name, value } = e.target;
     dispatch(setUser({ ...user, [name]: value }));
-    if (name === "userPhone") {
+    if (name === "phone") {
       validatePhone(value);
     }
-    if (name === "userEmail") {
+    if (name === "email") {
       validateEmail(value);
     }
-    if (name === "userPassword") {
+    if (name === "password") {
       validatePassword(value);
     }
     if (name === "passwordCheck") {
@@ -59,7 +59,7 @@ const SignUpForm = () => {
     if (!emailRegex.test(email)) {
       setIsNotEmail("이메일 주소를 정확히 입력해주세요");
     } else {
-      setIsNotEmail("");
+      setIsNotEmail("유효한 이메일입니다.");
     }
   };
 
@@ -114,44 +114,49 @@ const SignUpForm = () => {
    * 이메일 인증번호 전송 API(/auth/fetch-email)
    ********************/
   const onSendEmail = async (e) => {
-    if (!user.email) {
+    console.log(isNotEmail);
+
+    if (!user.id) {
       setIsNotEmail("이메일 주소를 입력해주세요");
       emailInputRef.current.focus();
       return;
-    }
-    setEmailModal(true);
-    try {
-      const res = await axios.post("/auth/fetch-email", {
-        email: user.email,
-      });
-      if (res.data == 200) {
-        dispatch(
-          setEmailMessage({
-            ...emailMessage,
-            message: "해당 이메일로 인증메일을 보내드렸습니다.",
-            isEmailTaken: "",
-          })
-        );
+    } else if (isNotEmail === "유효한 이메일입니다.") {
+      setEmailModal(true);
+      try {
+        const res = await axios.post("/auth/fetch-email", {
+          id: user.id,
+        });
+        if (res.data == 200) {
+          dispatch(
+            setEmailMessage({
+              ...emailMessage,
+              message: "해당 이메일로 인증메일을 보내드렸습니다.",
+              isEmailTaken: "",
+            })
+          );
 
-        setEmailModal(true);
-      } else if (res.data == 405) {
-        dispatch(
-          setEmailMessage({
-            ...emailMessage,
-            message: "이미 존재하는 이메일입니다.",
-            isEmailTaken: "NO",
-          })
-        );
+          setEmailModal(true);
+        } else if (res.data == 405) {
+          dispatch(
+            setEmailMessage({
+              ...emailMessage,
+              message: "이미 존재하는 이메일입니다.",
+              isEmailTaken: "NO",
+            })
+          );
+        }
+      } catch (e) {
+        console.log(e);
       }
-    } catch (e) {
-      console.log(e);
     }
   };
   /********************
    * 휴대폰 인증번호 전송 API(/auth/fetch-phone)
    ********************/
   const onSendPhone = async (e) => {
-    if (!user.userPhone) {
+    console.log(user.phone);
+
+    if (!user.phone) {
       setIsNotPhone("휴대폰 번호를 입력해주세요");
       phoneInputRef.current.focus();
       return;
@@ -159,7 +164,7 @@ const SignUpForm = () => {
     setPhoneModal(true);
     try {
       const res = await axios.post("/auth/fetch-phone", {
-        phone: user.userPhone,
+        phone: user.phone,
       });
       if (res.data == 200) {
         dispatch(
@@ -231,8 +236,8 @@ const SignUpForm = () => {
           send
           ref={phoneInputRef} // 참조 추가
           onChange={onChangeInput}
-          name="userPhone"
-          value={user.userPhone}
+          name="phone"
+          value={user.phone}
           type="text"
           placeholder="예시) 01012345678"
           maxLength={11}
@@ -271,8 +276,8 @@ const SignUpForm = () => {
       <Div margin>
         <Input
           onChange={onChangeInput}
-          name="userPassword"
-          value={user.userPassword}
+          name="password"
+          value={user.password}
           type="password"
           placeholder="영문자 + 숫자 + 특수문자를 포함하여 8자 이상 입력해주세요"
           required

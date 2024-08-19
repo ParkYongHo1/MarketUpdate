@@ -4,13 +4,19 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
-import store from "./store/index";
+import store, { persistor } from "./store/index";
+import { PersistGate } from "redux-persist/integration/react"; // PersistGate 추가
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <Provider store={store}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+    {/* PersistGate로 앱을 감싸서 로컬 스토리지에서 상태를 복원할 때까지 로딩 상태를 유지합니다 */}
+    <PersistGate loading={null} persistor={persistor}>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </PersistGate>
   </Provider>
 );
 

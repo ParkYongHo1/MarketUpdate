@@ -16,8 +16,8 @@ const FindByPasswordForm = ({ user, setUser }) => {
       <PTag>이메일 주소*</PTag>
       <Input
         onChange={onChangeInput}
-        name="userEmail"
-        value={user.userEmail}
+        name="id"
+        value={user.id}
         type="email"
         maxLength={11}
         placeholder="예시) carrot@carrot.com"

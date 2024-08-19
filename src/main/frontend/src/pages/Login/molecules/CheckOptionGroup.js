@@ -1,10 +1,13 @@
+import { useDispatch, useSelector } from "react-redux";
 import CheckOption from "../atoms/CheckOption";
 import Div from "../atoms/Div";
 import HiddenCheck from "../atoms/HiddenCheck";
 import StyledLabel from "../atoms/StyledLabel";
 import React, { useState } from "react";
-
-const CheckOptionGroup = ({ options, name, setUser, user }) => {
+import { setUser } from "../../../slices/userSlice";
+const CheckOptionGroup = ({ options, name }) => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
   {
     /*
     15 스프레드 연산으로 배열을 복사합니다. ,는 추가하는 역할을 합니다. 따라서 이전배열을 복사한후 새로운 값 저장
@@ -12,12 +15,14 @@ const CheckOptionGroup = ({ options, name, setUser, user }) => {
   }
   const handleCheck = (event) => {
     const { value, checked } = event.target;
-    setUser((prevUser) => ({
-      ...prevUser,
-      userCategory: checked
-        ? [...prevUser.userCategory, value]
-        : prevUser.userCategory.filter((category) => category !== value),
-    }));
+    dispatch(
+      setUser({
+        ...user,
+        category: checked
+        ? [...(user.category || []), value]  // null일 경우 빈 배열로 처리
+        : (user.category || []).filter((category) => category !== value),
+      })
+    );
   };
   return (
     <Div wrapFlex>

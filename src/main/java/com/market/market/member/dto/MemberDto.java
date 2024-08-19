@@ -56,12 +56,17 @@ public class MemberDto{
     public static MemberDto toDto(Member entity)
     {
 
-        ObjectMapper objectMapper = new ObjectMapper();
+       //ObjectMapper objectMapper = new ObjectMapper();
        LocationDto locations = new LocationDto();
         try {
-            if (entity.getLocation() != null) {
-                locations = objectMapper.readValue(entity.getLocation(), new TypeReference<LocationDto>() {});
-            }
+            // if (entity.getLocation() != null) {
+            //     locations = objectMapper.readValue(entity.getLocation(), new TypeReference<LocationDto>() {});
+            // }
+            locations.setAddress(entity.getAddress());
+            locations.setJibun_address(entity.getJibun_address());
+            locations.setLatitude(entity.getLatitude());
+            locations.setLongitude(entity.getLongitude());
+            
         } catch (Exception e) {
             System.out.println("Error Message : "+e.getMessage());           
         }

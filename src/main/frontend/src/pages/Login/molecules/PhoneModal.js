@@ -15,7 +15,10 @@ const PhoneModal = ({ phoneModal, setPhoneModal }) => {
   const [checkNum, setCheckNum] = useState("");
   const [authState, setAuthState] = useState("");
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
   const phoneMessage = useSelector((state) => state.user.phoneMessage);
+  console.log(user.phone);
+
   /********************
    * 인증번호 확인 API (/suth/checknum-phone)
    ********************/
@@ -27,8 +30,9 @@ const PhoneModal = ({ phoneModal, setPhoneModal }) => {
       try {
         const res = await axios.post("/auth/checknum-phone", {
           checkNum: value,
+          phone: user.phone,
         });
-        if (res.data == 200) {
+        if (res.data == "200") {
           setAuthState("YES");
           dispatch(
             setPhoneMessage({
@@ -37,7 +41,7 @@ const PhoneModal = ({ phoneModal, setPhoneModal }) => {
               isPhoneTaken: "YES",
             })
           );
-        } else if (res.data == 400) {
+        } else if (res.data == "405") {
           setAuthState("NO");
         }
         console.log(res);
@@ -88,7 +92,7 @@ const PhoneModal = ({ phoneModal, setPhoneModal }) => {
                 확인
               </Button>
             ) : (
-              <Button middleBlackButton disabledButton>
+              <Button middleBlackButton disabledButton disabled>
                 확인
               </Button>
             )}

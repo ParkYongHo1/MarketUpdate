@@ -15,6 +15,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class LocationDto {
     String address;
-    String latitude;
-    String longitude;
+    double latitude;
+    double longitude;
+    String jibun_address;
 }

@@ -7,7 +7,7 @@ import Button from "../atoms/Button";
 import axios from "axios";
 const FindByPasswordPage = () => {
   const [user, setUser] = useState({
-    userEmail: "",
+    id: "",
   });
   const handleFindPasswordInfo = async (e) => {
     e.preventDefault();
