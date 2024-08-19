@@ -101,10 +101,9 @@ public class MemberService {
             System.out.println("===KaKao Login===");
 
             String id = requestMemberData.get("email").toString();
-            String nickname = requestMemberData.get("nickname").toString();
             String profile_img = requestMemberData.get("profile_image").toString();
 
-            MemberDto memberDto = MemberDto.builder().id(id).password("kakaoPw").nickname(nickname).profile_image(profile_img).build();
+            MemberDto memberDto = MemberDto.builder().id(id).password("kakaoPw").profile_image(profile_img).build();
 
             memberRepository.save(Member.toEntity(memberDto));
 
