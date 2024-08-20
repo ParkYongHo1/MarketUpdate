@@ -28,6 +28,7 @@ const WriteProduct = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   console.log(product);
+  console.log(user);
 
   const checkOption = [
     { label: "의상", value: "의상" },
