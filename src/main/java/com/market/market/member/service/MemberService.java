@@ -103,7 +103,7 @@ public class MemberService {
             String id = requestMemberData.get("email").toString();
             String profile_img = requestMemberData.get("profile_image").toString();
 
-            MemberDto memberDto = MemberDto.builder().id(id).password("kakaoPw").profile_image(profile_img).build();
+            MemberDto memberDto = MemberDto.builder().id(id).password("kakaoPw").profile_image(profile_img).auth(1).build();
 
             memberRepository.save(Member.toEntity(memberDto));
 
