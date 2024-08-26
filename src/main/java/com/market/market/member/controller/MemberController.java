@@ -8,6 +8,8 @@ import javax.swing.JWindow;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,13 +48,28 @@ public class MemberController {
     }
 
     @PostMapping(value = "/add-info")
-    public @ResponseBody Map<String,Object> adduserinfo(@RequestBody Map<String,Object> body)
-    {
+    public @ResponseBody Map<String, Object> adduserinfo(@RequestBody Map<String, Object> body) {
         System.out.println("===Request Body===" + body.toString());
 
-        Map<String,Object> resultMap = memberService.adduserinfo(body);
-
+    
+        Map<String, Object> resultMap = memberService.adduserinfo(body);
         return resultMap;
-    } 
+    }
+
+    @PostMapping("/check-nickname")
+    public ResponseEntity<Map<String, String>> checkNickname(@RequestBody Map<String, String> body) {
+        String nickname = body.get("nickname");
+        Map<String, String> response = new HashMap<>();
+
+        if (memberService.isNicknameTaken(nickname)) {
+            response.put("status", "400");
+            response.put("message", "닉네임이 이미 있습니다.");
+        } else {
+            response.put("status", "200");
+            response.put("message", "닉네임이 사용가능합니다.");
+        }
+
+        return ResponseEntity.ok(response);
+    }
 
 }
