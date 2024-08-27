@@ -1,10 +1,10 @@
-import Wrapper from "./atom/Wrapper";
-import Box from "./atom/Box";
-import Container from "./atom/Container";
-import FlexDiv from "./atom/FlexDiv";
-import AlertBox from "../../components/AlertBox";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
+import Wrapper from './atom/Wrapper';
+import Box from './atom/Box';
+import Container from './atom/Container';
+import FlexDiv from './atom/FlexDiv';
+import AlertBox from '../../components/AlertBox';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import {
   faKey,
   faPhone,
@@ -15,12 +15,12 @@ import {
   faFire,
   faBullhorn,
   faQuestion,
-} from "@fortawesome/free-solid-svg-icons";
-import SideMenu from "./templates/SideMenu";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import RenderContent from "./templates/RenderContent";
-import { useNavigate } from "react-router-dom";
+} from '@fortawesome/free-solid-svg-icons';
+import SideMenu from './templates/SideMenu';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import RenderContent from './templates/RenderContent';
+import { useNavigate } from 'react-router-dom';
 const Profile = () => {
   const activetab = useSelector((state) => state.profile.activeTab);
   const user = useSelector((state) => state.user.user.member);
@@ -29,14 +29,14 @@ const Profile = () => {
   const navigate = useNavigate();
   console.log(user);
 
-  useEffect(() => {
-    const initMypage = async () => {
-      if (!isLoggedIn) {
-        setShowAlert(true);
-      }
-    };
-    initMypage();
-  }, [isLoggedIn]);
+  // useEffect(() => {
+  //   const initMypage = async () => {
+  //     if (!isLoggedIn) {
+  //       setShowAlert(true);
+  //     }
+  //   };
+  //   initMypage();
+  // }, [isLoggedIn]);
 
   return (
     <Container>
@@ -44,12 +44,12 @@ const Profile = () => {
         <Box left>
           <Box profile>
             <img
-              src={process.env.PUBLIC_URL + "/logo.png"}
+              src={process.env.PUBLIC_URL + '/logo.png'}
               width={100}
               height={100}
             />
             <FlexDiv>
-              <Box name>{user.nickname}</Box>
+              <Box name>박용호</Box>
             </FlexDiv>
             <button> 프로필 수정</button>
           </Box>
@@ -70,7 +70,7 @@ const Profile = () => {
         <AlertBox
           onClose={() => {
             setShowAlert(false);
-            navigate("/");
+            navigate('/');
           }}
         />
       )}

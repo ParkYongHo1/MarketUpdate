@@ -13,15 +13,7 @@ const RenderContent = () => {
     case "heartList":
       return "관심 목록";
     case "changeEmail":
-      return "이메일 변경";
-    case "changePassword":
-      return "비밀번호 변경";
-    case "changePhone":
-      return "휴대폰 번호 변경";
-    case "changeAddress":
-      return "주소 변경";
-    case "event":
-      return "진행 중인 이벤트";
+      return "회원정보 변경";
     case "notice":
       return "공지사항";
     case "faq":
