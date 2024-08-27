@@ -57,9 +57,6 @@ public class Member implements UserDetails{
     @Column(length = 100,nullable = false)
     private String password;
 
-    @Column(length = 30)
-    private String email;  
-
     @Column(length = 20)
     private String phone;  
 
@@ -162,7 +159,6 @@ public class Member implements UserDetails{
         return Member.builder()
         .id(dto.getId())
         .password(dto.getPassword())
-        .email(dto.getEmail())
         .phone(dto.getPhone())
         .nickname(dto.getNickname())
         //.location(locations)

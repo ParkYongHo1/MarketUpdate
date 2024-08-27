@@ -146,6 +146,18 @@
 			<artifactId>spring-boot-starter-data-redis</artifactId>
 			<version>3.2.4</version>
 		</dependency>
+
+
+		<!-- sms 인증 구현을 위한 dependency-->
+		<!-- https://mvnrepository.com/artifact/net.nurigo/sdk -->
+		<dependency>
+			<groupId>net.nurigo</groupId>
+			<artifactId>sdk</artifactId>
+			<version>4.3.0</version>
+		</dependency>
+
+
+
 	</dependencies>
 
 	<build>

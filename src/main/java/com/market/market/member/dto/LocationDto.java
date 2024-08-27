@@ -18,4 +18,5 @@ public class LocationDto {
     double latitude;
     double longitude;
     String jibun_address;
+
 }
