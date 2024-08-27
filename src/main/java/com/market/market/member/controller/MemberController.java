@@ -3,16 +3,17 @@ package com.market.market.member.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.JWindow;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.market.market.member.dto.MemberDto;
+import com.market.market.member.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import com.market.market.member.dto.JwtDto;
-import com.market.market.member.service.MemberService;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,6 +22,8 @@ public class MemberController {
 
     @Autowired
     private MemberService memberService;
+
+    Map<String, Object> responseMap = new HashMap<>();
 
     @PostMapping(value = "/login")
     public @ResponseBody Map<String,Object> login(@RequestBody Map<String,Object> body)
@@ -54,5 +57,25 @@ public class MemberController {
 
         return resultMap;
     } 
+
+
+    @PostMapping(value="/signup")
+    public Map<String, Object> signUp(@RequestBody MemberDto memberDto){
+        int checked =memberService.signUp(memberDto);
+
+        if(checked == 200){
+            responseMap.put("status", "200");
+            return responseMap;
+        }
+        else if(checked == 405){
+            responseMap.put("status", "405");
+            return responseMap;
+        }else{
+            responseMap.put("status", "400");
+            return responseMap;
+        }
+
+        
+    }
 
 }

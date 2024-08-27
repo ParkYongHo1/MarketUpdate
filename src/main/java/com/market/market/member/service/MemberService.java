@@ -9,10 +9,13 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties.Lettuce.Cluster.Refresh;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -245,6 +248,37 @@ public class MemberService {
 
     private boolean isNicknameTaken(String nickname) {
         return memberRepository.existsByNickname(nickname);
+    }
+
+
+
+    public int signUp(MemberDto memberDto) {
+        boolean existsByEmail = memberRepository.existsById(memberDto.getId());
+        System.out.println("exitstByEmail" + existsByEmail);
+        if (existsByEmail) {
+         return 405;
+        }
+        try {
+            signUpProc(memberDto);
+            return 200;
+        } catch (Exception e) {
+            // 예외가 발생한 경우 400 Bad Request로 처리
+            return 400; // 오류일 경우
+        }
+    }
+    
+
+    @Transactional
+    public void signUpProc(MemberDto memberDto){
+               
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+        memberDto.setId(memberDto.getId());
+        memberDto.setPhone(memberDto.getPhone());
+
+        Member member = Member.toEntity(memberDto);
+
+        memberRepository.save(member);
     }
 
 }

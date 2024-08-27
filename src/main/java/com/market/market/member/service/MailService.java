@@ -6,6 +6,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,8 @@ public class MailService {
     private  RedisUtil redisUtil;
     private int authNumber;
     
-
+    @Value("${email.from}")
+    private String emailFrom;
 
      // 임의의 6자리 양수를 생성하여 authNumber에 저장합니다.
      public void makeRandomNumber() {
@@ -35,7 +37,7 @@ public class MailService {
     // 이메일을 보내고 인증 번호를 반환합니다.
     public String fetchEmail(String email) {
         makeRandomNumber();
-        String setFrom = "sinyeongseo92@gmail.com"; // email-config에 설정한 자신의 이메일 주소를 입력
+        String setFrom = emailFrom; // email-config에 설정한 자신의 이메일 주소를 입력
         String toMail = email;
         String title = "CARROT MARKET 인증 이메일 입니다."; // 이메일 제목
         String content =
@@ -52,7 +54,7 @@ public class MailService {
     //이메일을 전송합니다.
     public void mailSend(String setFrom, String toMail, String title, String content) {
         MimeMessage message = mailSender.createMimeMessage();//JavaMailSender 객체를 사용하여 MimeMessage 객체를 생성
-    
+        System.out.println("toMail" + toMail);
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message,true,"utf-8");//이메일 메시지와 관련된 설정을 수행합니다.
             // true를 전달하여 multipart 형식의 메시지를 지원하고, "utf-8"을 전달하여 문자 인코딩을 설정
