@@ -6,10 +6,13 @@ import java.util.Map;
 
 import com.market.market.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/product")
@@ -21,27 +24,27 @@ public class ProductController {
     Map<String, Object> resultMap = new HashMap<>();
 
     @PostMapping(value = "/write")
-        public Map<String,Object> writeProduct(@RequestPart("product_image") List<MultipartFile> product_image,
-                                 @RequestParam("address") String address,
-                                 @RequestParam("category") List<String> category,
-                                 @RequestParam("content") String content,
-                                 @RequestParam("jibunAddress") String jibun_address,
-                                 @RequestParam("latitude") double latitude,
-                                 @RequestParam("longitude") double longitude,
-                                 @RequestParam("price") String price,
-                                 @RequestParam("reg_member") String reg_member,
-                                 @RequestParam("title") String title)
+    public Map<String,Object> writeProduct(@RequestPart("product_image") List<MultipartFile> product_image,
+                                @RequestParam("address") String address,
+                                @RequestParam("category") List<String> category,
+                                @RequestParam("content") String content,
+                                @RequestParam("jibunAddress") String jibun_address,
+                                @RequestParam("latitude") double latitude,
+                                @RequestParam("longitude") double longitude,
+                                @RequestParam("price") String price,
+                                @RequestParam("reg_member") String reg_member,
+                                @RequestParam("title") String title)
         {
-            System.out.println("======RequestIMAGE======"+product_image.toString());
-            System.out.println("Address: " + address);
-            System.out.println("Category: " + category.toString());
-            System.out.println("Content: " + content);
-            System.out.println("Jibun Address: " + jibun_address);
-            System.out.println("Latitude: " + latitude);
-            System.out.println("Longitude: " + longitude);
-            System.out.println("Price: " + price);
-            System.out.println("Reg_member: " + reg_member);
-            System.out.println("Title: " + title);
+            log.info("======RequestIMAGE======"+product_image.toString());
+            log.info("Address: " + address);
+            log.info("Category: " + category.toString());
+            log.info("Content: " + content);
+            log.info("Jibun Address: " + jibun_address);
+            log.info("Latitude: " + latitude);
+            log.info("Longitude: " + longitude);
+            log.info("Price: " + price);
+            log.info("Reg_member: " + reg_member);
+            log.info("Title: " + title);
     
             Map<String, Object> productData = new HashMap<>();
             productData.put("address",address);
@@ -60,10 +63,14 @@ public class ProductController {
         }
 
 
-    // @PostMapping(value = "/image")
-    // public Map<String, Object> imageUpload(@RequestParam Map<String, MultipartFile> files)
-    // {
-    //    productService.imageUpload(files);
-    //    return resultMap;
-    // }
+    @GetMapping(value = "/detail")
+    public @ResponseBody Map<String,Object> productDetail(@RequestParam(name = "product-seq") String productSeq){
+        
+        log.info("productSeq : "+productSeq);
+        
+        resultMap = productService.productDetail(Long.parseLong(productSeq));
+
+        return resultMap;
+    }
+ 
 }
