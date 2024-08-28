@@ -58,7 +58,6 @@ public class MemberController {
         return resultMap;
     } 
 
-
     @PostMapping(value="/signup")
     public Map<String, Object> signUp(@RequestBody MemberDto memberDto){
         int checked =memberService.signUp(memberDto);
