@@ -1,6 +1,10 @@
 import { useSelector } from "react-redux";
 import WriteList from "../organisms/WriteList";
 import ReviewList from "../organisms/ReviewList";
+import HeartList from "../organisms/HeartList";
+import ChangeEmail from "../organisms/ChangeEmail";
+import Notice from "../organisms/Notice";
+import Faq from "../organisms/Faq";
 
 const RenderContent = () => {
   const activeTab = useSelector((state) => state.profile.activeTab);
@@ -11,13 +15,13 @@ const RenderContent = () => {
     case "reviewList":
       return <ReviewList />;
     case "heartList":
-      return "관심 목록";
+      return <HeartList />;
     case "changeEmail":
-      return "회원정보 변경";
+      return <ChangeEmail />;
     case "notice":
-      return "공지사항";
+      return <Notice />;
     case "faq":
-      return "자주 묻는 질문";
+      return <Faq />;
     default:
       return "프로필";
   }
