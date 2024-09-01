@@ -281,5 +281,33 @@ public class MemberService {
         memberRepository.save(member);
     }
 
+    public boolean memeberByPhone(String phone){
+        int memberExist = 0;
+        memberExist = memberRepository.searchByPhone(phone);
+
+        if(memberExist == 0){
+            return false;
+        }else {
+            return true;
+        }
+    }
+
+    public String searchId(String phone){
+        String id = memberRepository.findIdByPhone(phone);
+
+        return id;
+    }
+
+    public boolean memeberById(String phone){
+        
+        return memberRepository.existsById(phone);
+    }
+
+    public void settingPw(String id, String newPw){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String putPw = passwordEncoder.encode(newPw);
+       
+        memberRepository.settingPw(id, putPw);
+    }
 }
 

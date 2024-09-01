@@ -46,4 +46,11 @@ public class AuthService {
     }
 
 
+    public String searchPw(String id){
+
+        String pw = memberRepository.findPwById(id);
+
+        return pw;
+    }
+
 }
