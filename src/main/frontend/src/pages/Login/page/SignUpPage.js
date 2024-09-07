@@ -27,9 +27,11 @@ const SignUpPage = () => {
     try {
       const res = await axios.post("/member/signup", user);
       console.log(user);
-      if (res.data === 200) {
+      console.log(res.data);
+      
+      if (res.data.status === "200") {
         navigate("/login");
-      } else if (res.data === 400) {
+      } else if (res.data === "400") {
         alert("일시적인 서버 에러가 발생했습니다.");
       }
     } catch (e) {

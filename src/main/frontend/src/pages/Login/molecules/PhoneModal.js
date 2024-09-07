@@ -32,12 +32,14 @@ const PhoneModal = ({ phoneModal, setPhoneModal }) => {
           checkNum: value,
           phone: user.phone,
         });
-        if (res.data == "200") {
+        if (res.data.status == "200") {
+          console.log("true");
+          
           setAuthState("YES");
           dispatch(
             setPhoneMessage({
               ...phoneMessage,
-              message: "이메일 인증이 완료되었습니다.",
+              message: "휴대폰 인증이 완료되었습니다.",
               isPhoneTaken: "YES",
             })
           );
@@ -50,6 +52,7 @@ const PhoneModal = ({ phoneModal, setPhoneModal }) => {
       }
     }
   };
+console.log(authState);
 
   return (
     <Body>

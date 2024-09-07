@@ -56,6 +56,7 @@ public class AuthController {
     @PostMapping("/checknum-email")
     public Map<String,Object> CheckNumEmail(@RequestBody @Valid EmailCheckDto emailCheckDto){
          Boolean Checked=mailService.CheckAuthNum(emailCheckDto.getId(),emailCheckDto.getCheckNum());
+         
         if(Checked){
             responseMap.put("status", "200");
             return responseMap;
