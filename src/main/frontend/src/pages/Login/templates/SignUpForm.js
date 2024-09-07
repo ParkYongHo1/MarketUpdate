@@ -35,8 +35,7 @@ const SignUpForm = () => {
   const [isNotPhone, setIsNotPhone] = useState("");
   const emailInputRef = useRef(null);
   const phoneInputRef = useRef(null);
-
-  const onChangeInput = (e) => {
+    const onChangeInput = (e) => {
     const { name, value } = e.target;
     dispatch(setUser({ ...user, [name]: value }));
     if (name === "phone") {
@@ -93,7 +92,7 @@ const SignUpForm = () => {
   };
 
   const validatePasswordMatch = (passwordCheck, password) => {
-    if (passwordCheck !== password) {
+    if (passwordCheck !== user.password) {
       dispatch(
         setCheckPassword({
           ...checkPassword,
@@ -109,7 +108,10 @@ const SignUpForm = () => {
       );
     }
   };
-  console.log(user.email);
+  console.log(user.password);
+  
+console.log(passwordCheck);
+
   /********************
    * 이메일 인증번호 전송 API(/auth/fetch-email)
    ********************/

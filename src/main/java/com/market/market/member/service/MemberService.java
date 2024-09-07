@@ -47,6 +47,7 @@ public class MemberService {
     @Transactional
     public Map<String,Object> login(Map<String,Object> requestMemberData){
 
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String auth = requestMemberData.get("auth").toString();
         Map<String, Object> responseMap = new HashMap<>();
 
@@ -73,9 +74,15 @@ public class MemberService {
                 return responseMap;
             }
 
+            //패스워드가 일치하지 않을 때
+            if (!passwordEncoder.matches(password, member.getPassword()))
+            {
+                responseMap.put("status", "400");
+                return responseMap;
+            }
 
             //일반 로그인
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(id,password);
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(id,member.getPassword());
 
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
@@ -269,9 +276,10 @@ public class MemberService {
     
 
     @Transactional
-    public void signUpProc(MemberDto memberDto){
-               
+    public void signUpProc(MemberDto memberDto){              
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        System.out.println("pw : "+passwordEncoder.encode(memberDto.getPassword()));
+
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
         memberDto.setId(memberDto.getId());
         memberDto.setPhone(memberDto.getPhone());
