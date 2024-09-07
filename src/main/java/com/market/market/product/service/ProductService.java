@@ -11,6 +11,7 @@ import java.util.*;
 import com.market.market.member.dto.LocationDto;
 import com.market.market.member.dto.MemberDto;
 import com.market.market.member.entity.Member;
+import com.market.market.member.repository.MemberRepository;
 import com.market.market.product.dto.ProductDto;
 import com.market.market.product.entity.Product;
 import com.market.market.product.repository.ProductRepository;
@@ -19,8 +20,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.mysql.cj.protocol.x.OkBuilder;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @Service
 public class ProductService {
 
@@ -29,6 +34,9 @@ public class ProductService {
 
     @Autowired
     ProductRepository productRepository;
+
+    @Autowired
+    MemberRepository memberRepository;
 
     private Map<String, Object> respoonseMap = new HashMap<>();
 
@@ -87,6 +95,32 @@ public class ProductService {
        return respoonseMap;
     }
 
+    public Map<String, Object> productDetail(Long productSeq)
+    {
+        try{
+            Product product= productRepository.findById(productSeq).orElseThrow();
+
+            ProductDto productDto = ProductDto.toDto(product);
+
+            Member member = memberRepository.findById(product.getMember().getId()).orElseThrow();
+
+            MemberDto memberDto = MemberDto.toDto(member);
+
+            log.info("productDto : "+productDto.toString());
+            log.info("memberDto : "+memberDto.toString());
+
+            respoonseMap.put("status","200");
+            respoonseMap.put("product", productDto);
+            respoonseMap.put("member", memberDto);
+
+        }catch(Exception e)
+        {
+            log.info("Error Message : ",e.getMessage());
+            respoonseMap.put("status", "400");
+        }
+        
+        return respoonseMap;
+    }
 
 
     public List<String> imageUpload(List<MultipartFile> files)

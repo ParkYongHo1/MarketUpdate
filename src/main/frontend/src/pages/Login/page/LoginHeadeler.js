@@ -13,6 +13,7 @@ const LoginHandeler = (props) => {
   const code = new URL(window.location.href).searchParams.get("code");
   const CLIENT_ID = process.env.REACT_APP_REST_API_KEY;
   const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
+  console.log(user);
 
   useEffect(() => {
     const KakaoLogin = async () => {
@@ -70,7 +71,7 @@ const LoginHandeler = (props) => {
 
           // Handle successful login, navigate to the desired route
           if (backendResponse.data.status == "200") {
-            dispatch(login({ user: backendResponse.data }));
+            dispatch(login({ user: backendResponse.data.member }));
             dispatch(setJwt(jwtData));
             console.log(backendResponse.data);
 

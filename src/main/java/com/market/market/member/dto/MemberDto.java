@@ -35,8 +35,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class MemberDto{
     private String id;
-    private String password;
-    private String email;  
+    private String password;  
     private String phone;  
     private String nickname;  
     private LocationDto location;
@@ -57,6 +56,7 @@ public class MemberDto{
     {
 
        //ObjectMapper objectMapper = new ObjectMapper();
+
        LocationDto locations = new LocationDto();
         try {
             // if (entity.getLocation() != null) {
@@ -74,7 +74,6 @@ public class MemberDto{
         return MemberDto.builder()
         .id(entity.getId())
         .password(entity.getPassword())
-        .email(entity.getEmail())
         .phone(entity.getPhone())
         .nickname(entity.getNickname())
         .location(locations)

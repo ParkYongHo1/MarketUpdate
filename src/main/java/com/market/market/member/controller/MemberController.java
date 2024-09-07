@@ -3,18 +3,15 @@ package com.market.market.member.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.JWindow;
-
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import com.market.market.member.dto.JwtDto;
+import com.market.market.member.dto.MemberDto;
 import com.market.market.member.service.MemberService;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +20,8 @@ public class MemberController {
 
     @Autowired
     private MemberService memberService;
+
+    Map<String, Object> responseMap = new HashMap<>();
 
     @PostMapping(value = "/login")
     public @ResponseBody Map<String,Object> login(@RequestBody Map<String,Object> body)
@@ -54,7 +53,7 @@ public class MemberController {
     
         Map<String, Object> resultMap = memberService.adduserinfo(body);
         return resultMap;
-    }
+    } 
 
     @PostMapping("/check-nickname")
     public ResponseEntity<Map<String, String>> checkNickname(@RequestBody Map<String, String> body) {

@@ -9,10 +9,13 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties.Lettuce.Cluster.Refresh;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -103,7 +106,7 @@ public class MemberService {
             String id = requestMemberData.get("email").toString();
             String profile_img = requestMemberData.get("profile_image").toString();
 
-            MemberDto memberDto = MemberDto.builder().id(id).password("kakaoPw").profile_image(profile_img).build();
+            MemberDto memberDto = MemberDto.builder().id(id).password("kakaoPw").profile_image(profile_img).auth(1).build();
 
             memberRepository.save(Member.toEntity(memberDto));
 
@@ -247,5 +250,64 @@ public class MemberService {
         return memberRepository.existsByNickname(nickname);
     }
 
+
+
+    public int signUp(MemberDto memberDto) {
+        boolean existsByEmail = memberRepository.existsById(memberDto.getId());
+        System.out.println("exitstByEmail" + existsByEmail);
+        if (existsByEmail) {
+         return 405;
+        }
+        try {
+            signUpProc(memberDto);
+            return 200;
+        } catch (Exception e) {
+            // 예외가 발생한 경우 400 Bad Request로 처리
+            return 400; // 오류일 경우
+        }
+    }
+    
+
+    @Transactional
+    public void signUpProc(MemberDto memberDto){
+               
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+        memberDto.setId(memberDto.getId());
+        memberDto.setPhone(memberDto.getPhone());
+
+        Member member = Member.toEntity(memberDto);
+
+        memberRepository.save(member);
+    }
+
+    public boolean memeberByPhone(String phone){
+        int memberExist = 0;
+        memberExist = memberRepository.searchByPhone(phone);
+
+        if(memberExist == 0){
+            return false;
+        }else {
+            return true;
+        }
+    }
+
+    public String searchId(String phone){
+        String id = memberRepository.findIdByPhone(phone);
+
+        return id;
+    }
+
+    public boolean memeberById(String phone){
+        
+        return memberRepository.existsById(phone);
+    }
+
+    public void settingPw(String id, String newPw){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String putPw = passwordEncoder.encode(newPw);
+       
+        memberRepository.settingPw(id, putPw);
+    }
 }
 

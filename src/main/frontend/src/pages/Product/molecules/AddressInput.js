@@ -10,7 +10,7 @@ const AddressInput = ({ user, setUser }) => {
   const geoCoder = new window.kakao.maps.services.Geocoder();
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
   const dispatch = useDispatch();
-  const product = useSelector((state) => state.product);
+  const product = useSelector((state) => state.product.product);
   const handleUser = (e) => {
     const { name, value } = e.target;
     dispatch(write({ ...product, [name]: value }));

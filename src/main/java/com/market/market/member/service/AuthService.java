@@ -27,7 +27,6 @@ public class AuthService {
         MemberDto memberDto = MemberDto.builder()
         .id(body.get("id"))
         .password(body.get("password"))
-        .email(body.get("email"))
         .nickname(body.get("nickname")).build();
 
         
@@ -44,6 +43,14 @@ public class AuthService {
         resultMap.put("MESSAGE", "SUCCESS");
 
         return resultMap;
+    }
+
+
+    public String searchPw(String id){
+
+        String pw = memberRepository.findPwById(id);
+
+        return pw;
     }
 
 }
