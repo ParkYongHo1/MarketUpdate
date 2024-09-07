@@ -17,7 +17,7 @@ const LoginForm = () => {
       <PTag>이메일 주소</PTag>
       <Input value={user?.id} name="id" onChange={onChangeInput} />
       <PTag>비밀번호</PTag>
-      <Input value={user?.password} name="password" onChange={onChangeInput} />
+      <Input value={user?.password} type="password" name="password" onChange={onChangeInput} />
     </>
   );
 };
