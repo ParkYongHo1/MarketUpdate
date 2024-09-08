@@ -1,5 +1,6 @@
 package com.market.market.member.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.market.market.member.entity.Member;
+import com.market.market.product.entity.Product;
 
 public interface MemberRepository extends JpaRepository<Member,String>{
     Optional<Member> findById(String id);
@@ -28,4 +30,8 @@ public interface MemberRepository extends JpaRepository<Member,String>{
     @Transactional
     @Query("UPDATE Member m SET m.password = :putPw WHERE m.id = :id")
     void settingPw(@Param("id") String id, @Param("putPw") String putPw);
+
+    @Query("SELECT nickname FROM Member m WHERE m.id = :id")
+    String getNickname(@Param("id") String id);
+
 }
