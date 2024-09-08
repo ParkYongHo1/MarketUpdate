@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,8 +25,16 @@ public class MyPageController {
     @GetMapping("/my-product")
     public Map<String,Object> MyProduct(@RequestParam(name="id") String id) {
         responseMap = mypageService.getMyProduct(id);
-        System.out.println("responseMap" + responseMap);
+        
         return responseMap;
     }
+
+    @GetMapping("/page-in")
+    public Map<String,Object> PageIn(@RequestParam(name="id") String id){
+        responseMap = mypageService.getPageIn(id);
+        
+        return responseMap;
+    }
+
 
 }
