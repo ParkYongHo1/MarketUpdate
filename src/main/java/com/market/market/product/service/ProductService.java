@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import com.market.market.member.dto.LocationDto;
 import com.market.market.member.dto.MemberDto;
@@ -170,4 +171,34 @@ public class ProductService {
         return uploadPath;
     }
 
+    public List<ProductDto> getRecentProducts(int count) {
+        List<Product> products = productRepository.findTop10ByOrderByRegDateDesc();
+        return products.stream().map(product -> mapToDto(product)).collect(Collectors.toList());
+    }
+
+     // 카테고리를 포함하는 상품 조회 서비스
+    public List<ProductDto> getProductsByCategory(String category) {
+        List<Product> products = productRepository.findByCategoryContaining(category);
+        return products.stream().map(product -> mapToDto(product)).collect(Collectors.toList());
+    }
+
+    private ProductDto mapToDto(Product product) {
+
+        LocationDto locationDto = new LocationDto();
+        locationDto.setAddress(product.getAddress());
+        locationDto.setLatitude(product.getLatitude());
+        locationDto.setJibun_address(product.getJibun_address());
+        locationDto.setLongitude(product.getLongitude());
+
+
+        // Product 엔티티를 ProductDto로 매핑
+        return ProductDto.builder()
+                .title(product.getTitle())
+                .reg_date(product.getReg_date())
+                .product_image(List.of(product.getProduct_image().split(","))) // 가정: 이미지가 콤마로 구분된 문자열
+                .price(product.getPrice())
+                .location(locationDto)
+                .category(List.of(product.getCategory().split(","))) // 가정: 카테고리가 콤마로 구분된 문자열
+                .build();
+    }
 }

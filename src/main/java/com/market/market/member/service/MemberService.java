@@ -59,6 +59,7 @@ public class MemberService {
 
             String id = requestMemberData.get("id").toString();
             String password = requestMemberData.get("password").toString();
+            System.out.println(passwordEncoder.encode(password));
 
             if (id == null || id.isEmpty() || password == null || password.isEmpty()) {          
                 responseMap.put("status", "400");
@@ -171,89 +172,99 @@ public class MemberService {
         return responseMap;
     }
 
+
     @Transactional
-    public Map<String,Object> adduserinfo(Map<String,Object> body){
+    public Map<String, Object> adduserinfo(Map<String, Object> body) {
+        Map<String, Object> resultMap = new HashMap<>();
+    
+        try {
+            
+    
+         
+    
+            String address = (String) body.get("address");
+            double latitude = body.containsKey("latitude") ? Double.parseDouble(body.get("latitude").toString()) : 0;
+            double longitude = body.containsKey("longitude") ? Double.parseDouble(body.get("longitude").toString()) : 0;
+            String jibun_address = (String) body.get("jibunAddress");
+            
+    
+            if (address == null || latitude == 0 || longitude == 0 || jibun_address == null) {
+                resultMap.put("status", "400");
+                resultMap.put("message", "Incomplete location data");
+                return resultMap;
+            }
+    
+            LocationDto locationDto = LocationDto.builder()
+                    .address(address)
+                    .latitude(latitude)
+                    .longitude(longitude)
+                    .jibun_address(jibun_address)
+                    .build();
+    
+                    String nickname = (String) body.get("nickname");
+                    if (nickname == null || nickname.isEmpty()) {
+                        resultMap.put("status", "400");
+                        resultMap.put("message", "닉네임이 가능합니다");
+                        return resultMap;
+                    }
+            
+                    if (isNicknameTaken(nickname)) {
+                        resultMap.put("status", "400");
+                        resultMap.put("message", "닉네임이 이미 있습니다");
+                        return resultMap;
+                    }
+    
         
-        Map<String,Object> resultMap = new HashMap<>();
+            List<String> category = (List)body.get("category");
+    
+            String id = (String) body.get("id");
+            String password = (String) body.get("password");
+    
+            if (password == null || password.isEmpty()) {
+                resultMap.put("status", "400");
+                resultMap.put("message", "Password is required");
+                return resultMap;
+            }
+    
+            MemberDto memberDto = MemberDto.builder()
+                    .id(id)
+                    .nickname(nickname)
+                    .birth((String) body.get("birth"))
+                    .location(locationDto)
+                    .category(category.toString())  // List<String> 사용
+                    .password(password)
+                    .phone((String) body.get("phone"))
+                    .build();
+    
+            System.out.println("======"+memberDto);
 
-        Map<String, Object> locations = (Map<String, Object>) body.get("location");
-        if (locations == null) {
-            resultMap.put("status", "400");
-            resultMap.put("message", "Location data is missing");
-            return resultMap;
+            Member member = Member.toEntity(memberDto);
+
+            System.out.println("======"+member.toString());
+    
+            System.out.println("Saving Member: " + member);
+    
+            memberRepository.save(member);
+    
+            resultMap.put("status", "200");
+            resultMap.put("message", "SUCCESS");
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultMap.put("status", "500");
+            resultMap.put("message", "Internal server error: " + e.getMessage());
         }
-
-    // Check if all required location fields are present and not null
-    String address = (String) locations.get("address");
-    double latitude = Double.parseDouble(locations.get("latitude").toString());
-    double longitude = Double.parseDouble(locations.get("longitude").toString());
-    String jibun_address = (String) locations.get("jibunAddress");
-
-    if (address == null || latitude == 0 || longitude == 0 || jibun_address == null) {
-        resultMap.put("status", "400");
-        resultMap.put("message", "Incomplete location data");
+    
         return resultMap;
     }
+    
+    
+    
 
-    LocationDto locationDto = LocationDto.builder()
-            .address(address)
-            .latitude(latitude)
-            .longitude(longitude)
-            .jibun_address(jibun_address)
-            .build();
-
-    // Check and handle nickname
-    String nickname = (String) body.get("nickname");
-    if (nickname == null || nickname.isEmpty()) {
-        resultMap.put("status", "400");
-        resultMap.put("message", "Nickname is required");
-        return resultMap;
-    }
-    if (isNicknameTaken(nickname)) {
-        resultMap.put("status", "400");
-        resultMap.put("message", "Nickname is already taken");
-        return resultMap;
-    }
-
-    // Process categories
-    String categoryStr = body.get("category").toString();
-    List<String> categories = categoryStr != null ? List.of(categoryStr.split(",")) : new ArrayList<>();
-
-    String id = body.get("id") != null ? String.valueOf(body.get("id").toString()) : null;
-    String password = (String) body.get("password"); // Ensure password is present
-
-    if (password == null || password.isEmpty()) { // Check if password is provided
-        resultMap.put("status", "400");
-        resultMap.put("message", "Password is required");
-        return resultMap;
-    }
-
-    // Build MemberDto and convert to Member entity
-    MemberDto memberDto = MemberDto.builder()
-            .id(id)
-            .nickname(nickname)
-            .birth((String) body.get("birth"))
-            .location(locationDto)
-            .category(categories.toString())
-            .password(password)
-            .build();
-
-    Member member = Member.toEntity(memberDto);
-
-    System.out.println("Insert value: " + member.toString());
-
-    // Save entity
-    memberRepository.save(member);
-
-    // Set result map
-    resultMap.put("status", "200");
-    resultMap.put("message", "SUCCESS");
-
-    return resultMap;
-    }
+    
 
 
-    private boolean isNicknameTaken(String nickname) {
+
+    public boolean isNicknameTaken(String nickname) {
         return memberRepository.existsByNickname(nickname);
     }
 
@@ -262,6 +273,7 @@ public class MemberService {
     public int signUp(MemberDto memberDto) {
         boolean existsByEmail = memberRepository.existsById(memberDto.getId());
         System.out.println("exitstByEmail" + existsByEmail);
+        
         if (existsByEmail) {
          return 405;
         }
