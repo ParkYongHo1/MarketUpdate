@@ -2,6 +2,7 @@ package com.market.market.product.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -102,6 +103,7 @@ public class ProductService {
             Product product= productRepository.findById(productSeq).orElseThrow();
 
             ProductDto productDto = ProductDto.toDto(product);
+            productDto.setProduct_seq(productSeq.intValue());
 
             Member member = memberRepository.findById(product.getMember().getId()).orElseThrow();
 
@@ -191,14 +193,22 @@ public class ProductService {
         locationDto.setLongitude(product.getLongitude());
 
 
+    
+        Date regDate = product.getReg_date(); 
+
+        String productImages = product.getProduct_image().replace("[", "").replace("]", "");
+    
         // Product 엔티티를 ProductDto로 매핑
         return ProductDto.builder()
+                .product_seq(product.getProduct_seq().intValue())
                 .title(product.getTitle())
-                .reg_date(product.getReg_date())
-                .product_image(List.of(product.getProduct_image().split(","))) // 가정: 이미지가 콤마로 구분된 문자열
+                .reg_date(regDate) // 변환된 Date 객체를 전달
+                .product_image(Arrays.asList(productImages.split(",")))
                 .price(product.getPrice())
                 .location(locationDto)
                 .category(List.of(product.getCategory().split(","))) // 가정: 카테고리가 콤마로 구분된 문자열
                 .build();
     }
+       
+       
 }

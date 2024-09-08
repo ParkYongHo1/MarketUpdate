@@ -66,8 +66,7 @@ public class ProductController {
 
 
     @GetMapping(value = "/detail")
-    public @ResponseBody Map<String,Object> productDetail(@RequestParam(name = "product-seq") String productSeq){
-        
+    public @ResponseBody Map<String,Object> productDetail(@RequestParam(name = "product_seq") String productSeq){
         log.info("productSeq : "+productSeq);
         
         resultMap = productService.productDetail(Long.parseLong(productSeq));
