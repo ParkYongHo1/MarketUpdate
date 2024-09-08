@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.market.market.product.dto.ProductDto;
+import com.market.market.product.entity.Product;
 import com.market.market.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -72,5 +74,15 @@ public class ProductController {
 
         return resultMap;
     }
- 
+
+    @GetMapping("/select")
+    public List<ProductDto> getRecentProducts() {
+        return productService.getRecentProducts(10);
+        
+    }
+
+    @GetMapping("/select-category")
+      public List<ProductDto> getProductsByCategory(@RequestParam String category) {
+        return productService.getProductsByCategory(category);
+    }
 }

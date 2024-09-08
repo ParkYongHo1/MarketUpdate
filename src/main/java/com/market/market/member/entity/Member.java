@@ -24,6 +24,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -46,6 +47,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @Builder
+@DynamicUpdate
 @AllArgsConstructor
 @NoArgsConstructor
 public class Member implements UserDetails{
@@ -161,7 +163,6 @@ public class Member implements UserDetails{
         .password(dto.getPassword())
         .phone(dto.getPhone())
         .nickname(dto.getNickname())
-        //.location(locations)
         .address(address)
         .jibun_address(jibunAddress)
         .longitude(longitude)

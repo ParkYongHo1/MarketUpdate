@@ -52,6 +52,8 @@ public class MemberDto{
     @Builder.Default
     private int level = 0;  // 0: 사용자, 1 : 관리자
 
+    
+
     public static MemberDto toDto(Member entity)
     {
 
@@ -70,6 +72,8 @@ public class MemberDto{
         } catch (Exception e) {
             System.out.println("Error Message : "+e.getMessage());           
         }
+
+      
 
         return MemberDto.builder()
         .id(entity.getId())

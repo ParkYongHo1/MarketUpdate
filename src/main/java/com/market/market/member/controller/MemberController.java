@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,4 +72,21 @@ public class MemberController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(value="/signup")
+    public Map<String, Object> signUp(@RequestBody MemberDto memberDto){
+        int checked =memberService.signUp(memberDto);
+
+        if(checked == 200){
+            responseMap.put("status", "200");
+            return responseMap;
+        }
+        else if(checked == 405){
+            responseMap.put("status", "405");
+            return responseMap;
+        }else{
+            responseMap.put("status", "400");
+            return responseMap;
+        }
+
+    }
 }
