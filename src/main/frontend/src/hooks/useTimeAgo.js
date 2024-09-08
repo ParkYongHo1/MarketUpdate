@@ -11,31 +11,34 @@ const useTimeAgo = (initialDate) => {
       const duration = moment.duration(now.diff(datetime));
 
       let seconds = duration.asSeconds();
-      let minute = duration.asMinutes();
+      let minutes = duration.asMinutes();
       let hours = duration.asHours();
       let days = duration.asDays();
       let weeks = duration.asWeeks();
-      let month = duration.asMonths();
-      let year = duration.asYears();
+      let months = duration.asMonths();
+      let years = duration.asYears();
 
-      if (minute < 1) {
+      if (minutes < 1) {
         setContentTime(parseInt(seconds) + "초 전");
       } else if (hours < 1) {
-        setContentTime(parseInt(minute) + "분 전");
+        setContentTime(parseInt(minutes) + "분 전");
       } else if (hours < 24) {
         setContentTime(parseInt(hours) + "시간 전");
-      } else if (weeks < 1) {
+      } else if (days < 7) {
         setContentTime(parseInt(days) + "일 전");
-      } else if (month < 1) {
+      } else if (weeks < 4) {
         setContentTime(parseInt(weeks) + "주 전");
-      } else if (year < 1) {
-        setContentTime(parseInt(month) + "달 전");
+      } else if (months < 12) {
+        setContentTime(parseInt(months) + "달 전");
       } else {
-        setContentTime(parseInt(year) + "년 전");
+        setContentTime(parseInt(years) + "년 전");
       }
     };
 
     updateTime();
+    const intervalId = setInterval(updateTime, 60000); // Update every minute
+
+    return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, [initialDate]);
 
   return contentTime;
