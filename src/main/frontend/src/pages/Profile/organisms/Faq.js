@@ -314,7 +314,7 @@ export default Faq;
 //     border: 2px solid #6C20E1;
 //     color: ${props => props.primary ? '#fff' : '#6C20E1'};
 //     cursor: pointer;
-//     font-size: 16px;
+//     font-size: 16px;n
 //     border-radius: 8px;
 //     box-sizing: border-box;
 // `;
