@@ -68,7 +68,8 @@ public class ProductController {
     @GetMapping(value = "/detail")
     public @ResponseBody Map<String,Object> productDetail(@RequestParam(name = "product_seq") String productSeq){
         log.info("productSeq : "+productSeq);
-        
+
+
         resultMap = productService.productDetail(Long.parseLong(productSeq));
 
         return resultMap;
@@ -84,4 +85,11 @@ public class ProductController {
       public List<ProductDto> getProductsByCategory(@RequestParam String category) {
         return productService.getProductsByCategory(category);
     }
+
+    @PostMapping("/product-like")
+    public @ResponseBody Map<String,Object> productLike(@RequestBody Map<String,Object> body)
+    {
+        return productService.productLike(body);
+    }
+
 }

@@ -15,7 +15,10 @@ import com.market.market.member.dto.MemberDto;
 import com.market.market.member.entity.Member;
 import com.market.market.member.repository.MemberRepository;
 import com.market.market.product.dto.ProductDto;
+import com.market.market.product.dto.ProductLikeDto;
 import com.market.market.product.entity.Product;
+import com.market.market.product.entity.ProductLike;
+import com.market.market.product.repository.ProductLikeRepository;
 import com.market.market.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,10 +43,14 @@ public class ProductService {
     @Autowired
     MemberRepository memberRepository;
 
+    @Autowired
+    ProductLikeRepository productLikeRepository;
+
     private Map<String, Object> respoonseMap = new HashMap<>();
 
     public Map<String, Object> writeProduct(Map<String,Object> body)
     {
+        respoonseMap.clear();
 
         System.out.println("Body : "+body.toString());
         
@@ -79,11 +86,12 @@ public class ProductService {
                     .product_image(uploadPath)
                     .location(locationDto)                
                     .reg_date(reg_date)
+                    .member_id(id)
                     .build();
     
-            Member member =Member.toEntity(MemberDto.builder().id(id).build());
+            //Member member =Member.toEntity(MemberDto.builder().id(id).build());
     
-            productRepository.save(Product.toEntity(productDto,member));
+            productRepository.save(Product.toEntity(productDto));
 
             System.out.println("====물품등록성공====");
             respoonseMap.put("status", "200");
@@ -99,11 +107,12 @@ public class ProductService {
 
     public Map<String, Object> productDetail(Long productSeq)
     {
+        respoonseMap.clear();
+
         try{
             Product product= productRepository.findById(productSeq).orElseThrow();
 
             ProductDto productDto = ProductDto.toDto(product);
-            productDto.setProduct_seq(productSeq.intValue());
 
             Member member = memberRepository.findById(product.getMember().getId()).orElseThrow();
 
@@ -189,18 +198,16 @@ public class ProductService {
         LocationDto locationDto = new LocationDto();
         locationDto.setAddress(product.getAddress());
         locationDto.setLatitude(product.getLatitude());
-        locationDto.setJibun_address(product.getJibun_address());
+        locationDto.setJibun_address(product.getJibunAddress());
         locationDto.setLongitude(product.getLongitude());
 
+        Date regDate = product.getRegDate();
 
-    
-        Date regDate = product.getReg_date(); 
-
-        String productImages = product.getProduct_image().replace("[", "").replace("]", "");
+        String productImages = product.getProductImage().replace("[", "").replace("]", "");
     
         // Product 엔티티를 ProductDto로 매핑
         return ProductDto.builder()
-                .product_seq(product.getProduct_seq().intValue())
+                .product_seq(product.getProductSeq())
                 .title(product.getTitle())
                 .reg_date(regDate) // 변환된 Date 객체를 전달
                 .product_image(Arrays.asList(productImages.split(",")))
@@ -209,6 +216,59 @@ public class ProductService {
                 .category(List.of(product.getCategory().split(","))) // 가정: 카테고리가 콤마로 구분된 문자열
                 .build();
     }
-       
+
+
+    public Map<String,Object> productLike(Map<String,Object> body)
+    {
+        respoonseMap.clear();
+
+        try{
+            Long productSeq = Long.parseLong(body.get("product-seq").toString());
+            String memberId = (String)body.get("id");
+
+            ProductLikeDto dto = new ProductLikeDto();
+
+            dto.setProduct_seq(productSeq);
+            dto.setMember_id(memberId);
+
+            ProductLike entity = ProductLike.toEntity(dto);
+
+            productLikeRepository.save(entity);
+
+            updateLikeCnt(productSeq);
+
+            respoonseMap.put("status","200");
+        }catch (Exception e)
+        {
+            respoonseMap.put("status","400");
+            log.info("Error Message : "+e.getMessage());
+        }
+
+        return respoonseMap;
+    }
+
+
+    public void updateLikeCnt(Long productSeq)
+    {
+        try{
+            Long likeCnt = productLikeRepository.countByProduct_ProductSeq(productSeq);
+
+            Product product = productRepository.findById(productSeq).orElseThrow();
+
+            ProductDto productDto = ProductDto.toDto(product);
+
+            productDto.setLike_cnt(likeCnt.intValue());
+            productDto.setProduct_seq(productSeq);
+
+            productRepository.save(Product.toEntity(productDto));
+
+            log.info("좋아요 개수 : "+productDto.getLike_cnt());
+
+        } catch (Exception e)
+        {
+            log.info("Error Message",e.getMessage());
+        }
+
+    }
        
 }

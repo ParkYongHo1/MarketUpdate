@@ -35,11 +35,11 @@ public class MyPageService {
         for (int i = 0; i < productList.size(); i++) {
             Map<String, Object> productMap = new HashMap<>();
             productMap.put("status", "200");
-            productMap.put("product-image", productList.get(i).getProduct_image());
+            productMap.put("product-image", productList.get(i).getProductImage());
             productMap.put("title", productList.get(i).getTitle());
             productMap.put("address", productList.get(i).getAddress());
             productMap.put("price", productList.get(i).getPrice());
-            productMap.put("regtime", productList.get(i).getReg_date());
+            productMap.put("regtime", productList.get(i).getRegDate());
             
             resultList.add(productMap);
         }
