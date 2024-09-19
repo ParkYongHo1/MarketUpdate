@@ -10,12 +10,11 @@ import com.market.market.product.entity.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query("SELECT p FROM Product p ORDER BY p.reg_date DESC")
+    @Query("SELECT p FROM Product p ORDER BY p.regDate DESC")
     List<Product> findTop10ByOrderByRegDateDesc();
 
     @Query("SELECT p FROM Product p WHERE p.category LIKE %:category%")
     List<Product> findByCategoryContaining(@Param("category") String category);
-    
 
     List<Product> findByMember_Id(String id);
 

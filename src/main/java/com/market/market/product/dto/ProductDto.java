@@ -37,7 +37,7 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 public class ProductDto {
 
-    private int product_seq;
+    private Long product_seq;
 
     private String title;
 
@@ -59,6 +59,9 @@ public class ProductDto {
 
     private List<String> category;
 
+    private String member_id;
+
+
     public static ProductDto toDto(Product entity){
         String imagePath = "";
         String category = "";
@@ -69,7 +72,7 @@ public class ProductDto {
         try {          
 
             locations.setAddress(entity.getAddress());
-            locations.setJibun_address(entity.getJibun_address());
+            locations.setJibun_address(entity.getJibunAddress());
             locations.setLatitude(entity.getLatitude());
             locations.setLongitude(entity.getLongitude());
 
@@ -80,8 +83,8 @@ public class ProductDto {
                categoryList = new ArrayList<>(Arrays.asList(category.split(", ")));
            }
 
-           if(entity.getProduct_image() != null){
-               imagePath = entity.getProduct_image();
+           if(entity.getProductImage() != null){
+               imagePath = entity.getProductImage();
 
                imagePath = imagePath.substring(1, imagePath.length() - 1);
                
@@ -93,16 +96,18 @@ public class ProductDto {
        }
 
         return ProductDto.builder()
+       .product_seq(entity.getProductSeq())
        .title(entity.getTitle())
        .content(entity.getContent())
-       .reg_date(entity.getReg_date())
+       .reg_date(entity.getRegDate())
        .product_image(imagePathList)
        .location(locations)
-       .view_cnt(entity.getView_cnt())
-       .like_cnt(entity.getLike_cnt())
+       .view_cnt(entity.getViewCnt())
+       .like_cnt(entity.getLikeCnt())
        .price(entity.getPrice())
-       .product_status(entity.getProduct_status())
+       .product_status(entity.getProductStatus())
        .category(categoryList)
+       .member_id(entity.getMember().getId())
        .build();
        
     }

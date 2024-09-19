@@ -25,7 +25,8 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long product_seq;
+    @Column(name="product_seq")
+    private Long productSeq;
 
     @Column(length = 30)
     private String title;
@@ -33,17 +34,17 @@ public class Product {
     @Column(length = 300)
     private String content;
 
-    @Column
-    private Date reg_date;
+    @Column(name="reg_date")
+    private Date regDate;
 
-    @Column(columnDefinition = "TEXT")
-    private String product_image;
+    @Column(columnDefinition = "TEXT", name="product_image")
+    private String productImage;
 
-    @Column
-    private int view_cnt;
+    @Column(name="view_cnt")
+    private int viewCnt;
 
-    @Column
-    private int like_cnt;
+    @Column(name="like_cnt")
+    private int likeCnt;
 
     @Column
     private int price;
@@ -51,8 +52,8 @@ public class Product {
     @Column
     private String address;
 
-    @Column
-    private String jibun_address;
+    @Column(name="jibun_address")
+    private String jibunAddress;
 
     @Column
     private Double latitude;
@@ -60,8 +61,8 @@ public class Product {
     @Column
     private Double longitude;
 
-    @Column
-    private int product_status;
+    @Column(name="product_status")
+    private int productStatus;
 
     @Column(length = 100)
     private String category;
@@ -71,9 +72,11 @@ public class Product {
     private Member member;
 
 
-    public static Product toEntity(ProductDto dto, Member member){       
+    public static Product toEntity(ProductDto dto){
         String imagePath = "";
         String category = "";
+
+        Member member = Member.builder().id(dto.getMember_id()).build();
 
         try {          
            if (dto.getCategory() != null){
@@ -89,18 +92,19 @@ public class Product {
        }
 
        return Product.builder()
+       .productSeq(dto.getProduct_seq())
        .title(dto.getTitle())
        .content(dto.getContent())
-       .reg_date(dto.getReg_date())
-       .product_image(imagePath)
-       .view_cnt(dto.getView_cnt())
-       .like_cnt(dto.getLike_cnt())
+       .regDate(dto.getReg_date())
+       .productImage(imagePath)
+       .viewCnt(dto.getView_cnt())
+       .likeCnt(dto.getLike_cnt())
        .price(dto.getPrice())
        .address(dto.getLocation().getAddress())
-       .jibun_address(dto.getLocation().getJibun_address())
+       .jibunAddress(dto.getLocation().getJibun_address())
        .latitude(dto.getLocation().getLatitude())
        .longitude(dto.getLocation().getLongitude())
-       .product_status(dto.getProduct_status())
+       .productStatus(dto.getProduct_status())
        .category(category)
        .member(member)
        .build();
