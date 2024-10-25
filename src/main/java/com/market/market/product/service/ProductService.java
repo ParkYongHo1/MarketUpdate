@@ -111,8 +111,12 @@ public class ProductService {
 
         try{
             Product product= productRepository.findById(productSeq).orElseThrow();
-
             ProductDto productDto = ProductDto.toDto(product);
+
+            int viewCnt = productDto.getView_cnt() + 1;
+            productDto.setView_cnt(viewCnt);
+
+            productRepository.save(Product.toEntity(productDto));
 
             Member member = memberRepository.findById(product.getMember().getId()).orElseThrow();
 
@@ -233,7 +237,17 @@ public class ProductService {
 
             ProductLike entity = ProductLike.toEntity(dto);
 
-            productLikeRepository.save(entity);
+            Product productEntity = Product.builder().productSeq(productSeq).build();
+            Member memberEntity = Member.builder().id(memberId).build();
+
+            Long likeSeq = productLikeRepository.countByProductSeqAndMemberId(productEntity,memberEntity);
+
+            if(likeSeq == null)
+            {
+                productLikeRepository.save(entity);
+            }else{
+                productLikeRepository.deleteById(likeSeq);
+            }
 
             updateLikeCnt(productSeq);
 
@@ -270,5 +284,6 @@ public class ProductService {
         }
 
     }
-       
+
+
 }

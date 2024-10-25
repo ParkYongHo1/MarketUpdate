@@ -69,7 +69,6 @@ public class ProductController {
     public @ResponseBody Map<String,Object> productDetail(@RequestParam(name = "product_seq") String productSeq){
         log.info("productSeq : "+productSeq);
 
-
         resultMap = productService.productDetail(Long.parseLong(productSeq));
 
         return resultMap;
@@ -91,5 +90,7 @@ public class ProductController {
     {
         return productService.productLike(body);
     }
+
+
 
 }
