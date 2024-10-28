@@ -19,13 +19,13 @@ const ProductDetailContentTemplates = () => {
         });
         console.log(response.data);
 
-        setProduct(response.data); // Assume response.data contains the product details
+        setProduct(response.data);
       } catch (error) {
         console.error("Failed to fetch product details", error);
       }
     };
     fetchProductDetail();
-  }, [productId]);
+  }, []);
 
   return (
     <>

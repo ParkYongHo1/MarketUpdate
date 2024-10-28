@@ -55,7 +55,9 @@ const Main = () => {
         <MainDivContent>
           {products.map((product) => {
             console.log(`C:/market/images/${product.product_image[0]}`);
-            console.log(`http://localhost:8080/${product.product_image[0]}`);
+            console.log(
+              `http://localhost:8090/market/images/${product.product_image[0]}`
+            );
             return (
               <MainDivContentBox
                 key={product.product_seq}
@@ -64,7 +66,7 @@ const Main = () => {
                 <MainContentImg>
                   <img
                     style={{ borderRadius: "10px", width: "100%" }}
-                    src={`C:/market/images/${product.product_image[0]}`}
+                    src={`file://C:/market/images/${product.product_image[0]}`}
                     alt={product.title}
                   />
                 </MainContentImg>

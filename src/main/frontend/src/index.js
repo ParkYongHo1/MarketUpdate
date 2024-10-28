@@ -13,9 +13,7 @@ root.render(
   <Provider store={store}>
     {/* PersistGate로 앱을 감싸서 로컬 스토리지에서 상태를 복원할 때까지 로딩 상태를 유지합니다 */}
     <PersistGate loading={null} persistor={persistor}>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
+      <App />
     </PersistGate>
   </Provider>
 );
