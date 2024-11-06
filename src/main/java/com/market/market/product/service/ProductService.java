@@ -52,7 +52,7 @@ public class ProductService {
     {
         respoonseMap.clear();
 
-        System.out.println("Body : "+body.toString());
+        log.info("Body : "+body.toString());
         
         try{
             LocationDto locationDto = LocationDto.builder()
