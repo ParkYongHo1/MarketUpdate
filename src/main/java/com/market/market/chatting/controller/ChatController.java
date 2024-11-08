@@ -19,12 +19,23 @@ public class ChatController {
     @Autowired
     ChatService chatService;
 
-    @PostMapping("/makeChatRoom")
+    Map<String,Object> responseMap = new HashMap<>();
+
+    @PostMapping("/startChat")
     public Map<String,Object> makeChatRoom(@RequestBody Map<String,Object> body)
     {
-        return chatService.makeChatRoom(body);
+        Long chatRoomId = chatService.findChatRoom(body);
+
+        if (chatRoomId != null)
+        {
+            responseMap = chatService.selectChatRoom(chatRoomId);
+        }
+        else
+        {
+            responseMap = chatService.makeChatRoom(body);
+        }
+
+        return responseMap;
     }
-
-
 
 }

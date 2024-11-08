@@ -28,6 +28,13 @@ public class ChatRoom {
     @JoinColumn(name="product_seq",nullable=false)
     private Product product;
 
+    @Column(name="master_id",length = 100)
+    private String masterId;
+
+    @Column(name="participant_id",length = 100)
+    private String participantId;
+
+
     @Column
     Date createTime;
 
@@ -39,6 +46,8 @@ public class ChatRoom {
                 .chatroomId(dto.getChatroomId())
                 .product(joinProduct)
                 .createTime(dto.getCreateTime())
+                .masterId(dto.getMasterId())
+                .participantId(dto.getParticipantId())
                 .build();
     }
 
