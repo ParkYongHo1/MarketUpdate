@@ -21,12 +21,18 @@ public class ChatRoomDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     Date createTime;
 
+    private String masterId;
+
+    private String participantId;
+
     public static ChatRoomDto toDto(ChatRoom entity)
     {
         return ChatRoomDto.builder()
                 .chatroomId(entity.getChatroomId())
                 .productSeq(entity.getProduct().getProductSeq())
                 .createTime(entity.getCreateTime())
+                .masterId(entity.getMasterId())
+                .participantId(entity.getParticipantId())
                 .build();
     }
 

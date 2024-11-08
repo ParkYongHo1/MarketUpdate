@@ -35,6 +35,9 @@ public class Chat {
     @Column(name="send_time")
     private Date sendTime;
 
+    @Column(name="chat_content")
+    private String chatContent;
+
     public static Chat toEntity(ChatDto dto)
     {
         ChatRoom joinChatRoom = ChatRoom.builder().chatroomId(dto.getChatroomId()).build();
@@ -46,6 +49,7 @@ public class Chat {
                 .member(joinMember)
                 .senderName(dto.getSenderName())
                 .sendTime(dto.getSendTime())
+                .chatContent(dto.getChatContent())
                 .build();
     }
 

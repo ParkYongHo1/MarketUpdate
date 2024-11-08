@@ -93,12 +93,12 @@ public class ProductService {
     
             productRepository.save(Product.toEntity(productDto));
 
-            System.out.println("====물품등록성공====");
+            log.info("====물품등록성공====");
             respoonseMap.put("status", "200");
         }catch(Exception e)
         {
-            System.out.println("====물품등록실패====");
-            System.out.println("에러 : "+e.getMessage());
+            log.info("====물품등록실패====");
+            log.info("에러 : "+e.getMessage());
             respoonseMap.put("status", "400");
         }
 
@@ -147,7 +147,7 @@ public class ProductService {
 
         try {
 
-            System.out.println("파일 경로 : "+uploadDir);
+            log.info("파일 경로 : "+uploadDir);
 
             File uploadDirFile = new File(uploadDir);
 
@@ -180,7 +180,7 @@ public class ProductService {
            }
 
         } catch (IOException e) {
-            System.out.println("Error Message : "+e.getMessage());
+            log.info("Error Message : "+e.getMessage());
         }
 
         return uploadPath;

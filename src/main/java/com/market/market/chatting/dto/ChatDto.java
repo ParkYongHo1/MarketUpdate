@@ -21,6 +21,7 @@ public class ChatDto {
     String memberId;
     String senderName;
     Date sendTime;
+    String chatContent;
 
     public static ChatDto toDto(Chat entity)
     {
@@ -30,6 +31,7 @@ public class ChatDto {
                 .memberId(entity.getMember().getId())
                 .senderName(entity.getSenderName())
                 .sendTime(entity.getSendTime())
+                .chatContent(entity.getChatContent())
                 .build();
     }
 
