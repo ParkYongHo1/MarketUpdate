@@ -34,7 +34,6 @@ public class ChatRoom {
     @Column(name="participant_id",length = 100)
     private String participantId;
 
-
     @Column
     Date createTime;
 

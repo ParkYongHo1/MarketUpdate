@@ -76,7 +76,7 @@ public class ProductController {
 
     @GetMapping("/select")
     public List<ProductDto> getRecentProducts() {
-        return productService.getRecentProducts(10);
+        return productService.getRecentProducts();
         
     }
 

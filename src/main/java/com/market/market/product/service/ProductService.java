@@ -186,14 +186,15 @@ public class ProductService {
         return uploadPath;
     }
 
-    public List<ProductDto> getRecentProducts(int count) {
-        List<Product> products = productRepository.findTop10ByOrderByRegDateDesc();
+    public List<ProductDto> getRecentProducts() {
+        List<Product> products = productRepository.findTop5ByOrderByRegDateDesc();
         return products.stream().map(product -> mapToDto(product)).collect(Collectors.toList());
     }
 
      // 카테고리를 포함하는 상품 조회 서비스
     public List<ProductDto> getProductsByCategory(String category) {
-        List<Product> products = productRepository.findByCategoryContaining(category);
+        List<Product> products = productRepository.findTop5ByCategoryContainingOrderByRegDateDesc(category);
+
         return products.stream().map(product -> mapToDto(product)).collect(Collectors.toList());
     }
 

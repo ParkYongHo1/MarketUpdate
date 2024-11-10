@@ -92,9 +92,6 @@ public class TokenProvider {
     {
         Claims claims = parseClaims(accessToken);
 
-        System.out.println("클레임 : "+claims.toString());
-
-
         if(claims.get(AUTHORITIES_KEY) == null)
         {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
