@@ -59,7 +59,6 @@ public class MemberService {
 
             String id = requestMemberData.get("id").toString();
             String password = requestMemberData.get("password").toString();
-            System.out.println(passwordEncoder.encode(password));
 
             if (id == null || id.isEmpty() || password == null || password.isEmpty()) {          
                 responseMap.put("status", "400");
@@ -147,8 +146,10 @@ public class MemberService {
             Authentication authentication = tokenProvider.getAuthentication(requestJwtData.get("accessToken").toString());
     
     
-            RefreshToken refreshToken = refreshTokenRepository.findByKey(authentication.getName())
-            .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
+//            RefreshToken refreshToken = refreshTokenRepository.findByKey(authentication.getName())
+//            .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
+
+            RefreshToken refreshToken = refreshTokenRepository.findByValue(requestJwtData.get("refreshToken"));
     
             if(!refreshToken.getValue().equals(requestJwtData.get("refreshToken"))){
                 throw new RuntimeException("토큰의 유저 정보가 일치하지 않습니다.");
@@ -162,10 +163,11 @@ public class MemberService {
             refreshTokenRepository.save(newRefreshToken);
 
             responseMap.put("status", "200");
-            responseMap.put("token", jwtDto);
+            responseMap.put("accessToken",jwtDto.getAccessToken());
 
         } catch(Exception e)
         {
+            System.out.println("error Message : "+e.getMessage());
             responseMap.put("status", "400");
         }
 
