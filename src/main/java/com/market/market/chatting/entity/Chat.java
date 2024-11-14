@@ -29,7 +29,7 @@ public class Chat {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(name="sender_name",length = 20, unique = true)
+    @Column(name="sender_name",length = 20)
     private String senderName;
 
     @Column(name="send_time")

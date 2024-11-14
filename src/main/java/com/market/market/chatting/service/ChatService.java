@@ -97,12 +97,12 @@ public class ChatService {
         return responseMap;
     }
 
-    public Map<String,Object> selectChatRoomList(Map<String,Object> body)
+    public Map<String,Object> selectChatRoomList(String email)
     {
         Map<String,Object> responseMap = new HashMap<>();
         try{
             List<ChatRoomDto> chatRoomDtoList = new ArrayList<>();
-            List<ChatRoom> chatRoomList = chatRoomRepository.findChatroomByMasterEmailOrPaticipantEmail(body.get("email").toString());
+            List<ChatRoom> chatRoomList = chatRoomRepository.findChatroomByMasterEmailOrPaticipantEmail(email);
             for(ChatRoom chatRoom : chatRoomList)
             {
                 chatRoomDtoList.add(ChatRoomDto.toDto(chatRoom));
@@ -115,4 +115,10 @@ public class ChatService {
         }
         return responseMap;
     }
+
+    public void insertChat(ChatDto chatDto)
+    {
+        chatRepository.save(Chat.toEntity(chatDto));
+    }
+
 }

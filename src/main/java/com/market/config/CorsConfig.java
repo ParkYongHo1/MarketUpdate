@@ -17,7 +17,7 @@ public class CorsConfig {
         config.setAllowCredentials(true);
         //config.addAllowedOrigin("*");
         config.addAllowedOriginPattern("*");
-
+        config.addAllowedOrigin("http://localhost:3899");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 

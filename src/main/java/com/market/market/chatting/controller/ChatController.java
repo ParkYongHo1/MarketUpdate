@@ -20,7 +20,6 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(value = "/chat")
 public class ChatController {
 
@@ -28,6 +27,11 @@ public class ChatController {
     ChatService chatService;
 
     private final SimpMessagingTemplate messagingTemplate;
+
+    public ChatController(SimpMessagingTemplate messagingTemplate)
+    {
+        this.messagingTemplate = messagingTemplate;
+    }
 
     Map<String,Object> responseMap = new HashMap<>();
 
@@ -51,21 +55,15 @@ public class ChatController {
     @MessageMapping("/chat.sendMessage")
     public void sendMessage(@Payload ChatDto chatDto)
     {
+        log.info(chatDto.getSenderName()+" : "+chatDto.getChatContent());
+        chatService.insertChat(chatDto);
         messagingTemplate.convertAndSend("/topic/public/"+chatDto.getChatroomId(),chatDto);
     }
 
-    @MessageMapping("chat.addUser")
-    @SendTo("/topic/public")
-    public ChatDto addUser(ChatDto chatDto, SimpMessageHeaderAccessor headerAccessor)
-    {
-        headerAccessor.getSessionAttributes().put("username",chatDto.getSenderName());
-        return chatDto;
-    }
-
     @GetMapping("/selectChatRoomList")
-    public Map<String,Object> selectChatRoom(@RequestBody Map<String,Object> body)
+    public Map<String,Object> selectChatRoom(@RequestParam String email)
     {
-        return chatService.selectChatRoomList(body);
+        return chatService.selectChatRoomList(email);
     }
 
 }
