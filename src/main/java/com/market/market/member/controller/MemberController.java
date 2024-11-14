@@ -38,7 +38,6 @@ public class MemberController {
         return responseMap;
     }
 
-
     @PostMapping(value = "/request-token")
     public @ResponseBody Map<String,Object> requestToken(@RequestBody Map<String,String> tokenData){
         Map<String,Object> responseMap = new HashMap<>();

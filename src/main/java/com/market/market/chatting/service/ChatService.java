@@ -2,6 +2,7 @@ package com.market.market.chatting.service;
 
 
 import com.market.market.chatting.dto.ChatDto;
+import com.market.market.chatting.dto.ChatRoomDto;
 import com.market.market.chatting.entity.Chat;
 import com.market.market.chatting.entity.ChatRoom;
 import com.market.market.chatting.repository.ChatRepository;
@@ -30,12 +31,12 @@ public class ChatService {
     public Long findChatRoom(Map<String,Object> body)
     {
         int productSeq = (int)body.get("productSeq");
-        String participantId = body.get("participantId").toString();
+        String participantEmail = body.get("participantEmail").toString();
 
-        return chatRoomRepository.findChatroomIdByProductSeqAndParticipantId(Long.valueOf(productSeq),participantId);
+        return chatRoomRepository.findChatroomIdByProductSeqAndParticipantEmail(Long.valueOf(productSeq),participantEmail);
     }
 
-    public Map<String,Object> selectChatRoom(Long chatRoomId)
+    public Map<String,Object> selectChatList(Long chatRoomId)
     {
         responseMap.clear();
         try{
@@ -51,6 +52,7 @@ public class ChatService {
            responseMap.put("chatList",chatDataList);
         } catch (Exception e) {
             responseMap.put("status", "400");
+            log.info("Error Message : "+e.getMessage());
         }
         return responseMap;
     }
@@ -60,25 +62,25 @@ public class ChatService {
         int productSeq = (int)body.get("productSeq");
         LocalDateTime localDateTime = LocalDateTime.now();
         Date now = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-        String masterId = "";
-        String participantId = "";
+        String masterEmail = "";
+        String participantEmail = "";
         responseMap.clear();
         try{
-            if(body.containsKey("masterId"))
+            if(body.containsKey("masterEmail"))
             {
-                masterId = body.get("masterId").toString();
+                masterEmail = body.get("masterEmail").toString();
             }
-            if(body.containsKey("participantId"))
+            if(body.containsKey("participantEmail"))
             {
-                participantId = body.get("participantId").toString();
+                participantEmail = body.get("participantEmail").toString();
             }
 
             Product product = Product.builder().productSeq(Long.valueOf(productSeq)).build();
             ChatRoom chatRoom = ChatRoom.builder()
                     .product(product)
                     .createTime(now)
-                    .masterId(masterId)
-                    .participantId(participantId)
+                    .masterEmail(masterEmail)
+                    .participantEmail(participantEmail)
                     .build();
 
             chatRoomRepository.save(chatRoom);
@@ -88,9 +90,29 @@ public class ChatService {
         }catch (Exception e)
         {
             log.info("=========채팅방 생성 실패==========");
+            log.info("Error Message : "+e.getMessage());
             responseMap.put("status","400");
+
         }
         return responseMap;
     }
 
+    public Map<String,Object> selectChatRoomList(Map<String,Object> body)
+    {
+        Map<String,Object> responseMap = new HashMap<>();
+        try{
+            List<ChatRoomDto> chatRoomDtoList = new ArrayList<>();
+            List<ChatRoom> chatRoomList = chatRoomRepository.findChatroomByMasterEmailOrPaticipantEmail(body.get("email").toString());
+            for(ChatRoom chatRoom : chatRoomList)
+            {
+                chatRoomDtoList.add(ChatRoomDto.toDto(chatRoom));
+            }
+            responseMap.put("status","200");
+            responseMap.put("chatRoomList",chatRoomDtoList);
+        } catch (Exception e)
+        {
+            responseMap.put("status","400");
+        }
+        return responseMap;
+    }
 }
