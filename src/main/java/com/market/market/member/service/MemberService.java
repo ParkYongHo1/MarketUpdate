@@ -54,10 +54,9 @@ public class MemberService {
         //일반 로그인
         if(auth.equals("0"))
         {
-
             System.out.println("===Login===");
 
-            String id = requestMemberData.get("id").toString();
+            String id = requestMemberData.get("email").toString();
             String password = requestMemberData.get("password").toString();
 
             if (id == null || id.isEmpty() || password == null || password.isEmpty()) {          
@@ -146,10 +145,10 @@ public class MemberService {
             Authentication authentication = tokenProvider.getAuthentication(requestJwtData.get("accessToken").toString());
     
     
-//            RefreshToken refreshToken = refreshTokenRepository.findByKey(authentication.getName())
-//            .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
+            RefreshToken refreshToken = refreshTokenRepository.findByKey(authentication.getName())
+            .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
 
-            RefreshToken refreshToken = refreshTokenRepository.findByValue(requestJwtData.get("refreshToken"));
+           // RefreshToken refreshToken = refreshTokenRepository.findByValue(requestJwtData.get("refreshToken"));
     
             if(!refreshToken.getValue().equals(requestJwtData.get("refreshToken"))){
                 throw new RuntimeException("토큰의 유저 정보가 일치하지 않습니다.");
@@ -169,6 +168,7 @@ public class MemberService {
         {
             System.out.println("error Message : "+e.getMessage());
             responseMap.put("status", "400");
+            responseMap.put("message",e.getMessage());
         }
 
         return responseMap;
@@ -219,7 +219,7 @@ public class MemberService {
         
             List<String> category = (List)body.get("category");
     
-            String id = (String) body.get("id");
+            String id = (String) body.get("email");
             String password = (String) body.get("password");
     
             if (password == null || password.isEmpty()) {
@@ -274,8 +274,7 @@ public class MemberService {
 
     public int signUp(MemberDto memberDto) {
         boolean existsByEmail = memberRepository.existsById(memberDto.getId());
-        System.out.println("exitstByEmail" + existsByEmail);
-        
+
         if (existsByEmail) {
          return 405;
         }
@@ -292,11 +291,11 @@ public class MemberService {
     @Transactional
     public void signUpProc(MemberDto memberDto){              
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        System.out.println("pw : "+passwordEncoder.encode(memberDto.getPassword()));
 
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
         memberDto.setId(memberDto.getId());
         memberDto.setPhone(memberDto.getPhone());
+
 
         Member member = Member.toEntity(memberDto);
 

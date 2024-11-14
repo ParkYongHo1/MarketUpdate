@@ -26,7 +26,7 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const res = await axios.post("/member/login", {
-        id: user.id,
+        email: user.id,
         password: user.password,
         auth: "0",
       });

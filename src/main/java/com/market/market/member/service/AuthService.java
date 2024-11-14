@@ -33,8 +33,6 @@ public class AuthService {
         //DTO -> Entity 변환
         Member member = Member.toEntity(memberDto);
 
-        System.out.println("인서트 값 : "+member.toString());
-
         //Repository로 CRUD
         memberRepository.save(member);
 

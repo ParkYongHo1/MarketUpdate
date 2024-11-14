@@ -229,7 +229,7 @@ public class ProductService {
 
         try{
             Long productSeq = Long.parseLong(body.get("product-seq").toString());
-            String memberId = (String)body.get("id");
+            String memberId = (String)body.get("email");
 
             ProductLikeDto dto = new ProductLikeDto();
 
