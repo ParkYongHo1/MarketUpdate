@@ -50,7 +50,7 @@ import lombok.ToString;
 @DynamicUpdate
 @AllArgsConstructor
 @NoArgsConstructor
-public class Member implements UserDetails{
+public class Member{
 
     @Id
     @Column(length = 100, nullable = false, unique = true)
@@ -63,10 +63,7 @@ public class Member implements UserDetails{
     private String phone;  
 
     @Column(length = 20, unique = true)
-    private String nickname;  
-
-    // @Column(columnDefinition = "TEXT", nullable = false)
-    // private String location;
+    private String nickname;
 
     @Column
     private String address;
@@ -84,7 +81,7 @@ public class Member implements UserDetails{
     private String profile_image; 
     
     @Enumerated(EnumType.STRING)
-    private Authority authority;
+    private Authority level;
 
     @Column
     @ColumnDefault("36.5")
@@ -97,54 +94,11 @@ public class Member implements UserDetails{
     @Builder.Default
     private int auth = 0;
 
-    
     @Column(name = "category")
     private String category;  // List<String>으로 정의
 
     @Column(length = 10)
     private String birth;
-
-    // 0: 사용자, 1 : 관리자
-    @Column
-    @ColumnDefault("0")
-    @Builder.Default
-    private int level = 0;
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.id;
-    }
 
     public static Member toEntity(MemberDto dto)
     {
@@ -155,7 +109,6 @@ public class Member implements UserDetails{
         String jibunAddress = (location != null) ? location.getJibun_address() : null;
         Double longitude = (location != null) ? location.getLongitude() : null;
         Double latitude = (location != null) ? location.getLatitude() : null;
-
 
         return Member.builder()
         .id(dto.getId())
