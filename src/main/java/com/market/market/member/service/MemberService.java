@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.transaction.Transactional;
 
+import com.market.market.util.Authority;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties.Lettuce.Cluster.Refresh;
 import org.springframework.http.HttpStatus;
@@ -33,6 +35,7 @@ import com.market.market.member.repository.RefreshTokenRepository;
 
 import lombok.RequiredArgsConstructor;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -54,7 +57,7 @@ public class MemberService {
         //일반 로그인
         if(auth.equals("0"))
         {
-            System.out.println("===Login===");
+            log.info("===Login===");
 
             String id = requestMemberData.get("email").toString();
             String password = requestMemberData.get("password").toString();
@@ -96,18 +99,14 @@ public class MemberService {
 
             MemberDto memberDto = MemberDto.toDto(member);
 
-            System.out.println("Location : "+memberDto.getLocation().toString());
-
             responseMap.put("status", "200");
             responseMap.put("member", memberDto);
             responseMap.put("token", jwtDto);
-
-
         }
         //소셜 로그인
         else if(auth.equals("1"))
         {
-            System.out.println("===KaKao Login===");
+            log.info("===KaKao Login===");
 
             String id = requestMemberData.get("email").toString();
             String profile_img = requestMemberData.get("profile_image").toString();
@@ -127,7 +126,7 @@ public class MemberService {
         }
 
 
-        System.out.println("전달값 : "+responseMap.toString());
+        log.info("전달값 : "+responseMap.toString());
 
         return responseMap;
     }
@@ -180,10 +179,6 @@ public class MemberService {
         Map<String, Object> resultMap = new HashMap<>();
     
         try {
-            
-    
-         
-    
             String address = (String) body.get("address");
             double latitude = body.containsKey("latitude") ? Double.parseDouble(body.get("latitude").toString()) : 0;
             double longitude = body.containsKey("longitude") ? Double.parseDouble(body.get("longitude").toString()) : 0;
@@ -237,14 +232,8 @@ public class MemberService {
                     .password(password)
                     .phone((String) body.get("phone"))
                     .build();
-    
-            System.out.println("======"+memberDto);
-
             Member member = Member.toEntity(memberDto);
-
-            System.out.println("======"+member.toString());
-    
-            System.out.println("Saving Member: " + member);
+            log.info("Saving Member: " + member);
     
             memberRepository.save(member);
     
@@ -258,18 +247,10 @@ public class MemberService {
     
         return resultMap;
     }
-    
-    
-    
-
-    
-
-
 
     public boolean isNicknameTaken(String nickname) {
         return memberRepository.existsByNickname(nickname);
     }
-
 
 
     public int signUp(MemberDto memberDto) {
@@ -295,6 +276,7 @@ public class MemberService {
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
         memberDto.setId(memberDto.getId());
         memberDto.setPhone(memberDto.getPhone());
+        memberDto.setLevel(Authority.ROLE_USER);
 
 
         Member member = Member.toEntity(memberDto);

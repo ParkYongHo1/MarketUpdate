@@ -11,6 +11,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 
+import com.market.market.util.Authority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,7 +40,8 @@ public class MemberDto{
     private String phone;  
     private String nickname;  
     private LocationDto location;
-    private String profile_image; 
+    private String profile_image;
+    private Authority level;
 
     @Builder.Default
     private double manner_temp = 36.5;
@@ -49,21 +51,14 @@ public class MemberDto{
     private String category;
     private String birth;
 
-    @Builder.Default
-    private int level = 0;  // 0: 사용자, 1 : 관리자
-
-    
 
     public static MemberDto toDto(Member entity)
     {
 
-       //ObjectMapper objectMapper = new ObjectMapper();
+
 
        LocationDto locations = new LocationDto();
         try {
-            // if (entity.getLocation() != null) {
-            //     locations = objectMapper.readValue(entity.getLocation(), new TypeReference<LocationDto>() {});
-            // }
             locations.setAddress(entity.getAddress());
             locations.setJibun_address(entity.getJibun_address());
             locations.setLatitude(entity.getLatitude());
@@ -72,8 +67,6 @@ public class MemberDto{
         } catch (Exception e) {
             System.out.println("Error Message : "+e.getMessage());           
         }
-
-      
 
         return MemberDto.builder()
         .id(entity.getId())
@@ -86,6 +79,7 @@ public class MemberDto{
         .auth(entity.getAuth())
         .category(entity.getCategory())
         .birth(entity.getBirth())
+        .level(entity.getLevel())
         .level(entity.getLevel())
         .build();
     }
