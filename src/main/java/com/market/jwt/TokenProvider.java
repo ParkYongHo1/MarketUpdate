@@ -60,8 +60,8 @@ public class TokenProvider {
 
         claims.put("id", id);
 
-        System.out.println("ID : "+id);
-
+        log.info("ID : "+id);
+        log.info("Auth : "+authorities);
 
         //Access Token 생성
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
@@ -120,9 +120,36 @@ public class TokenProvider {
         } catch(IllegalArgumentException e){
             log.info("JWT 토큰이 잘못되었습니다.");
         }
-
         return false;
     }
+
+    public Map<String,Object> checkAccessToken(String accessToken)
+    {
+        Map<String,Object> responseMap = new HashMap<>();
+        try{
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken);
+            responseMap.put("status","200");
+        } catch(SecurityException | MalformedJwtException e){
+            responseMap.put("status","400");
+            responseMap.put("message","잘못된 JWT 서명입니다.");
+            log.info("잘못된 JWT 서명입니다.");
+        } catch(ExpiredJwtException e){
+            responseMap.put("status","400");
+            responseMap.put("message","만료된 JWT 토큰입니다.");
+            log.info("만료된 JWT 토큰입니다.");
+        } catch(UnsupportedJwtException e){
+            responseMap.put("status","400");
+            responseMap.put("message","지원되지 않는 JWT 토큰입니다.");
+            log.info("지원되지 않는 JWT 토큰입니다.");
+        } catch(IllegalArgumentException e){
+            responseMap.put("status","400");
+            responseMap.put("message","JWT 토큰이 잘못되었습니다.");
+            log.info("JWT 토큰이 잘못되었습니다.");
+        }
+        return responseMap;
+    }
+
+
 
     private Claims parseClaims(String accessToken) {
         try {
