@@ -3,6 +3,7 @@ package com.market.market.member.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import com.market.market.member.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/member")
@@ -32,9 +34,6 @@ public class MemberController {
         
         Map<String,Object> responseMap = memberService.login(body);
 
-
-        System.out.println("응답 값 : "+responseMap.toString());
-
         return responseMap;
     }
 
@@ -46,11 +45,15 @@ public class MemberController {
         return responseMap;
     }
 
+    @PostMapping(value="/check-access-token")
+    public @ResponseBody Map<String,Object> checkAccessToken(@RequestBody Map<String,Object> tokenData)
+    {
+        return memberService.checkAccessToken(tokenData);
+    }
+
     @PostMapping(value = "/add-info")
     public @ResponseBody Map<String, Object> adduserinfo(@RequestBody Map<String, Object> body) {
-        System.out.println("===Request Body===" + body.toString());
-
-    
+        log.info("===Request Body===" + body.toString());
         Map<String, Object> resultMap = memberService.adduserinfo(body);
         return resultMap;
     } 

@@ -8,6 +8,11 @@ import java.util.Map;
 import javax.transaction.Transactional;
 
 import com.market.market.util.Authority;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SecurityException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties.Lettuce.Cluster.Refresh;
@@ -125,7 +130,6 @@ public class MemberService {
             responseMap.put("member", MemberDto.toDto(member));
         }
 
-
         log.info("전달값 : "+responseMap.toString());
 
         return responseMap;
@@ -142,8 +146,7 @@ public class MemberService {
             }
     
             Authentication authentication = tokenProvider.getAuthentication(requestJwtData.get("accessToken").toString());
-    
-    
+
             RefreshToken refreshToken = refreshTokenRepository.findByKey(authentication.getName())
             .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
 
@@ -165,7 +168,7 @@ public class MemberService {
 
         } catch(Exception e)
         {
-            System.out.println("error Message : "+e.getMessage());
+            log.info("error Message : "+e.getMessage());
             responseMap.put("status", "400");
             responseMap.put("message",e.getMessage());
         }
@@ -248,6 +251,12 @@ public class MemberService {
         return resultMap;
     }
 
+
+    public Map<String,Object> checkAccessToken(Map<String,Object> tokenData)
+    {
+        return tokenProvider.checkAccessToken(tokenData.get("accessToken").toString());
+    }
+
     public boolean isNicknameTaken(String nickname) {
         return memberRepository.existsByNickname(nickname);
     }
@@ -277,7 +286,6 @@ public class MemberService {
         memberDto.setId(memberDto.getId());
         memberDto.setPhone(memberDto.getPhone());
         memberDto.setLevel(Authority.ROLE_USER);
-
 
         Member member = Member.toEntity(memberDto);
 
