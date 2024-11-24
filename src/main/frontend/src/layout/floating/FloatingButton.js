@@ -46,86 +46,37 @@ const FloatingButton = () => {
               <Button onClick={handleClose}>X</Button>
             </TitleDiv>
             <Frame>
-              <div style={{ height: "75vh", overflowY: "auto" }}>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>das</div>
-                <div>d아니s</div>
-                <div>d아니s</div>
-                <div>d아니s</div>
-                <div>d아니s</div>
-                <div>d아니s</div>
-                <div>d아니s</div>
-                <div>d아니s</div>
-              </div>
+              <div style={{ height: "75vh", overflowY: "auto" }}></div>
               <FloatingFooter>
-                <Icon>
-                  <FontAwesomeIcon
-                    icon={faBell}
-                    size="lg"
-                    style={{ cursor: "pointer" }}
-                  />
-                  <Dot>.</Dot>
-                </Icon>
-                <Icon>
-                  <FontAwesomeIcon
-                    icon={faComment}
-                    size="lg"
-                    style={{ cursor: "pointer" }}
-                  />
+                <div
+                  style={{
+                    display: "flex",
+                    width: "80%",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    textAlign: "center",
+                    height: "100%",
+                    margin: "0 auto",
+                  }}
+                >
+                  <Icon>
+                    <FontAwesomeIcon
+                      icon={faBell}
+                      size="lg"
+                      style={{ cursor: "pointer" }}
+                    />
+                    <Dot>.</Dot>
+                  </Icon>
+                  <Icon>
+                    <FontAwesomeIcon
+                      icon={faComment}
+                      size="lg"
+                      style={{ cursor: "pointer" }}
+                    />
 
-                  <Dot>.</Dot>
-                </Icon>
-                <Icon>
-                  <FontAwesomeIcon
-                    icon={faStamp}
-                    size="lg"
-                    style={{ cursor: "pointer" }}
-                  />
-                </Icon>
+                    <Dot>.</Dot>
+                  </Icon>
+                </div>
               </FloatingFooter>
             </Frame>
           </Box>

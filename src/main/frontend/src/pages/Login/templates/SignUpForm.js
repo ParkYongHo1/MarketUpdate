@@ -11,8 +11,6 @@ import {
   setPhoneMessage,
   setCheckPassword,
   setPassword,
-  isEmailState,
-  sendEmail,
 } from "../../../slices/userSlice";
 import Button from "../atoms/Button";
 import Div from "../atoms/Div";
@@ -35,7 +33,7 @@ const SignUpForm = () => {
   const [isNotPhone, setIsNotPhone] = useState("");
   const emailInputRef = useRef(null);
   const phoneInputRef = useRef(null);
-    const onChangeInput = (e) => {
+  const onChangeInput = (e) => {
     const { name, value } = e.target;
     dispatch(setUser({ ...user, [name]: value }));
     if (name === "phone") {
@@ -109,24 +107,25 @@ const SignUpForm = () => {
     }
   };
   console.log(user.password);
-  
-console.log(passwordCheck);
+
+  console.log(passwordCheck);
 
   /********************
    * 이메일 인증번호 전송 API(/auth/fetch-email)
    ********************/
   const onSendEmail = async (e) => {
     console.log(isNotEmail);
+    console.log(user.id);
 
     if (!user.id) {
-      setIsNotEmail("이메일 주소를 입력해주세요");
+      alert("이메일 주소를 입력해주세요");
       emailInputRef.current.focus();
       return;
     } else if (isNotEmail === "유효한 이메일입니다.") {
       setEmailModal(true);
       try {
         const res = await axios.post("/auth/fetch-email", {
-          id: user.id,
+          email: user.id,
         });
         if (res.data == 200) {
           dispatch(

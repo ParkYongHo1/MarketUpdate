@@ -1,24 +1,23 @@
-import styled from '@emotion/styled';
-import {Link} from 'react-router-dom'
+import styled from "@emotion/styled";
+import { Link } from "react-router-dom";
 const Banner = () => {
   return (
     <Wrapper>
-      <Image src={process.env.PUBLIC_URL + 'mainBanner.png'} alt='banner' />
+      <Image src={process.env.PUBLIC_URL + "mainBanner.png"} alt="banner" />
       <Text>
         나만의 상품 <br />
         추천
       </Text>
-      <Checkbtn to='#'>지금 바로 확인하기</Checkbtn>
+      <Checkbtn to="#">지금 바로 확인하기</Checkbtn>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  width: 100vw;
+  width: 100%;
   position: relative;
   padding: 0;
   height: 510px;
-  margin-left: calc(-50vw + 50%);
 `;
 const Text = styled.div`
   position: absolute;
@@ -26,7 +25,7 @@ const Text = styled.div`
   right: 12%;
   margin-bottom: 40px;
   font-size: 50px;
-  // font-weight: bold;
+  font-weight: bold;
   text-align: right;
   z-index: 2;
 `;
@@ -35,9 +34,9 @@ const Checkbtn = styled(Link)`
   width: 290px;
   height: 68px;
   display: flex;
-  justify-content: center;  /* 가로 중앙 정렬 */
-  align-items: center;  /* 세로 중앙 정렬 */
-  margin: 40px auto;  /* 상단 마진을 주고, auto로 가로 중앙 정렬 */
+  justify-content: center;
+  align-items: center;
+  margin: 40px auto;
   z-index: 3;
   font-size: 21px;
   font-weight: bold;

@@ -22,9 +22,11 @@ const Main = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get("/product/select");
-        console.log(response.data);
-
-        setProducts(response.data); // Assuming response.data contains the product list
+        console.log(response);
+        if (response.status == 200) {
+          setProducts(response.data);
+        }
+        setProducts(response.data);
       } catch (error) {
         console.error("Failed to fetch products", error);
       }
@@ -32,6 +34,8 @@ const Main = () => {
 
     fetchProducts();
   }, []);
+  console.log(products);
+  console.log(products[0]?.location.jibun_address);
 
   return (
     <MainBody>
@@ -40,7 +44,7 @@ const Main = () => {
       <Container>
         <Div>
           <Div title>
-            <MainDivTitle>카테고리</MainDivTitle>
+            <MainDivTitle></MainDivTitle>
           </Div>
           <CategoryGroup />
         </Div>
@@ -74,15 +78,13 @@ const Main = () => {
                 <MainContentFont>
                   {product.category.join(", ")}
                 </MainContentFont>{" "}
-                {/* Join categories if there are multiple */}
                 <MainContentFont>
                   {product.location.jibun_address}
                 </MainContentFont>
                 <MainContentTitle>
                   {product.price.toLocaleString()}원
                 </MainContentTitle>{" "}
-                {/* Format price with commas */}
-                <MainContentFont></MainContentFont> {/* Display time ago */}
+                <MainContentFont></MainContentFont>
               </MainDivContentBox>
             );
           })}

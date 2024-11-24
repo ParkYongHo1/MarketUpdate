@@ -30,7 +30,7 @@ const EmailModal = ({ emailModal, setEmailModal }) => {
       try {
         const res = await axios.post("/auth/checknum-email", {
           checkNum: value,
-          id: user.id,
+          email: user.id,
         });
         console.log(res.data);
         if (res.status == "200") {
