@@ -55,8 +55,6 @@ public class MemberDto{
     public static MemberDto toDto(Member entity)
     {
 
-
-
        LocationDto locations = new LocationDto();
         try {
             locations.setAddress(entity.getAddress());

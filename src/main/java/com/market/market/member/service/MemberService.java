@@ -261,7 +261,7 @@ public class MemberService {
         return memberRepository.existsByNickname(nickname);
     }
 
-
+    
     @Transactional
     public Map<String,Object> signUpProc(Map<String, Object> memberData){
 

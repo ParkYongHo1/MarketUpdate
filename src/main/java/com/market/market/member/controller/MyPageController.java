@@ -23,14 +23,22 @@ public class MyPageController {
     Map<String, Object> responseMap = new HashMap<>();
 
     @GetMapping("/my-product")
-    public Map<String,Object> MyProduct(@RequestParam(name="id") String id) {
-        responseMap = mypageService.getMyProduct(id);
+    public Map<String,Object> MyProduct(@RequestParam(name="email") String id, @RequestParam(name="page") int page, @RequestParam(name = "offset")int offset) {
+        responseMap = mypageService.getMyProduct(id, page, offset);
+        
+        return responseMap;
+    }
+
+    @GetMapping("/like-product")
+    public Map<String,Object> LikeProduct(@RequestParam(name="email") String id, @RequestParam(name="page") int page, @RequestParam(name = "offset")int offset) {
+        System.out.println("LikeProduct 진입");
+        responseMap = mypageService.getLikeProduct(id, page, offset);
         
         return responseMap;
     }
 
     @GetMapping("/page-in")
-    public Map<String,Object> PageIn(@RequestParam(name="id") String id){
+    public Map<String,Object> PageIn(@RequestParam(name="email") String id){
         responseMap = mypageService.getPageIn(id);
         
         return responseMap;
