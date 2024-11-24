@@ -74,7 +74,7 @@ public class MailService {
     }
 
     public boolean CheckAuthNum(String email,String authNum){
-        System.out.println(redisUtil.getData(authNum).equals(email));
+       
         if(redisUtil.getData(authNum)==null){
             System.out.println("authNum == null ======");
             return false;

@@ -28,10 +28,7 @@ public class MemberController {
 
     @PostMapping(value = "/login")
     public @ResponseBody Map<String,Object> login(@RequestBody Map<String,Object> body)
-    {
-
-        System.out.println("====Request Body====" + body.toString());
-        
+    {        
         Map<String,Object> responseMap = memberService.login(body);
 
         return responseMap;
@@ -53,7 +50,6 @@ public class MemberController {
 
     @PostMapping(value = "/add-info")
     public @ResponseBody Map<String, Object> adduserinfo(@RequestBody Map<String, Object> body) {
-        log.info("===Request Body===" + body.toString());
         Map<String, Object> resultMap = memberService.adduserinfo(body);
         return resultMap;
     } 

@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.market.market.member.dto.MemberDto;
 import com.market.market.member.entity.Member;
 import com.market.market.product.dto.ProductDto;
@@ -21,6 +22,7 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Product {
 
     @Id
@@ -67,6 +69,7 @@ public class Product {
     @Column(length = 100)
     private String category;
 
+   
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id",nullable=false)
     private Member member;
