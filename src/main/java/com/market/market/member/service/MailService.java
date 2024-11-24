@@ -48,6 +48,8 @@ public class MailService {
                         "5분 이내로 인증해주시길 바랍니다." +
                         "인증번호를 제대로 입력해주세요"; // 이메일 내용 삽입
         mailSend(setFrom, toMail, title, content);
+
+        System.out.println("메일 인증 번호 : "+authNumber);
         return Integer.toString(authNumber);
     }
 

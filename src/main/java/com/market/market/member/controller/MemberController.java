@@ -75,20 +75,7 @@ public class MemberController {
     }
 
     @PostMapping(value="/signup")
-    public Map<String, Object> signUp(@RequestBody MemberDto memberDto){
-        int checked =memberService.signUp(memberDto);
-
-        if(checked == 200){
-            responseMap.put("status", "200");
-            return responseMap;
-        }
-        else if(checked == 405){
-            responseMap.put("status", "405");
-            return responseMap;
-        }else{
-            responseMap.put("status", "400");
-            return responseMap;
-        }
-
+    public Map<String, Object> signUp(@RequestBody Map<String ,Object> memberData){
+        return memberService.signUpProc(memberData);
     }
 }

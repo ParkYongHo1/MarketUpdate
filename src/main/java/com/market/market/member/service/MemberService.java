@@ -262,33 +262,29 @@ public class MemberService {
     }
 
 
-    public int signUp(MemberDto memberDto) {
-        boolean existsByEmail = memberRepository.existsById(memberDto.getId());
-
-        if (existsByEmail) {
-         return 405;
-        }
-        try {
-            signUpProc(memberDto);
-            return 200;
-        } catch (Exception e) {
-            // 예외가 발생한 경우 400 Bad Request로 처리
-            return 400; // 오류일 경우
-        }
-    }
-    
-
     @Transactional
-    public void signUpProc(MemberDto memberDto){              
+    public Map<String,Object> signUpProc(Map<String, Object> memberData){
+
+        System.out.println("회원가입 데이터 : "+memberData.toString());
+
+        MemberDto memberDto = new MemberDto();
+        Map<String, Object> responseMap = new HashMap<>();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-        memberDto.setId(memberDto.getId());
-        memberDto.setPhone(memberDto.getPhone());
-        memberDto.setLevel(Authority.ROLE_USER);
+        try{
+            memberDto.setPassword(passwordEncoder.encode(memberData.get("password").toString()));
+            memberDto.setId(memberData.get("email").toString());
+            memberDto.setPhone(memberData.get("phone").toString());
+            memberDto.setLevel(Authority.ROLE_USER);
+            Member member = Member.toEntity(memberDto);
 
-        Member member = Member.toEntity(memberDto);
+            memberRepository.save(member);
+            responseMap.put("status","200");
+        }catch(Exception e)
+        {
+            responseMap.put("status","400");
+        }
 
-        memberRepository.save(member);
+        return responseMap;
     }
 
     public boolean memeberByPhone(String phone){
