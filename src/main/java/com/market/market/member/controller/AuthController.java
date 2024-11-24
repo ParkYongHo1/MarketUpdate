@@ -50,7 +50,6 @@ public class AuthController {
 
         if (existsByEmail) {
             responseMap.put("status",405);
-            System.out.println("------------------계정 중복");
         }else{
             responseMap.put("status", "200");
             mailService.fetchEmail(email);
@@ -74,17 +73,24 @@ public class AuthController {
     }
 
     @PostMapping("/fetch-phone")
-    public Map<String, Object> fetchPhone(@RequestBody MemberDto memberDto){
-        String phone = memberDto.getPhone();
-        smsService.fetchPhone(phone);
+    public Map<String, Object> fetchPhone(@RequestBody Map<String,Object> phoneData){
+        String phone = phoneData.get("phone").toString();
 
-        responseMap.put("status", "200");
+        int memberExist = 0;
+        memberExist = memberRepository.searchByPhone(phone);
+
+        if(memberExist == 0){
+            smsService.fetchPhone(phone);
+            responseMap.put("status","200");
+        }else {
+            responseMap.put("status","405");
+        }
         return responseMap;
     }
 
     @PostMapping("/checknum-phone")
-    public Map<String,Object> CheckNumPhone(@RequestBody @Valid PhoneCheckDto phoneCheckDto){
-        Boolean Checked=smsService.CheckAuthNum(phoneCheckDto.getPhone(),phoneCheckDto.getCheckNum());
+    public Map<String,Object> CheckNumPhone(@RequestBody Map<String,Object> phoneData){
+        Boolean Checked=smsService.CheckAuthNum(phoneData.get("phone").toString(),phoneData.get("checkNum").toString());
         if(Checked){
             responseMap.put("status", "200");
             return responseMap;

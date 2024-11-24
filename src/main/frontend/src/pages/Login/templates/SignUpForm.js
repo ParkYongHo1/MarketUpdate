@@ -128,6 +128,8 @@ const SignUpForm = () => {
           email: user.id,
         });
 
+        console.log(res.data);
+
         if (res.data.status === "200") {
          setEmailModal(true);
         console.log("test")
@@ -170,6 +172,8 @@ const SignUpForm = () => {
       const res = await axios.post("/auth/fetch-phone", {
         phone: user.phone,
       });
+      console.log(res.data);
+
       if (res.data.status == "200") {
         dispatch(
           setPhoneMessage({
