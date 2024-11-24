@@ -273,6 +273,9 @@ public class MemberService {
             return 200;
         } catch (Exception e) {
             // 예외가 발생한 경우 400 Bad Request로 처리
+
+            System.out.println("Error Message : "+e.getMessage());
+
             return 400; // 오류일 경우
         }
     }
@@ -281,7 +284,6 @@ public class MemberService {
     @Transactional
     public void signUpProc(MemberDto memberDto){              
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
         memberDto.setId(memberDto.getId());
         memberDto.setPhone(memberDto.getPhone());

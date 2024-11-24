@@ -42,7 +42,6 @@ public class AuthController {
     private Map<String,String> resultMap = new HashMap<>();
     Map<String, Object> responseMap = new HashMap<>();
 
-
     @PostMapping(value = "/fetch-email")    
     public Map<String,Object> fetchEmail(@RequestBody MemberDto memberDto){
     
@@ -79,7 +78,7 @@ public class AuthController {
 
     @PostMapping("/checknum-phone")
     public Map<String,Object> CheckNumPhone(@RequestBody @Valid PhoneCheckDto phoneCheckDto){
-         Boolean Checked=smsService.CheckAuthNum(phoneCheckDto.getPhone(),phoneCheckDto.getCheckNum());
+        Boolean Checked=smsService.CheckAuthNum(phoneCheckDto.getPhone(),phoneCheckDto.getCheckNum());
         if(Checked){
             responseMap.put("status", "200");
             return responseMap;
@@ -110,7 +109,7 @@ public class AuthController {
         if(Checked){ 
             String id = memberService.searchId(phoneCheckDto.getPhone());
 
-            responseMap.put("id", id);
+            responseMap.put("email", id);
             responseMap.put("status", "200");
             return responseMap;
         }
@@ -122,7 +121,7 @@ public class AuthController {
 
     @PostMapping("/findby-id")
     public Map<String,Object> PWFind(@RequestBody  Map<String, String> requestData){
-        String id = requestData.get("id");
+        String id = requestData.get("email");
         Boolean Checked = memberService.memeberById(id);       
                 
         if(Checked == true){ 
@@ -152,7 +151,7 @@ public class AuthController {
 
    @PostMapping("/setting-pw")
     public Map<String,Object> SettingPw(@RequestBody Map<String, Object> requestData){
-        String id = (String) requestData.get("id");
+        String id = (String) requestData.get("email");
         String newPw = (String) requestData.get("password");
 
         memberService.settingPw(id, newPw);
