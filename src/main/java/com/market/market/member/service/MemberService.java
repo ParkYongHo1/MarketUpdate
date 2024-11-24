@@ -273,9 +273,6 @@ public class MemberService {
             return 200;
         } catch (Exception e) {
             // 예외가 발생한 경우 400 Bad Request로 처리
-
-            System.out.println("Error Message : "+e.getMessage());
-
             return 400; // 오류일 경우
         }
     }

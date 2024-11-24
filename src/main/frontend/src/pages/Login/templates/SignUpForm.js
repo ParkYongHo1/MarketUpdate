@@ -122,12 +122,15 @@ const SignUpForm = () => {
       emailInputRef.current.focus();
       return;
     } else if (isNotEmail === "유효한 이메일입니다.") {
-      setEmailModal(true);
+
       try {
         const res = await axios.post("/auth/fetch-email", {
           email: user.id,
         });
-        if (res.data == 200) {
+
+        if (res.data.status === "200") {
+         setEmailModal(true);
+        console.log("test")
           dispatch(
             setEmailMessage({
               ...emailMessage,
@@ -136,8 +139,9 @@ const SignUpForm = () => {
             })
           );
 
-          setEmailModal(true);
-        } else if (res.data == 405) {
+
+        } else if (res.data.status === "405") {
+        alert("이미 존재하는 이메일입니다.")
           dispatch(
             setEmailMessage({
               ...emailMessage,
@@ -162,12 +166,11 @@ const SignUpForm = () => {
       phoneInputRef.current.focus();
       return;
     }
-    setPhoneModal(true);
     try {
       const res = await axios.post("/auth/fetch-phone", {
         phone: user.phone,
       });
-      if (res.data == 200) {
+      if (res.data.status == "200") {
         dispatch(
           setPhoneMessage({
             ...phoneMessage,
@@ -176,7 +179,7 @@ const SignUpForm = () => {
           })
         );
         setPhoneModal(true);
-      } else if (res.data == 405) {
+      } else if (res.data.status == "405") {
         setPhoneMessage({
           ...phoneMessage,
           message: "이미 존재하는 휴대폰 번호입니다.",
@@ -217,7 +220,7 @@ const SignUpForm = () => {
       ) : (
         <Message fail>{emailMessage}</Message>
       )}
-      {setEmailModal && (
+      {emailModal && (
         <Modal
           style={customModalStyles}
           isOpen={emailModal}

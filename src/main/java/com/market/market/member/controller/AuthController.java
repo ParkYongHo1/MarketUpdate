@@ -5,13 +5,10 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import com.market.market.member.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.market.market.member.dto.EmailCheckDto;
 import com.market.market.member.dto.MemberDto;
@@ -38,23 +35,33 @@ public class AuthController {
     
     @Autowired
     MemberService memberService;
+
+    @Autowired
+    MemberRepository memberRepository;
     
     private Map<String,String> resultMap = new HashMap<>();
     Map<String, Object> responseMap = new HashMap<>();
 
     @PostMapping(value = "/fetch-email")    
-    public Map<String,Object> fetchEmail(@RequestBody MemberDto memberDto){
-    
-        String email = memberDto.getId();
-        mailService.fetchEmail(email);
+    public @ResponseBody  Map<String,Object> fetchEmail(@RequestBody Map<String,Object> emailData){
+        String email = emailData.get("email").toString();
 
-        responseMap.put("status", "200");
+        boolean existsByEmail = memberRepository.existsById(email);
+
+        if (existsByEmail) {
+            responseMap.put("status",405);
+            System.out.println("------------------계정 중복");
+        }else{
+            responseMap.put("status", "200");
+            mailService.fetchEmail(email);
+        }
+
         return responseMap;
     }
 
     @PostMapping("/checknum-email")
-    public Map<String,Object> CheckNumEmail(@RequestBody @Valid EmailCheckDto emailCheckDto){
-         Boolean Checked=mailService.CheckAuthNum(emailCheckDto.getId(),emailCheckDto.getCheckNum());
+    public Map<String,Object> CheckNumEmail(@RequestBody Map<String,Object> emailData){
+         Boolean Checked=mailService.CheckAuthNum(emailData.get("email").toString(),emailData.get("checkNum").toString());
          
         if(Checked){
             responseMap.put("status", "200");
@@ -70,8 +77,7 @@ public class AuthController {
     public Map<String, Object> fetchPhone(@RequestBody MemberDto memberDto){
         String phone = memberDto.getPhone();
         smsService.fetchPhone(phone);
-        
-    
+
         responseMap.put("status", "200");
         return responseMap;
     }
@@ -136,8 +142,6 @@ public class AuthController {
     @PostMapping("/search-pw")
     public Map<String,Object> SearchPw(@RequestBody @Valid EmailCheckDto emailCheckDto){
         Boolean Checked=mailService.CheckAuthNum(emailCheckDto.getId(),emailCheckDto.getCheckNum());
-         
-
         if(Checked){
            responseMap.put("status", "200");
            
