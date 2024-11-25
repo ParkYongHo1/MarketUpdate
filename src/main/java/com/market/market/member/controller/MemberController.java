@@ -43,9 +43,9 @@ public class MemberController {
     }
 
     @PostMapping(value="/check-access-token")
-    public @ResponseBody Map<String,Object> checkAccessToken(@RequestBody Map<String,Object> tokenData)
+    public @ResponseBody Map<String,Object> checkAccessToken(@RequestHeader("ACCESS_TOKEN") String accessToken)
     {
-        return memberService.checkAccessToken(tokenData);
+        return memberService.checkAccessToken(accessToken);
     }
 
     @PostMapping(value = "/add-info")

@@ -252,9 +252,15 @@ public class MemberService {
     }
 
 
-    public Map<String,Object> checkAccessToken(Map<String,Object> tokenData)
+    public Map<String,Object> checkAccessToken(String accessToken)
     {
-        return tokenProvider.checkAccessToken(tokenData.get("accessToken").toString());
+        tokenProvider.checkAccessToken(accessToken);
+
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("status", "200");
+        responseMap.put("message", "유효한 JWT 토큰입니다.");
+
+        return responseMap;
     }
 
     public boolean isNicknameTaken(String nickname) {
