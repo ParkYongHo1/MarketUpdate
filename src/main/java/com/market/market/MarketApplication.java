@@ -11,9 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 @EntityScan(basePackages = {"com.market.market.member.entity","com.market.market.product.entity","com.market.market.chatting.entity"})
 @ComponentScan(basePackages = {"com.market"})
 public class MarketApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(MarketApplication.class, args);
 	}
-
 }

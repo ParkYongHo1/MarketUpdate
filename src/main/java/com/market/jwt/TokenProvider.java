@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.market.market.exception.JwtCustomException;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,12 +21,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.market.market.member.dto.JwtDto;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
@@ -123,30 +119,45 @@ public class TokenProvider {
         return false;
     }
 
-    public Map<String,Object> checkAccessToken(String accessToken)
+//    public Map<String,Object> checkAccessToken(String accessToken)
+//    {
+//        Map<String,Object> responseMap = new HashMap<>();
+//        try{
+//            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken);
+//            responseMap.put("status","200");
+//        } catch(SecurityException | MalformedJwtException e){
+//            responseMap.put("status","400");
+//            responseMap.put("message","잘못된 JWT 서명입니다.");
+//            log.info("잘못된 JWT 서명입니다.");
+//        } catch(ExpiredJwtException e){
+//            responseMap.put("status","400");
+//            responseMap.put("message","만료된 JWT 토큰입니다.");
+//            log.info("만료된 JWT 토큰입니다.");
+//        } catch(UnsupportedJwtException e){
+//            responseMap.put("status","400");
+//            responseMap.put("message","지원되지 않는 JWT 토큰입니다.");
+//            log.info("지원되지 않는 JWT 토큰입니다.");
+//        } catch(IllegalArgumentException e){
+//            responseMap.put("status","400");
+//            responseMap.put("message","JWT 토큰이 잘못되었습니다.");
+//            log.info("JWT 토큰이 잘못되었습니다.");
+//        }
+//        return responseMap;
+//    }
+
+    public void checkAccessToken(String accessToken)
     {
-        Map<String,Object> responseMap = new HashMap<>();
         try{
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken);
-            responseMap.put("status","200");
-        } catch(SecurityException | MalformedJwtException e){
-            responseMap.put("status","400");
-            responseMap.put("message","잘못된 JWT 서명입니다.");
-            log.info("잘못된 JWT 서명입니다.");
-        } catch(ExpiredJwtException e){
-            responseMap.put("status","400");
-            responseMap.put("message","만료된 JWT 토큰입니다.");
-            log.info("만료된 JWT 토큰입니다.");
-        } catch(UnsupportedJwtException e){
-            responseMap.put("status","400");
-            responseMap.put("message","지원되지 않는 JWT 토큰입니다.");
-            log.info("지원되지 않는 JWT 토큰입니다.");
-        } catch(IllegalArgumentException e){
-            responseMap.put("status","400");
-            responseMap.put("message","JWT 토큰이 잘못되었습니다.");
-            log.info("JWT 토큰이 잘못되었습니다.");
+        } catch (SecurityException | MalformedJwtException e) {
+            throw new JwtCustomException("잘못된 JWT 서명입니다.");
+        } catch (ExpiredJwtException e) {
+            throw new JwtCustomException("만료된 JWT 토큰입니다.");
+        } catch (UnsupportedJwtException e) {
+            throw new JwtCustomException("지원되지 않는 JWT 토큰입니다.");
+        } catch (IllegalArgumentException e) {
+            throw new JwtCustomException("JWT 토큰이 잘못되었습니다.");
         }
-        return responseMap;
     }
 
 
