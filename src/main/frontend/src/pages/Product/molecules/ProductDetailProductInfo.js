@@ -10,7 +10,9 @@ import BoldFont from "../atom/ProductDetailContent/BoldFont";
 import BtnDiv from "../atom/ProductDetailUser/BtnDiv";
 import FlexButton from "../atom/ProductDetailUser/FlexButton";
 import SubButton from "../atom/ProductDetailUser/SubButton";
-const ProductDetailProductInfo = () => {
+const ProductDetailProductInfo = ({ product }) => {
+  console.log(product);
+
   return (
     <DetailInfoRight>
       <BoldFont>
@@ -22,14 +24,16 @@ const ProductDetailProductInfo = () => {
             <span style={{ marginLeft: "5%" }}>거래지역</span>
           </DetailInfoContentTitle>
           <DetailInfoContentInfo>
-            마포대로2112321312312312313131
+            {product?.product?.location?.address || "주소 정보가 없습니다"}
           </DetailInfoContentInfo>
         </DetailInfoContentSubBox>
         <DetailInfoContentCategori>
           <DetailInfoContentTitle>
             <span>카테고리</span>
           </DetailInfoContentTitle>
-          <DetailInfoContentInfo>글러브</DetailInfoContentInfo>
+          <DetailInfoContentInfo>
+            {product?.product?.category || "카테고리 정보가 없습니다"}
+          </DetailInfoContentInfo>
         </DetailInfoContentCategori>
       </DetailInfoContentBox>
       <BtnDiv>

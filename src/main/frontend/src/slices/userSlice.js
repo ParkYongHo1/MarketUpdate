@@ -8,12 +8,10 @@ const initialState = {
   checkPassword: "",
   isNotPassword: "",
   user: {
-    id: "",
     level: "",
     profile_image: "",
     auth: "",
     email: "",
-    password: "",
     nickname: "",
     birth: "",
     category: "",
@@ -42,12 +40,10 @@ export const userSlice = createSlice({
     logout: (state) => {
       state.isLoggedIn = false;
       state.user = {
-        id: "",
         level: "",
         profile_image: "",
         auth: "",
         email: "",
-        password: "",
         nickname: "",
         birth: "",
         category: [],

@@ -30,12 +30,15 @@ const LoginPage = () => {
         password: user.password,
         auth: "0",
       });
+      console.log(res.data);
+
       const memberData = res.data.member;
       const jwtData = {
-        access: res.data.token.accessToken,
-        expirationTime: res.data.token.accessTokenExpiresIn,
-        refresh: res.data.token.refreshToken,
+        access: res.data?.token?.accessToken,
+        expirationTime: res.data?.token?.accessTokenExpiresIn,
+        refresh: res.data?.token?.refreshToken,
       };
+      console.log(res.data);
 
       sessionStorage.setItem("jwt", JSON.stringify(jwtData));
       if (res.data.status == "200") {
