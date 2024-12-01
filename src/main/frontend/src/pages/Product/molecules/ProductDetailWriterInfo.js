@@ -4,7 +4,9 @@ import ProductWriterName from "../atom/ProductDetailUser/ProductWriterName";
 import ProductWriterAddress from "../atom/ProductDetailUser/ProductWriterAddress";
 import ProductManner from "../atom/ProductDetailUser/ProductManner";
 import ProductWriterInfoDiv from "../atom/ProductDetailUser/ProductWriterInfoDiv";
-const ProductDetailWriterInfo = () => {
+const ProductDetailWriterInfo = ({ member }) => {
+  console.log(member);
+
   return (
     <>
       <ProductWriterInfoDiv>
@@ -13,8 +15,12 @@ const ProductDetailWriterInfo = () => {
             src={process.env.PUBLIC_URL + "/logo.png"}
           ></ProductWriterImg>
           <div>
-            <ProductWriterName>작성자</ProductWriterName>
-            <ProductWriterAddress>address</ProductWriterAddress>
+            <ProductWriterName>
+              {member?.nickname || "작성자"}
+            </ProductWriterName>
+            <ProductWriterAddress>
+              {member?.location?.address || "서울특별시 중구"}
+            </ProductWriterAddress>
           </div>
         </ProductWriterInfo>
         <ProductWriterInfo>
@@ -22,8 +28,8 @@ const ProductDetailWriterInfo = () => {
             src={process.env.PUBLIC_URL + "/logo.png"}
           ></ProductWriterImg>
           <div>
-            <ProductManner>36.5°C</ProductManner>
             <ProductManner>매너온도</ProductManner>
+            <ProductManner>{member?.manner_temp || "36°C"}</ProductManner>
           </div>
         </ProductWriterInfo>
       </ProductWriterInfoDiv>

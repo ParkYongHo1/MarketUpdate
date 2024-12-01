@@ -21,14 +21,14 @@ const SideMenu = () => {
   return (
     <>
       <Box info>
-        <Box title>회원정보 수정</Box>
+        <Box title="회원정보 수정">회원정보 수정</Box>
         <FlexDiv nomal onClick={() => dispatch(tab("changeProfile"))}>
           <Box font>
             <FontAwesomeIcon icon={faEnvelope} size="lg" />
           </Box>
           <Box font>개인정보 수정</Box>
         </FlexDiv>
-        <Box title>나의 활동</Box>
+        <Box title="나의 활동">나의 활동</Box>
         <FlexDiv nomal onClick={() => dispatch(tab("writeList"))}>
           <Box font>
             <FontAwesomeIcon
@@ -59,7 +59,7 @@ const SideMenu = () => {
           </Box>
           <Box font>관심 목록</Box>
         </FlexDiv>
-        <Box title>새로운 소식</Box>
+        <Box title="새로운 소식">새로운 소식</Box>
         <FlexDiv nomal onClick={() => dispatch(tab("notice"))}>
           <Box font>
             <FontAwesomeIcon

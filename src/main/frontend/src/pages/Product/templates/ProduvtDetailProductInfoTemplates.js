@@ -18,8 +18,10 @@ import FontDot from "../atom/ProductDetailUser/FontDot";
 import ProductDetailProductInfo from "../molecules/ProductDetailProductInfo";
 import ProductDetailWriterInfo from "../molecules/ProductDetailWriterInfo";
 
-const ProductDetailProductInfoTemplates = () => {
+const ProductDetailProductInfoTemplates = ({ product }) => {
   const contentTime = useTimeAgo("2024-06-20 11:22:00");
+  console.log(product);
+
   return (
     <ProductDiv>
       <ProductLeftDiv>
@@ -28,27 +30,37 @@ const ProductDetailProductInfoTemplates = () => {
       <ProductRightDiv>
         <ProductInfoDiv>
           <Div wrapFlex>
-            <Title>제목</Title>
+            <Title>{product?.product?.title || "제목 없음"}</Title>
             <FontAwesomeIcon
               icon={faEllipsisVertical}
               size="lg"
               style={{ cursor: "pointer" }}
             />
           </Div>
-          <MiddleFont>150,000원</MiddleFont>
+          <MiddleFont>
+            {product?.product?.price
+              ? `${product.product.price.toLocaleString()}원`
+              : "0원"}
+          </MiddleFont>
+
           <DetailInfoSub>
             <DetailFont>
               <span>{contentTime}</span>
               <FontDot>·</FontDot>
-              <span>조회</span>
-              <span>0</span> <FontDot>·</FontDot>
-              <span>관심 0 </span>
+              <span>조회 </span>
+              <span>{product?.product?.view_cnt || "0"}</span>
+              <span> 관심</span>
+              <span>{product?.product?.like_cnt || " 0"}</span>
             </DetailFont>
           </DetailInfoSub>
-          <ProductDetailWriterInfo></ProductDetailWriterInfo>
+          <ProductDetailWriterInfo
+            member={product.member}
+          ></ProductDetailWriterInfo>
           <ProductWarningMsg></ProductWarningMsg>
-          <KakaoMapApi></KakaoMapApi>
-          <ProductDetailProductInfo></ProductDetailProductInfo>
+          <KakaoMapApi member={product.member}></KakaoMapApi>
+          <ProductDetailProductInfo
+            product={product}
+          ></ProductDetailProductInfo>
         </ProductInfoDiv>
       </ProductRightDiv>
     </ProductDiv>

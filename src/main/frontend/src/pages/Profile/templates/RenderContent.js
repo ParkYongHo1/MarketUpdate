@@ -1,4 +1,6 @@
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import axios from "axios";
 import WriteList from "../organisms/WriteList";
 import ReviewList from "../organisms/ReviewList";
 import HeartList from "../organisms/HeartList";
@@ -23,7 +25,7 @@ const RenderContent = () => {
     case "faq":
       return <Faq />;
     default:
-      return "프로필";
+      return <div>프로필</div>;
   }
 };
 
