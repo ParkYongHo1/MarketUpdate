@@ -11,7 +11,7 @@ const HeartList = ({}) => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `/mypage/like-product?email=${email}&page=1&offset=10`
+          `/mypage/like-product?email=${email}&page=${1}&offset=10`
         );
         console.log(response.data.product);
         setProduct(response.data.products);
@@ -21,7 +21,6 @@ const HeartList = ({}) => {
     };
     fetchProduct();
   }, []);
-  console.log(product);
 
   return (
     <>
