@@ -31,7 +31,7 @@ const WriteList = ({}) => {
       <A>받은 거래 후기</A>
       {product.map((product) => {
         return (
-          <Container key={product.product_seq}>
+          <Container key={product.product.product_seq}>
             <Content>
               <ProductInfo isTitle>
                 {product?.product?.title || "제목 없음"}
