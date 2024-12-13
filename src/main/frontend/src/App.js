@@ -16,14 +16,17 @@ import ProductDetailPage from "./pages/Product/page/ProductDetailPage";
 import WriteProductpage from "./pages/Product/page/WriteProductPage";
 import FloatingButton from "./layout/floating/FloatingButton";
 import Profile from "./pages/Profile/Profile";
+import Chat from "./layout/floating/chat";
+import FloatingList from "./layout/floating/FloatingList";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Header />
-        <FloatingButton></FloatingButton>
+        <FloatingButton />
         <Routes>
+          {/* 기본 페이지 */}
           <Route path="/" element={<Main />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
@@ -38,8 +41,12 @@ function App() {
             path="/auth/kakao" //redirect_url
             element={<LoginHandeler />} //당신이 redirect_url에 맞춰 꾸밀 컴포넌트
           />
+
+          {/* 채팅 관련 경로 */}
+          <Route path="/floating-list" element={<FloatingList />} />
+          <Route path="/chat" element={<Chat />} />
         </Routes>
-        <Footer></Footer>
+        <Footer />
       </BrowserRouter>
     </div>
   );
