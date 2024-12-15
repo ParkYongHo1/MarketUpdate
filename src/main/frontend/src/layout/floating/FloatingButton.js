@@ -17,20 +17,35 @@ import { faBell } from "@fortawesome/free-regular-svg-icons";
 import Dot from "./atom/Dot";
 import { useDispatch, useSelector } from "react-redux";
 import FloatingList from "./FloatingList";
+import axios from "axios"; // axios import 추가
+
 const FloatingButton = () => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-  const [isPopupVisible, setIsPopupVisible] = useState(false); //챗봇 팝업
-  const [chatbotUrl, setChatbotUrl] = useState(""); //로컬 스토리지 챗봇
+  const [isPopupVisible, setIsPopupVisible] = useState(false); // 챗봇 팝업
+  const [sampleChats, setSampleChats] = useState([]); // 채팅 리스트 상태
 
-  //챗봇 팝업 열기
-  const handleOpen = () => {
-    setIsPopupVisible(true); //팝업 값 true로 변경 후 챗봇을 팝업에 표시
+  // 챗봇 팝업 열기
+  const handleOpen = async () => {
+    setIsPopupVisible(true); // 팝업 값 true로 변경 후 챗봇을 팝업에 표시
+    await fetchChatList(); // 채팅 리스트 API 호출
   };
 
-  //챗봇 팝업 닫기
+  // 챗봇 팝업 닫기
   const handleClose = () => {
-    setIsPopupVisible(false); //팝업 값 false로 변경 후 팝업 닫기
+    setIsPopupVisible(false); // 팝업 값 false로 변경 후 팝업 닫기
+  };
+  const userEmail = useSelector((state) => state.user.user.id);
+  // 채팅 리스트 가져오는 함수
+  const fetchChatList = async () => {
+    try {
+      const res = await axios.get(`/chat/selectChatRoomList`, {
+        params: { email: userEmail },
+      });
+      setSampleChats(res.data.chatRoomList); // 상태 업데이트
+    } catch (error) {
+      console.error("채팅 리스트 요청 실패:", error);
+    }
   };
 
   return (
@@ -48,7 +63,8 @@ const FloatingButton = () => {
             </TitleDiv>
             <Frame>
               <div style={{ height: "75vh", overflowY: "auto" }}>
-                <FloatingList />
+                <FloatingList sampleChats={sampleChats} />{" "}
+                {/* 채팅 리스트 전달 */}
               </div>
               <FloatingFooter>
                 <div
@@ -76,7 +92,6 @@ const FloatingButton = () => {
                       size="lg"
                       style={{ cursor: "pointer" }}
                     />
-
                     <Dot>.</Dot>
                   </Icon>
                 </div>

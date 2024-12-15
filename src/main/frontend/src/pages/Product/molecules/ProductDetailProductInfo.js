@@ -1,3 +1,5 @@
+import React, { useEffect } from "react"; // useEffect 추가
+import { useSearchParams } from "react-router-dom"; // useSearchParams 추가
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import DetailInfoContentBox from "../atom/ProductDetailContent/DetailInfoContentBox";
@@ -10,8 +12,28 @@ import BoldFont from "../atom/ProductDetailContent/BoldFont";
 import BtnDiv from "../atom/ProductDetailUser/BtnDiv";
 import FlexButton from "../atom/ProductDetailUser/FlexButton";
 import SubButton from "../atom/ProductDetailUser/SubButton";
+import axios from "axios"; // axios import 추가
+import { useSelector } from "react-redux";
+
 const ProductDetailProductInfo = ({ product }) => {
-  console.log(product);
+  const userEmail = useSelector((state) => state.user.user.id);
+
+  // 채팅 시작 함수
+  const startChat = async () => {
+    console.log({
+      productSeq: product?.product?.product_seq,
+      masterEmail: product?.product?.member_id,
+      participantEmail: userEmail,
+    });
+
+    try {
+      await axios.post(`/chat/startChat`, {
+        productSeq: product?.product?.product_seq,
+        masterEmail: product?.product?.member_id,
+        participantEmail: userEmail,
+      });
+    } catch (error) {}
+  };
 
   return (
     <DetailInfoRight>
@@ -37,13 +59,13 @@ const ProductDetailProductInfo = ({ product }) => {
         </DetailInfoContentCategori>
       </DetailInfoContentBox>
       <BtnDiv>
-        <FlexButton>채팅하기</FlexButton>
+        <FlexButton onClick={startChat}>채팅하기</FlexButton>
         <SubButton>
-          {" "}
           <FontAwesomeIcon icon={faHeart} size="lg" />
         </SubButton>
       </BtnDiv>
     </DetailInfoRight>
   );
 };
+
 export default ProductDetailProductInfo;

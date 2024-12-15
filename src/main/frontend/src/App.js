@@ -44,7 +44,7 @@ function App() {
 
           {/* 채팅 관련 경로 */}
           <Route path="/floating-list" element={<FloatingList />} />
-          <Route path="/chat" element={<Chat />} />
+          <Route path="/chat/:chatId" element={<Chat />} />
         </Routes>
         <Footer />
       </BrowserRouter>

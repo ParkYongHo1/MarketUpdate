@@ -1,49 +1,63 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import SockJS from "sockjs-client"; // SockJS import
+import { Client } from "@stomp/stompjs";
+import { useLocation, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Chat = () => {
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      sender: "buyer",
-      text: "안녕하세요, 국밥밀키트 아직 있나요?",
-      time: "오전 10:15",
-    },
-    { id: 2, sender: "seller", text: "네, 아직 있어요!", time: "오전 10:16" },
-    { id: 3, sender: "buyer", text: "혹시", time: "오전 10:18" },
-    {
-      id: 4,
-      sender: "buyer",
-      text: "국밥 밀키트 유통기한 날짜가 얼마나 남았나요?",
-      time: "오전 10:18",
-    },
-  ]);
+  const { chatId } = useParams();
+  const location = useLocation();
+  const { masterEmail } = location.state || {}; // masterEmail 가져오기
+  const userEmail = useSelector((state) => state.user.user.id);
+  const userNickname = useSelector((state) => state.user.user.nickname);
 
+  const [client, setClient] = useState(null);
+  const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [isHovered, setIsHovered] = useState(false); // 버튼 hover 상태 관리
+  const [isHovered, setIsHovered] = useState(false);
 
-  // 현재 시간 가져오기
-  const getCurrentTime = () => {
-    const now = new Date();
-    const hours = now.getHours();
-    const minutes = now.getMinutes();
-    const ampm = hours >= 12 ? "오후" : "오전";
-    const formattedHours = hours % 12 || 12; // 12시간제로 표시
-    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-    return `${ampm} ${formattedHours}:${formattedMinutes}`;
-  };
+  useEffect(() => {
+    const socket = new SockJS("http://localhost:8090/ws");
+    const stompClient = new Client({
+      webSocketFactory: () => socket,
+      onConnect: (frame) => {
+        console.log("Connected: " + frame);
+        stompClient.subscribe(`/topic/public/${chatId}`, (messageOutput) => {
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            JSON.parse(messageOutput.body),
+          ]);
+        });
+      },
+    });
+
+    stompClient.activate();
+    setClient(stompClient);
+
+    return () => {
+      stompClient.deactivate();
+    };
+  }, [chatId]);
 
   const handleSend = () => {
-    if (newMessage.trim()) {
-      setMessages([
-        ...messages,
-        {
-          id: messages.length + 1,
-          sender: "buyer",
-          text: newMessage,
-          time: getCurrentTime(),
-        },
-      ]);
-      setNewMessage("");
+    console.log("test");
+
+    const messageData = {
+      chatroomId: chatId,
+      senderName: userNickname,
+      chatContent: newMessage,
+      sendTime: new Date().toISOString(),
+      memberId: userEmail,
+    };
+
+    try {
+      client.publish({
+        destination: "/app/chat.sendMessage",
+        body: JSON.stringify(messageData),
+      });
+      setNewMessage(""); // 입력 필드 초기화
+    } catch (error) {
+      console.error("메시지 전송 오류:", error);
     }
   };
 
@@ -52,14 +66,14 @@ const Chat = () => {
       {/* 헤더 */}
       <div style={headerStyle}>
         <img style={profileImageStyle} src="profile.png" alt="Seller Profile" />
-        <div style={sellerInfoStyle}>판매자: 주부 구구단</div>
+        <div style={sellerInfoStyle}>판매자: {masterEmail || "로딩 중..."}</div>
       </div>
 
       {/* 메시지 리스트 */}
       <div style={messageListStyle}>
-        {messages.map((message) => (
+        {messages.map((message, index) => (
           <div
-            key={message.id}
+            key={index} // 고유한 key 사용
             style={messageItemStyle(message.sender === "buyer")}
           >
             <div style={messageBubbleStyle(message.sender === "buyer")}>
@@ -82,10 +96,10 @@ const Chat = () => {
         <button
           style={{
             ...sendButtonStyle,
-            backgroundColor: isHovered ? "#678C1E" : "#78AD25", // hover 상태에 따른 색상 변경
+            backgroundColor: isHovered ? "#678C1E" : "#78AD25",
           }}
-          onMouseEnter={() => setIsHovered(true)} // hover 상태 true
-          onMouseLeave={() => setIsHovered(false)} // hover 상태 false
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
           onClick={handleSend}
         >
           보내기
@@ -95,6 +109,7 @@ const Chat = () => {
   );
 };
 
+// 스타일 정의
 const chatContainerStyle = {
   width: "100%",
   maxWidth: "600px",

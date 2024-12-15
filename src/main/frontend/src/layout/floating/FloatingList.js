@@ -1,47 +1,27 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const FloatingList = () => {
-  const sampleChats = [
-    {
-      id: "1",
-      name: "게임쟁이 룰루",
-      lastMessage: "책상 사이즈 좀 알 수 있을까요?",
-      time: "오후 11:41",
-      profileImage: "profile.png",
-      unreadCount: 2,
-    },
-    {
-      id: "2",
-      name: "정아영",
-      lastMessage: "혹시 쇼파 팔렸나요?",
-      time: "오후 11:37",
-      profileImage: "profile.png",
-      unreadCount: 1,
-    },
-    {
-      id: "3",
-      name: "주부 구구단",
-      lastMessage: "국밥 밀키트 유통기한 날짜가 얼마나 남았나요??",
-      time: "오후 11:37",
-      profileImage: "profile.png",
-      unreadCount: 0,
-    },
-  ];
-
+const FloatingList = ({ sampleChats }) => {
+  // sampleChats props 추가
   const navigate = useNavigate();
 
-  const handleChatClick = (chatId) => {
-    navigate("/chat"); // 채팅 화면으로 이동
+  const handleChatClick = (chat) => {
+    console.log(chat.chatroomId);
+    navigate(`/chat/${chat.chatroomId}`, {
+      state: { masterEmail: chat.masterEmail },
+    });
   };
+  console.log(sampleChats);
 
   return (
     <div style={containerStyle}>
       {sampleChats.map((chat, index) => (
         <div
-          style={index === sampleChats.length - 1 ? lastItemStyle : itemStyle}
-          key={chat.id}
-          onClick={() => handleChatClick(chat.id)} // 클릭 시 이동
+          style={index === 0 ? lastItemStyle : itemStyle}
+          key={chat.chatroomId}
+          onClick={() => handleChatClick(chat)} // 클릭 시 이동
           onMouseOver={(e) =>
             (e.currentTarget.style.backgroundColor = "#f0f0f0")
           }
@@ -49,18 +29,11 @@ const FloatingList = () => {
         >
           <img style={imageStyle} src={chat.profileImage} />
           <div style={detailsStyle}>
-            <span style={nameStyle}>{chat.name}</span>
-            <span style={messageStyle}>
-              {chat.lastMessage.length > 20
-                ? `${chat.lastMessage.slice(0, 20)}...`
-                : chat.lastMessage}
-            </span>
+            <span style={nameStyle}>{chat.masterEmail}</span>
+            <span style={messageStyle}></span>
           </div>
           <div style={timeBadgeContainerStyle}>
-            <span style={timeStyle}>{chat.time}</span>
-            {chat.unreadCount > 0 && (
-              <div style={badgeStyle}>{chat.unreadCount}</div>
-            )}
+            <span style={timeStyle}>{chat.createTime}</span>
           </div>
         </div>
       ))}
