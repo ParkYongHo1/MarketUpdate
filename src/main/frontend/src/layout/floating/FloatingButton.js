@@ -16,6 +16,7 @@ import { faBell } from "@fortawesome/free-regular-svg-icons";
 
 import Dot from "./atom/Dot";
 import { useDispatch, useSelector } from "react-redux";
+import FloatingList from "./FloatingList";
 const FloatingButton = () => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
@@ -46,7 +47,9 @@ const FloatingButton = () => {
               <Button onClick={handleClose}>X</Button>
             </TitleDiv>
             <Frame>
-              <div style={{ height: "75vh", overflowY: "auto" }}></div>
+              <div style={{ height: "75vh", overflowY: "auto" }}>
+                <FloatingList />
+              </div>
               <FloatingFooter>
                 <div
                   style={{
