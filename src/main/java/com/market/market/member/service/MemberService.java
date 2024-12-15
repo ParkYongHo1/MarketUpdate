@@ -1,33 +1,16 @@
 package com.market.market.member.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.transaction.Transactional;
-
 import com.market.market.util.Authority;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
-import io.jsonwebtoken.security.SecurityException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties.Lettuce.Cluster.Refresh;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.market.jwt.TokenProvider;
 import com.market.market.member.dto.JwtDto;
 import com.market.market.member.dto.LocationDto;
@@ -37,7 +20,6 @@ import com.market.market.member.entity.Member;
 import com.market.market.member.entity.RefreshToken;
 import com.market.market.member.repository.MemberRepository;
 import com.market.market.member.repository.RefreshTokenRepository;
-
 import lombok.RequiredArgsConstructor;
 
 @Slf4j

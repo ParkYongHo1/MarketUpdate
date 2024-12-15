@@ -9,4 +9,8 @@ import java.util.List;
 
 public interface ChatRepository extends JpaRepository<Chat,Long> {
     List<Chat> findByChatroom_ChatroomId(Long chatroomId);
+
+    @Query(value = "SELECT * FROM chat WHERE chatroom_id = :roomId ORDER BY chat_id DESC LIMIT 1", nativeQuery = true)
+    Chat findLatestChatByRoomId(@Param("roomId") Long roomId);
+
 }

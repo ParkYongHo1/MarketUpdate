@@ -7,11 +7,13 @@ import com.market.market.chatting.entity.Chat;
 import com.market.market.chatting.entity.ChatRoom;
 import com.market.market.chatting.repository.ChatRepository;
 import com.market.market.chatting.repository.ChatRoomRepository;
+import com.market.market.member.repository.MemberRepository;
 import com.market.market.product.entity.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -25,6 +27,9 @@ public class ChatService {
 
     @Autowired
     ChatRoomRepository chatRoomRepository;
+
+    @Autowired
+    MemberRepository memberRepository;
 
     Map<String,Object> responseMap = new HashMap<>();
 
@@ -101,18 +106,62 @@ public class ChatService {
     {
         Map<String,Object> responseMap = new HashMap<>();
         try{
-            List<ChatRoomDto> chatRoomDtoList = new ArrayList<>();
             List<ChatRoom> chatRoomList = chatRoomRepository.findChatroomByMasterEmailOrPaticipantEmail(email);
+            List<Map<String,Object>> chatList = new ArrayList<>();
+            SimpleDateFormat notTodayformatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            SimpleDateFormat todayformatter = new SimpleDateFormat("MM-dd HH:mm");
+            Calendar now = Calendar.getInstance();
+            Calendar calendar = Calendar.getInstance();
+
             for(ChatRoom chatRoom : chatRoomList)
             {
-                chatRoomDtoList.add(ChatRoomDto.toDto(chatRoom));
+                Map<String, Object> chatData = new HashMap<>();
+                chatData.put("product_image","");
+                chatData.put("chatroomId",chatRoom.getChatroomId());
+                chatData.put("productSeq", chatRoom.getProduct().getProductSeq());
+                Chat chat = chatRepository.findLatestChatByRoomId(chatRoom.getChatroomId());
+                if(chatRoom.getMasterEmail() != email)
+                {
+                    chatData.put("chatMember",memberRepository.getNickname(chatRoom.getMasterEmail()));
+                }
+                if(chatRoom.getParticipantEmail() != email)
+                {
+                    chatData.put("chatMember",memberRepository.getNickname(chatRoom.getParticipantEmail()));
+                }
+
+                if(chat != null)
+                {
+                    chatData.put("lastetContent",chat.getChatContent());
+                    calendar.setTime(chat.getSendTime());
+
+                    if (now.get(Calendar.YEAR) == calendar.get(Calendar.YEAR) &&
+                            now.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
+                            now.get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH)) {
+                        chatData.put("lastetSendTime",todayformatter.format(chat.getSendTime()));
+                    } else {
+                        chatData.put("lastetSendTime",notTodayformatter.format(chat.getSendTime()));
+                    }
+                }
+                chatList.add(chatData);
             }
+
             responseMap.put("status","200");
-            responseMap.put("chatRoomList",chatRoomDtoList);
+            responseMap.put("chatRoomList",chatList);
+
         } catch (Exception e)
         {
             responseMap.put("status","400");
+            log.info("Error Message : "+e.getMessage());
         }
+        return responseMap;
+    }
+
+
+    public Map<String,Object> selectChatData(Long chatroomId)
+    {
+        Map<String,Object> responseMap = new HashMap<>();
+
+
         return responseMap;
     }
 

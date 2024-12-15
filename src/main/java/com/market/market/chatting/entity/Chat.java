@@ -38,6 +38,9 @@ public class Chat {
     @Column(name="chat_content")
     private String chatContent;
 
+    @Column(name="chat_status")
+    private Long chatStatus;
+
     public static Chat toEntity(ChatDto dto)
     {
         ChatRoom joinChatRoom = ChatRoom.builder().chatroomId(dto.getChatroomId()).build();
@@ -50,6 +53,7 @@ public class Chat {
                 .senderName(dto.getSenderName())
                 .sendTime(dto.getSendTime())
                 .chatContent(dto.getChatContent())
+                .chatStatus(dto.getChatStatus())
                 .build();
     }
 
