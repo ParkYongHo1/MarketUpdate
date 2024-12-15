@@ -22,6 +22,7 @@ public class ChatDto {
     String senderName;
     Date sendTime;
     String chatContent;
+    Long chatStatus;
 
     public static ChatDto toDto(Chat entity)
     {
@@ -32,6 +33,7 @@ public class ChatDto {
                 .senderName(entity.getSenderName())
                 .sendTime(entity.getSendTime())
                 .chatContent(entity.getChatContent())
+                .chatStatus(entity.getChatStatus())
                 .build();
     }
 
