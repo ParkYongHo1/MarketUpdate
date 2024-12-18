@@ -28,12 +28,6 @@
       </a><br>
       <span class="role">벡엔드</span>
     </td>
-    <td align="center">
-      <a href="https://github.com/member3">
-        <img src="https://avatars.githubusercontent.com/u/105470710?v=4" width="100px" alt="문웅기"><br>
-        <b>문웅기</b>
-      </a><br>
-      <span class="role">벡엔드</span>
-    </td>
+   
   </tr>
 </table>
