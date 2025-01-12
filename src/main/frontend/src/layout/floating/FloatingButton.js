@@ -42,6 +42,8 @@ const FloatingButton = () => {
       const res = await axios.get(`/chat/selectChatRoomList`, {
         params: { email: userEmail },
       });
+      console.log(res.data);
+
       setSampleChats(res.data.chatRoomList); // 상태 업데이트
     } catch (error) {
       console.error("채팅 리스트 요청 실패:", error);
