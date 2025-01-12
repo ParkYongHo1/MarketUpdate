@@ -5,13 +5,24 @@ import { useNavigate } from "react-router-dom";
 
 const FloatingList = ({ sampleChats }) => {
   // sampleChats props 추가
-  const navigate = useNavigate();
 
   const handleChatClick = (chat) => {
     console.log(chat.chatroomId);
-    navigate(`/chat/${chat.chatroomId}`, {
-      state: { masterEmail: chat.masterEmail },
-    });
+
+    // 수정된 URL
+    const chatWindow = window.open(
+      `/chat/${chat.chatroomId}`, // chat.js 파일이 처리하는 경로
+      "_blank", // 새 창에서 열기
+      "width=800,height=600" // 새 창 크기
+    );
+
+    // 새 창이 열렸을 때 추가 작업을 할 수 있음 (예: 상태 전달)
+    if (chatWindow) {
+      chatWindow.onload = () => {
+        // 채팅 페이지가 열렸을 때 추가적인 상태 전달 작업 가능
+        chatWindow.postMessage({ masterEmail: chat.masterEmail }, "*");
+      };
+    }
   };
   console.log(sampleChats);
 
@@ -21,19 +32,27 @@ const FloatingList = ({ sampleChats }) => {
         <div
           style={index === 0 ? lastItemStyle : itemStyle}
           key={chat.chatroomId}
-          onClick={() => handleChatClick(chat)} // 클릭 시 이동
+          onClick={() => handleChatClick(chat)} // 클릭 시 새 창 열기
           onMouseOver={(e) =>
             (e.currentTarget.style.backgroundColor = "#f0f0f0")
           }
           onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#fff")}
         >
-          <img style={imageStyle} src={chat.profileImage} />
+          {/* 프로필 이미지가 제대로 로드되는지 확인 */}
+          {chat.profileImage ? (
+            <img style={imageStyle} src={chat.profileImage} alt="Profile" />
+          ) : (
+            <div style={imageStyle}>No Image</div>
+          )}
           <div style={detailsStyle}>
-            <span style={nameStyle}>{chat.masterEmail}</span>
-            <span style={messageStyle}></span>
+            {/* masterEmail이 제대로 표시되는지 확인 */}
+            <span style={nameStyle}>{chat.chatMember || "Unknown"}</span>
+            <span style={messageStyle}>
+              {chat.lastetContent || "No message"}
+            </span>
           </div>
           <div style={timeBadgeContainerStyle}>
-            <span style={timeStyle}>{chat.createTime}</span>
+            <span style={timeStyle}>{chat.createTime || "No Time"}</span>
           </div>
         </div>
       ))}
